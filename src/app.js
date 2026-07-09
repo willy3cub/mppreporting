@@ -125,6 +125,7 @@ function initApp() {
       </div>
     </section>`);
   initChart();
+  renderPronosShell();
   initNavScrollSpy();
 }
 
@@ -234,4 +235,111 @@ function initReplay() {
     }, 700);
   }
   btn.addEventListener('click', () => (timer ? pause() : play()));
+}
+
+// -- Pronostics : 3 vues (grille / par joueur / par match) --------------
+// fStatus réimplémente forecastStatus() de src/lib/compute.mjs (Node-only,
+// non importable ici car app.js s'exécute en <script> classique).
+
+function outcome(a, b) { return a > b ? '1' : a < b ? '2' : 'N'; }
+function fStatus(prono, m) {
+  if (!prono || m.status !== 'played') return 'pending';
+  if (prono.score1 === m.score1 && prono.score2 === m.score2) return 'exact';
+  if (outcome(prono.score1, prono.score2) === outcome(m.score1, m.score2)) return 'result';
+  return 'miss';
+}
+const PASTILLE = { exact: ['E', 'st-exact'], result: ['R', 'st-result'], miss: ['✗', 'st-miss'], pending: ['·', 'st-pending'] };
+function pastille(st, label) {
+  const [ch, cls] = PASTILLE[st];
+  return `<span class="pill ${cls}" title="${label || ''}">${ch}</span>`;
+}
+function matchLabel(m) { return `${m.flag1} ${m.team1} ${m.score1 ?? '–'}-${m.score2 ?? '–'} ${m.team2} ${m.flag2}`; }
+
+function renderPronosShell() {
+  const { players, matches } = window.__WC;
+  const playerOpts = players.map((p) => `<option value="${p.uid}">${p.name}</option>`).join('');
+  const matchOpts = matches.map((m) => `<option value="${m.id}">${matchLabel(m)}</option>`).join('');
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="pronos" class="card">
+      <h2>🎯 Pronostics</h2>
+      <div class="tabs">
+        <button class="pv active" data-view="grille">Grille</button>
+        <button class="pv" data-view="joueur">Par joueur</button>
+        <button class="pv" data-view="match">Par match</button>
+      </div>
+      <div class="pv-controls">
+        <select id="selPlayer" hidden>${playerOpts}</select>
+        <select id="selMatch" hidden>${matchOpts}</select>
+      </div>
+      <div id="pronoBody"></div>
+    </section>`);
+  document.querySelectorAll('.pv').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.pv').forEach((x) => x.classList.remove('active'));
+    b.classList.add('active');
+    showView(b.dataset.view);
+  }));
+  document.getElementById('selPlayer').addEventListener('change', () => showView('joueur'));
+  document.getElementById('selMatch').addEventListener('change', () => showView('match'));
+  showView('grille');
+}
+
+function showView(view) {
+  document.getElementById('selPlayer').hidden = view !== 'joueur';
+  document.getElementById('selMatch').hidden = view !== 'match';
+  const body = document.getElementById('pronoBody');
+  if (view === 'grille') body.innerHTML = viewGrille();
+  else if (view === 'joueur') body.innerHTML = viewJoueur(document.getElementById('selPlayer').value);
+  else body.innerHTML = viewMatch(document.getElementById('selMatch').value);
+}
+
+function viewGrille() {
+  const { players, matches, forecasts } = window.__WC;
+  const head = `<th>Match</th>` + players.map((p) => `<th class="vth" style="color:${p.color}">${p.name}</th>`).join('');
+  const rows = matches.map((m) => {
+    const cells = players.map((p) => {
+      const pr = forecasts[p.uid]?.[m.id];
+      const st = fStatus(pr, m);
+      const lbl = pr ? `${pr.score1}-${pr.score2}` : '—';
+      return `<td>${pastille(st, lbl)}</td>`;
+    }).join('');
+    return `<tr><td class="mcol">${matchLabel(m)}</td>${cells}</tr>`;
+  }).join('');
+  return `<div class="twrap"><table class="tbl grid"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function viewJoueur(uid) {
+  const { matches, forecasts } = window.__WC;
+  const p = window.__WC.players.find((x) => x.uid === uid);
+  const pf = forecasts[uid] || {};
+  let played = 0, exact = 0, resu = 0, pts = 0;
+  const rows = matches.map((m) => {
+    const pr = pf[m.id]; const st = fStatus(pr, m);
+    if (st !== 'pending') { played++; if (st === 'exact') exact++; if (st === 'result') resu++; pts += pr?.points || 0; }
+    return `<tr><td class="mcol">${matchLabel(m)}</td>
+      <td>${pr ? `${pr.score1}-${pr.score2}` : '—'}</td>
+      <td>${pastille(st)}</td><td class="dp">${pr?.points ?? ''}</td></tr>`;
+  }).join('');
+  const rate = played ? Math.round((exact / played) * 100) : 0;
+  return `<div class="stats">
+      <div class="stat"><b style="color:${p.color}">${p.name}</b><span>${p.pseudo}</span></div>
+      <div class="stat"><b>${pts.toLocaleString('fr-FR')}</b><span>points pronos</span></div>
+      <div class="stat"><b>${exact}</b><span>scores exacts</span></div>
+      <div class="stat"><b>${rate}%</b><span>taux d'exacts</span></div>
+    </div>
+    <div class="twrap"><table class="tbl"><thead><tr><th>Match</th><th>Prono</th><th>Statut</th><th>Pts</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
+}
+
+function viewMatch(id) {
+  const { players, matches, forecasts } = window.__WC;
+  const m = matches.find((x) => x.id === id);
+  const rows = players.map((p) => {
+    const pr = forecasts[p.uid]?.[id]; const st = fStatus(pr, m);
+    return `<tr><td style="color:${p.color};font-weight:600">${p.name}</td>
+      <td>${pr ? `${pr.score1}-${pr.score2}` : '—'}</td>
+      <td>${pastille(st)}</td><td class="dp">${pr?.points ?? ''}</td></tr>`;
+  }).join('');
+  return `<p class="mhead">${matchLabel(m)} <span class="muted">(${m.phase})</span></p>
+    <div class="twrap"><table class="tbl"><thead><tr><th>Joueur</th><th>Prono</th><th>Statut</th><th>Pts</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
 }
