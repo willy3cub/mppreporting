@@ -469,28 +469,11 @@ function renderRares() {
       <span class="muted">sur ${m.team1}–${m.team2}</span></li>`;
   }).join('') : '<li class="muted">Aucun prono rare pour l’instant.</li>';
 
-  const played = matches.filter((m) => m.status === 'played');
-  const consLines = played.map((m) => {
-    const c = groupConsensus(m.id, forecasts);
-    if (!c) return '';
-    const wrong = c.score1 !== m.score1 || c.score2 !== m.score2;
-    return `<tr class="${wrong ? 'cons-wrong' : ''}">
-      <td class="mcol">${m.flag1} ${m.team1}–${m.team2} ${m.flag2}</td>
-      <td class="ctr">${c.score1}-${c.score2} <span class="muted">(${c.count}/${c.total})</span></td>
-      <td class="ctr">${m.score1}-${m.score2}</td>
-      <td class="ctr">${wrong ? '❌' : '✅'}</td></tr>`;
-  }).join('');
-
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="rares" class="card">
       <h2>💎 Pronos rares</h2>
       <h3 class="rare-sub">Les paris les plus gonflés (et justes)</h3>
       <ul class="rare-list">${rareItems}</ul>
-      <h3 class="rare-sub">Le groupe avait-il raison ?</h3>
-      <div class="twrap"><table class="tbl">
-        <thead><tr><th>Match</th><th class="ctr">Consensus</th><th class="ctr">Réel</th><th class="ctr">✓</th></tr></thead>
-        <tbody>${consLines || '<tr><td class="muted" colspan="4">Pas encore de match joué.</td></tr>'}</tbody>
-      </table></div>
     </section>`);
 }
 
