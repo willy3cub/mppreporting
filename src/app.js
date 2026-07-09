@@ -85,6 +85,11 @@ function initApp() {
         <button class="tab" data-mode="points">Points</button>
       </div>
       <div id="chart" style="height:460px"></div>
+      <div id="replay" class="replay">
+        <button id="playBtn" class="tab">▶︎ Rejouer</button>
+        <input id="scrub" type="range" min="0" value="0" step="1">
+        <span id="scrubLabel" class="muted"></span>
+      </div>
     </section>`);
   initChart();
   initNavScrollSpy();
@@ -150,10 +155,50 @@ let _chart;
 function initChart() {
   _chart = window.echarts.init(document.getElementById('chart'), null, { renderer: 'canvas' });
   _chart.setOption(chartOptionRanks());
-  document.querySelectorAll('.tab').forEach((btn) => btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach((b) => b.classList.remove('active'));
+  // Scopé à [data-mode] : #playBtn porte aussi la classe .tab (même style)
+  // mais ne doit pas être traité comme un onglet Rangs/Points.
+  document.querySelectorAll('.tab[data-mode]').forEach((btn) => btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab[data-mode]').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     _chart.setOption(btn.dataset.mode === 'ranks' ? chartOptionRanks() : chartOptionPoints(), true);
   }));
   window.addEventListener('resize', () => _chart.resize());
+  initReplay();
+}
+
+// -- Curseur temporel + animation replay journée par journée ------------
+
+function currentMode() {
+  return document.querySelector('.tab.active[data-mode]')?.dataset.mode || 'ranks';
+}
+function applyUpTo(idx) {
+  const labels = Object.keys(window.__WC.history);
+  const clip = idx + 1;
+  const opt = currentMode() === 'ranks' ? chartOptionRanks() : chartOptionPoints();
+  opt.xAxis.data = labels.slice(0, clip);
+  opt.series = opt.series.map((s) => ({ ...s, data: s.data.slice(0, clip) }));
+  opt.dataZoom = opt.dataZoom.map((z) => ({ ...z, start: 0, end: 100 }));
+  _chart.setOption(opt, true);
+  document.getElementById('scrubLabel').textContent = labels[idx];
+}
+function initReplay() {
+  const labels = Object.keys(window.__WC.history);
+  const scrub = document.getElementById('scrub');
+  const btn = document.getElementById('playBtn');
+  scrub.max = String(labels.length - 1);
+  scrub.value = String(labels.length - 1);
+  document.getElementById('scrubLabel').textContent = labels[labels.length - 1];
+  scrub.addEventListener('input', () => { pause(); applyUpTo(+scrub.value); });
+  let timer = null;
+  function pause() { if (timer) { clearInterval(timer); timer = null; btn.textContent = '▶︎ Rejouer'; } }
+  function play() {
+    let i = +scrub.value >= labels.length - 1 ? 0 : +scrub.value;
+    btn.textContent = '⏸ Pause';
+    timer = setInterval(() => {
+      applyUpTo(i); scrub.value = String(i);
+      if (i >= labels.length - 1) { pause(); return; }
+      i++;
+    }, 700);
+  }
+  btn.addEventListener('click', () => (timer ? pause() : play()));
 }
