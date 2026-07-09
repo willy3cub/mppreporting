@@ -126,6 +126,10 @@ function rankStandings(points) {
     .map(([uid, pts], i) => ({ uid, pts, rank: i + 1 }));
 }
 
+function ordinalFr(v) {
+  return v === 1 ? '1er' : `${v}e`;
+}
+
 function renderHero(root) {
   const label = latestLabel();
   root.insertAdjacentHTML('beforeend', `
@@ -228,7 +232,7 @@ function baseOption(mode) {
       order: mode === 'ranks' ? 'valueAsc' : 'valueDesc',
       axisPointer: { type: 'line', lineStyle: { color: '#ffffff55' } },
       backgroundColor: '#141b3c', borderColor: '#ffffff33', textStyle: { color: '#fff' },
-      valueFormatter: (v) => (v == null ? '—' : mode === 'ranks' ? `${v}e` : v.toLocaleString('fr-FR')),
+      valueFormatter: (v) => (v == null ? '—' : mode === 'ranks' ? ordinalFr(v) : v.toLocaleString('fr-FR')),
     },
     legend: { type: 'scroll', top: 0, textStyle: { color: '#cfd6f5' }, inactiveColor: '#555' },
     grid: { left: 44, right: 20, top: 40, bottom: 60 },
@@ -236,7 +240,7 @@ function baseOption(mode) {
     yAxis: mode === 'ranks'
       ? {
           type: 'value', inverse: true, min: 1, max: 16, interval: 1,
-          axisLabel: { formatter: (v) => (v === 1 ? '1er' : `${v}e`) },
+          axisLabel: { formatter: ordinalFr },
           splitLine: { lineStyle: { color: '#ffffff12' } },
         }
       : {
