@@ -1,0 +1,33 @@
+# Outputs générés automatiquement — ne pas versionner
+email_journee*.html
+email_journee*.png
+email_journee*.pdf
+*_full.png
+*_screenshot.png
+email-journee*.png
+WC2026-email-*.png
+classement_*.png
+
+# Scripts intermédiaires / archives
+gen_j*_run.py
+generate_email.py
+teams_journee*.md
+browser-screenshot-notes.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Éditeurs
+.DS_Store
+*.swp
+*~
+.vscode/
+.idea/
+
+# Node
+node_modules/
+
+# Token MPP — ne jamais versionner
+.mpp-token

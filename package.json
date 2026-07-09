@@ -1,0 +1,14 @@
+{
+  "name": "wc2026-bilan",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "fetch": "node src/fetch.mjs",
+    "build": "node src/build.mjs",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "echarts": "^5.5.0"
+  }
+}

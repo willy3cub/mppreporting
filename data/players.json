@@ -1,0 +1,18 @@
+[
+  { "uid": "user_10698233", "name": "JC",         "pseudo": "JCBBBB",          "color": "#ff5a5f" },
+  { "uid": "user_8701920",  "name": "Christophe", "pseudo": "ChrisCouder",     "color": "#5aa9e6" },
+  { "uid": "user_8702965",  "name": "Eric",       "pseudo": "ZINEDINE_RICOU",  "color": "#2ec4b6" },
+  { "uid": "user_8616704",  "name": "Marion",     "pseudo": "Go_3eme_Etoile",  "color": "#ffd166" },
+  { "uid": "user_8422848",  "name": "Willy",      "pseudo": "willy3cub_",      "color": "#f4a261" },
+  { "uid": "user_8620122",  "name": "Soizic",     "pseudo": "Soiiiiiiz",       "color": "#a8dadc" },
+  { "uid": "user_10189113", "name": "Mathilde",   "pseudo": "MathouDori",      "color": "#52b788" },
+  { "uid": "user_8619563",  "name": "Clément",    "pseudo": "Coach-33",        "color": "#c77dff" },
+  { "uid": "user_8736186",  "name": "Stéphen",    "pseudo": "THE_GOAT_STEPH",  "color": "#b8c0ff" },
+  { "uid": "user_9239662",  "name": "Manu",       "pseudo": "GOAT#UE2XW4MC",   "color": "#ced4da" },
+  { "uid": "user_8619031",  "name": "Kawett",     "pseudo": "kawett",          "color": "#fb8500" },
+  { "uid": "user_10595758", "name": "Candy",      "pseudo": "DidiiDeschamps",  "color": "#ff5da2" },
+  { "uid": "user_8620746",  "name": "Célia",      "pseudo": "ORYDERAIMBAULT",  "color": "#e0955f" },
+  { "uid": "user_8745208",  "name": "Vincent",    "pseudo": "Easybet",         "color": "#48cae4" },
+  { "uid": "user_8742869",  "name": "Ben",        "pseudo": "Zhufazan",        "color": "#a7c957" },
+  { "uid": "user_8738144",  "name": "Tonton",     "pseudo": "Tonton-du-Plaid", "color": "#90e0ef" }
+]
