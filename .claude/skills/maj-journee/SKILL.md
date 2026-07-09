@@ -49,15 +49,15 @@ Consignes par match :
 
 ### 5. Rédiger `data/bilan.json` — le mot du bilan
 ```json
-{ "updated": "J23 · <date/contexte>", "html": "<p>…</p><p>…</p>…" }
+{ "updated": "J23 · <date/contexte>", "html": "<p>…</p><p>…</p>" }
 ```
-- **Plusieurs paragraphes**, chacun **3-4 phrases max**, ton humoristique et très chambreur :
-  1. **Mouvements au classement** : qui grimpe, qui plonge, le leader, l'écart en tête.
-  2. **Bons pronos** : les coups de génie (exacts, pronos rares réussis) — cite les joueurs.
-  3. **Mauvais pronos** : les fours, les 0 pointés, les paris long terme qui sombrent (équipe/buteur éliminé).
-  4. **Piques ciblées** sur 1-2 joueurs (superlatifs : Sniper, Mouton, Frileux, Dernier…).
-  5. Clôture avec les **matchs à venir** si pertinent.
-- Appuie-toi sur les faits (classement, superlatifs, rares, favoris éliminés). Reste factuel sous l'humour.
+- **Rendu juste après le classement** (déjà câblé dans `initApp`).
+- **RÈGLE : ne commente QUE ce qui est directement lié à la dernière journée** — les matchs qui viennent d'être joués, leurs pronos, et les mouvements de classement de CETTE journée. **N'évoque pas** les paris long terme (équipes/buteurs éliminés lors de journées antérieures) ni un récap général des superlatifs, **sauf** si un titre a changé de main À CAUSE de cette journée (ex. un exact du soir fait basculer le Sniper) — là c'est lié, tu peux le glisser.
+- **2 à 3 paragraphes**, chacun **3-4 phrases max**, ton humoristique et très chambreur :
+  1. **Mouvements au classement** de la journée : qui grimpe/plonge, le leader, l'écart en tête.
+  2. **Pronos de la journée** : les coups de génie (exacts, pronos rares réussis) et les fours/0-pointés sur les matchs du jour — cite les joueurs.
+  3. (optionnel) une **pique** liée à la journée (un superlatif qui bascule, une série qui casse…).
+- Appuie-toi sur les faits (classement, pronos notables). Reste factuel sous l'humour.
 
 ### 6. Superlatifs & pronos rares
 Ils sont **recalculés automatiquement** côté front à partir de `data/forecasts.json` au build — aucun fichier à éditer. Vérifie juste, dans la sortie de `facts.mjs`, que les détenteurs ont du sens, et n'hésite pas à en citer dans le bilan.

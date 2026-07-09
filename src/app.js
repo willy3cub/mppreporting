@@ -53,12 +53,12 @@ function renderHero(root) {
   root.insertAdjacentHTML('beforeend', `
     <nav class="nav">
       <a href="#classement">Classement</a>
+      <a href="#bilan">Bilan</a>
       <a href="#graphe">Évolution</a>
       <a href="#pronos">Pronostics</a>
       <a href="#compare">Duel</a>
       <a href="#awards">Superlatifs</a>
       <a href="#rares">Rares</a>
-      <a href="#bilan">Bilan</a>
     </nav>
     <section id="podium" class="podium"></section>`);
 }
@@ -317,16 +317,16 @@ function computeAwards(players, matches, forecasts) {
   };
 }
 
-// Libellés des 8 superlatifs (partagés carte + section awards).
+// Libellés des 8 superlatifs [emoji, titre, détail court, explication tooltip].
 const AWARD_LABELS = {
-  sniper: ['🎯', 'Le Sniper', 'scores exacts'],
-  serie: ['🔥', 'La Série', "matchs d'affilée avec des points"],
-  kamikaze: ['🃏', 'Le Kamikaze', 'scores les plus rares'],
-  mouton: ['🐑', 'Le Mouton', 'suit le groupe'],
-  visionnaire: ['🧠', 'Le Visionnaire', 'juste à contre-courant'],
-  carton: ['💥', 'Le Carton', 'record sur une journée'],
-  frileux: ['🧊', 'Le Frileux', 'matchs à 0 point'],
-  dernier: ['⏱️', 'Le Dernier', 'pronos tardifs'],
+  sniper: ['🎯', 'Le Sniper', 'scores exacts', 'Le plus grand nombre de scores exacts trouvés sur la compétition.'],
+  serie: ['🔥', 'La Série', "matchs d'affilée avec des points", 'La plus longue série de matchs consécutifs avec au moins 1 point.'],
+  kamikaze: ['🃏', 'Le Kamikaze', 'scores les plus rares', 'La rareté moyenne de pronos la plus élevée : ose les scores que personne ne tente.'],
+  mouton: ['🐑', 'Le Mouton', 'suit le groupe', 'A le plus souvent misé le score le plus populaire du groupe.'],
+  visionnaire: ['🧠', 'Le Visionnaire', 'juste à contre-courant', 'A eu raison le plus souvent en pronostiquant à contre-courant du groupe.'],
+  carton: ['💥', 'Le Carton', 'record sur une journée', 'Le plus gros total de points marqué sur une seule journée.'],
+  frileux: ['🧊', 'Le Frileux', 'matchs à 0 point', 'Le plus grand nombre de matchs terminés à 0 point.'],
+  dernier: ['⏱️', 'Le Dernier', 'pronos tardifs', 'Valide ses pronos le plus tard, au plus près du coup d’envoi.'],
 };
 
 let _awardsCache;
@@ -376,7 +376,7 @@ function playerCardStats(uid) {
   return { rank, pts, played, exact, rate: played ? Math.round((exact / played) * 100) : 0 };
 }
 
-// Liste des pronos joués d'un joueur, triée par points décroissants.
+// Liste des pronos joués d'un joueur, du match le plus récent au plus ancien.
 function playerPronoList(uid) {
   const { matches, forecasts } = window.__WC;
   const pf = forecasts[uid] || {};
@@ -386,7 +386,7 @@ function playerPronoList(uid) {
     if (st === 'pending' || !pr) continue;
     rows.push({ m, pr, st, pts: pr.points ?? 0, rarity: pr.rarity ?? 0 });
   }
-  return rows.sort((a, b) => (a.m.date < b.m.date ? -1 : a.m.date > b.m.date ? 1 : 0));
+  return rows.sort((a, b) => (a.m.date > b.m.date ? -1 : a.m.date < b.m.date ? 1 : 0));
 }
 
 function renderPlayerCard(uid) {
@@ -517,13 +517,13 @@ function hasAward(key, a) {
 
 function renderAwards() {
   const aw = allAwards();
-  const cards = Object.entries(AWARD_LABELS).map(([key, [, title, detail]]) => {
+  const cards = Object.entries(AWARD_LABELS).map(([key, [, title, detail, hint]]) => {
     const a = aw[key];
     const has = hasAward(key, a);
     const p = has ? playerByUid(a.uid) : null;
     const who = p ? `<div class="badge-who" style="color:${p.color}">${p.name}</div>` : '<div class="badge-who muted">—</div>';
     const val = has ? `<div class="badge-val">${awardValueText(key, a.value)}</div>` : '';
-    return `<div class="badge">
+    return `<div class="badge" data-hint="${hint}">
       ${badgeImg(key)}
       <div class="badge-title">${title}</div>
       ${who}${val}
@@ -612,6 +612,30 @@ function initReveal() {
   targets.forEach((t) => io.observe(t));
 }
 
+// Tooltip flottant générique pour tout élément portant [data-hint].
+function initHintTips() {
+  let tip = document.getElementById('hintTip');
+  if (!tip) {
+    tip = document.createElement('div');
+    tip.id = 'hintTip';
+    tip.className = 'hint-tip';
+    document.body.appendChild(tip);
+  }
+  const move = (e) => { tip.style.left = (e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; };
+  document.body.addEventListener('mouseover', (e) => {
+    const el = e.target.closest('[data-hint]'); if (!el) return;
+    tip.textContent = el.dataset.hint;
+    tip.style.display = 'block';
+    move(e);
+  });
+  document.body.addEventListener('mousemove', (e) => { if (tip.style.display === 'block') move(e); });
+  document.body.addEventListener('mouseout', (e) => {
+    if (!e.target.closest('[data-hint]')) return;
+    const to = e.relatedTarget;
+    if (!to || !to.closest || !to.closest('[data-hint]')) tip.style.display = 'none';
+  });
+}
+
 // Nav sticky : surligne l'ancre correspondant à la section visible.
 function initNavScrollSpy() {
   const links = Array.from(document.querySelectorAll('.nav a'));
@@ -637,6 +661,7 @@ function initApp() {
   renderPodium();
   renderRecap();
   renderClassement();
+  renderBilan();
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="graphe" class="card">
       <h2>📈 Évolution</h2>
@@ -656,9 +681,10 @@ function initApp() {
   renderCompare();
   renderAwards();
   renderRares();
-  renderBilan();
+  renderFooter();
   initCardTriggers();
   openCardFromUrl();
+  initHintTips();
   initNavScrollSpy();
   initReveal();
 }
@@ -788,11 +814,20 @@ function pastille(st, label) {
   return `<span class="pill ${cls}" title="${label || ''}">${ch}</span>`;
 }
 function matchLabel(m) { return `${m.flag1} ${m.team1} ${m.score1 ?? '–'}-${m.score2 ?? '–'} ${m.team2} ${m.flag2}`; }
+// Matchs joués d'abord (le plus récent en tête), puis les matchs à venir (le plus proche d'abord).
+function matchesDesc() {
+  return [...window.__WC.matches].sort((a, b) => {
+    const ap = a.status === 'played', bp = b.status === 'played';
+    if (ap !== bp) return ap ? -1 : 1;
+    if (a.date === b.date) return 0;
+    return ap ? (a.date < b.date ? 1 : -1) : (a.date < b.date ? -1 : 1);
+  });
+}
 
 function renderPronosShell() {
-  const { players, matches } = window.__WC;
+  const { players } = window.__WC;
   const playerOpts = players.map((p) => `<option value="${p.uid}">${p.name}</option>`).join('');
-  const matchOpts = matches.map((m) => `<option value="${m.id}">${matchLabel(m)}</option>`).join('');
+  const matchOpts = matchesDesc().map((m) => `<option value="${m.id}">${matchLabel(m)}</option>`).join('');
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="pronos" class="card">
       <h2>🎯 Pronostics</h2>
@@ -864,7 +899,8 @@ const GRILLE_LEGEND = `
   </div>`;
 
 function viewGrille() {
-  const { players, matches, forecasts } = window.__WC;
+  const { players, forecasts } = window.__WC;
+  const matches = matchesDesc();
   const head = `<th>Match</th>` + players.map((p) => `<th class="vth" style="color:${p.color}">${p.name}</th>`).join('');
   const rows = matches.map((m) => {
     const cells = players.map((p) => {
@@ -879,7 +915,8 @@ function viewGrille() {
 }
 
 function viewJoueur(uid) {
-  const { matches, forecasts } = window.__WC;
+  const { forecasts } = window.__WC;
+  const matches = matchesDesc();
   const p = window.__WC.players.find((x) => x.uid === uid);
   const pf = forecasts[uid] || {};
   let played = 0, exact = 0, resu = 0, pts = 0;
@@ -923,6 +960,10 @@ function renderBilan() {
     <section id="bilan" class="card">
       <h2>🔍 Le mot du bilan <span class="muted">${b.updated}</span></h2>
       <div class="prose">${b.html}</div>
-    </section>
-    <footer class="foot">SHRS Football Club — Coupe du Monde 2026 • généré statiquement</footer>`);
+    </section>`);
+}
+
+function renderFooter() {
+  document.getElementById('app').insertAdjacentHTML('beforeend',
+    '<footer class="foot">SHRS Football Club — Coupe du Monde 2026 • généré statiquement</footer>');
 }
