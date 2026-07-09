@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -64,40 +64,58 @@ async function get(url, tok) {
 // (page auto-suffisante : aucune requête réseau au chargement).
 // Un même URL partagé par plusieurs joueurs = avatar par défaut → ignoré
 // (le front retombe sur la pastille colorée avec l'initiale).
-// Réduit une image à 96px et la ré-encode en JPEG léger via sips (macOS).
-// Renvoie null si sips échoue (l'appelant retombe sur l'image brute).
-function shrinkToJpegDataUri(buf, ext) {
-  try {
-    const src = join(tmpdir(), `mpp-avatar-src${ext}`);
-    const dst = join(tmpdir(), 'mpp-avatar.jpg');
-    writeFileSync(src, buf);
-    execFileSync('sips', ['-Z', '96', '-s', 'format', 'jpeg', '-s', 'formatOptions', '80', src, '--out', dst], { stdio: 'ignore' });
-    return `data:image/jpeg;base64,${readFileSync(dst).toString('base64')}`;
-  } catch {
-    return null;
+const AV_DIR = 'data/avatars';
+const AV_EXTS = ['jpg', 'jpeg', 'png', 'webp'];
+
+// Redimensionne une image à 96px (JPEG léger). Essaie plusieurs outils pour
+// rester multi-plateforme : sips (macOS), puis ImageMagick (Ubuntu : magick/convert).
+// Renvoie true si un outil a réussi.
+function resizeAvatar(srcPath, dstJpgPath) {
+  const attempts = [
+    ['sips', ['-Z', '96', '-s', 'format', 'jpeg', '-s', 'formatOptions', '80', srcPath, '--out', dstJpgPath]],
+    ['magick', [srcPath, '-resize', '96x96>', '-strip', '-quality', '80', dstJpgPath]],
+    ['convert', [srcPath, '-resize', '96x96>', '-strip', '-quality', '80', dstJpgPath]],
+  ];
+  for (const [cmd, args] of attempts) {
+    try { execFileSync(cmd, args, { stdio: 'ignore' }); return true; } catch { /* outil suivant */ }
+  }
+  return false;
+}
+
+function removeAvatarFiles(uid) {
+  for (const ext of AV_EXTS) {
+    const f = jpath(`${AV_DIR}/${uid}.${ext}`);
+    if (existsSync(f)) rmSync(f);
   }
 }
 
+// Télécharge les avatars dans data/avatars/<uid>.jpg (fichiers versionnés).
+// Le build les ré-encode en base64 → page auto-suffisante.
+// Un URL partagé par plusieurs joueurs = avatar par défaut → ignoré
+// (le front retombe sur la pastille colorée avec l'initiale).
 export async function updateAvatars(standingsRaw) {
   const entries = (standingsRaw.standings || [])
     .map((s) => [s.user.id, s.user.avatarUrl])
     .filter(([, url]) => url);
   const count = {};
   for (const [, url] of entries) count[url] = (count[url] || 0) + 1;
-  const out = existsSync(jpath('data/avatars.json')) ? readJson('data/avatars.json') : {};
+  mkdirSync(jpath(AV_DIR), { recursive: true });
+  let n = 0;
   for (const [uid, url] of entries) {
-    if (count[url] > 1) { delete out[uid]; continue; } // placeholder par défaut
+    removeAvatarFiles(uid); // repart propre (évite doublons d'extension)
+    if (count[url] > 1) continue; // placeholder par défaut
     try {
       const r = await fetch(url);
       if (!r.ok) continue;
       const buf = Buffer.from(await r.arrayBuffer());
-      const ext = /\.jpe?g($|\?)/i.test(url) ? '.jpg' : '.png';
-      const mime = ext === '.jpg' ? 'image/jpeg' : 'image/png';
-      out[uid] = shrinkToJpegDataUri(buf, ext) || `data:${mime};base64,${buf.toString('base64')}`;
-    } catch { /* avatar indisponible : on garde l'ancien s'il existe */ }
+      const ext = /\.jpe?g($|\?)/i.test(url) ? 'jpg' : /\.webp($|\?)/i.test(url) ? 'webp' : 'png';
+      const tmp = join(tmpdir(), `mpp-avatar-src.${ext}`);
+      writeFileSync(tmp, buf);
+      if (resizeAvatar(tmp, jpath(`${AV_DIR}/${uid}.jpg`))) n++;
+      else { writeFileSync(jpath(`${AV_DIR}/${uid}.${ext}`), buf); n++; } // pas d'outil : image brute
+    } catch { /* avatar indisponible : on garde l'existant */ }
   }
-  writeJson('data/avatars.json', out);
-  console.log(`OK  avatars (${Object.keys(out).length} persos)`);
+  console.log(`OK  avatars (${n} persos → ${AV_DIR}/)`);
 }
 
 async function main() {
