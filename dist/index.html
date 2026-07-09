@@ -78,6 +78,14 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .st-exact{background:#38d996}.st-result{background:var(--gold)}.st-miss{background:#ff6b6b}
 .st-pending{background:#3a4270;color:#aab}
 .tbl.grid th.vth{writing-mode:vertical-rl;transform:rotate(180deg);height:70px;font-size:12px}
+.grid-legend{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:2px 0 14px;font-size:13px;color:var(--muted)}
+.grid-legend .pill{margin-right:6px;width:20px;height:20px}
+.grid-legend-hint{font-style:italic;opacity:.8}
+.gcell{cursor:default}
+.grid-tip{position:fixed;z-index:30;display:none;pointer-events:none;max-width:260px;
+  background:#141b3c;border:1px solid #ffffff33;border-radius:8px;padding:8px 11px;
+  font-size:13px;line-height:1.5;color:#fff;box-shadow:0 6px 20px #00000066}
+.grid-tip b{color:var(--gold)}
 .tbl .mcol{white-space:nowrap;font-size:13px}
 .stats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px}
 .stat{background:#ffffff0d;border:1px solid #ffffff1a;border-radius:12px;padding:10px 14px;min-width:110px}
@@ -874,7 +882,35 @@ function renderPronosShell() {
   }));
   document.getElementById('selPlayer').addEventListener('change', () => showView('joueur'));
   document.getElementById('selMatch').addEventListener('change', () => showView('match'));
+  initGrilleTooltip();
   showView('grille');
+}
+
+// Tooltip au survol d'une case de la grille : montre le prono du joueur.
+// Délégué sur #pronoBody (persistant) pour survivre aux changements de vue.
+function initGrilleTooltip() {
+  const body = document.getElementById('pronoBody');
+  let tip = document.getElementById('gridTip');
+  if (!tip) {
+    tip = document.createElement('div');
+    tip.id = 'gridTip';
+    tip.className = 'grid-tip';
+    document.body.appendChild(tip);
+  }
+  const WORD = { exact: 'Score exact ✅', result: 'Bon résultat', miss: 'Raté', pending: 'À venir' };
+  const move = (e) => { tip.style.left = (e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; };
+  body.addEventListener('mouseover', (e) => {
+    const c = e.target.closest('.gcell'); if (!c) return;
+    const prono = c.dataset.prono === '—' ? 'aucun prono' : c.dataset.prono;
+    tip.innerHTML = `<b>${c.dataset.player}</b> · ${c.dataset.match}<br>Pronostic : <b>${prono}</b> — ${WORD[c.dataset.status]}`;
+    tip.style.display = 'block';
+    move(e);
+  });
+  body.addEventListener('mousemove', (e) => { if (tip.style.display === 'block') move(e); });
+  body.addEventListener('mouseout', (e) => {
+    const to = e.relatedTarget;
+    if (!to || !to.closest || !to.closest('.gcell')) tip.style.display = 'none';
+  });
 }
 
 function showView(view) {
@@ -886,6 +922,15 @@ function showView(view) {
   else body.innerHTML = viewMatch(document.getElementById('selMatch').value);
 }
 
+const GRILLE_LEGEND = `
+  <div class="grid-legend">
+    <span><span class="pill st-exact">E</span> Score exact</span>
+    <span><span class="pill st-result">R</span> Bon résultat</span>
+    <span><span class="pill st-miss">✗</span> Raté</span>
+    <span><span class="pill st-pending">·</span> À venir</span>
+    <span class="grid-legend-hint">Survolez une case pour voir le pronostic</span>
+  </div>`;
+
 function viewGrille() {
   const { players, matches, forecasts } = window.__WC;
   const head = `<th>Match</th>` + players.map((p) => `<th class="vth" style="color:${p.color}">${p.name}</th>`).join('');
@@ -894,11 +939,11 @@ function viewGrille() {
       const pr = forecasts[p.uid]?.[m.id];
       const st = fStatus(pr, m);
       const lbl = pr ? `${pr.score1}-${pr.score2}` : '—';
-      return `<td>${pastille(st, lbl)}</td>`;
+      return `<td class="gcell" data-player="${p.name}" data-match="${m.team1}–${m.team2}" data-prono="${lbl}" data-status="${st}">${pastille(st)}</td>`;
     }).join('');
     return `<tr><td class="mcol">${matchLabel(m)}</td>${cells}</tr>`;
   }).join('');
-  return `<div class="twrap"><table class="tbl grid"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  return `${GRILLE_LEGEND}<div class="twrap"><table class="tbl grid"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function viewJoueur(uid) {

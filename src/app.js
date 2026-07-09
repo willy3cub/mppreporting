@@ -692,7 +692,35 @@ function renderPronosShell() {
   }));
   document.getElementById('selPlayer').addEventListener('change', () => showView('joueur'));
   document.getElementById('selMatch').addEventListener('change', () => showView('match'));
+  initGrilleTooltip();
   showView('grille');
+}
+
+// Tooltip au survol d'une case de la grille : montre le prono du joueur.
+// Délégué sur #pronoBody (persistant) pour survivre aux changements de vue.
+function initGrilleTooltip() {
+  const body = document.getElementById('pronoBody');
+  let tip = document.getElementById('gridTip');
+  if (!tip) {
+    tip = document.createElement('div');
+    tip.id = 'gridTip';
+    tip.className = 'grid-tip';
+    document.body.appendChild(tip);
+  }
+  const WORD = { exact: 'Score exact ✅', result: 'Bon résultat', miss: 'Raté', pending: 'À venir' };
+  const move = (e) => { tip.style.left = (e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; };
+  body.addEventListener('mouseover', (e) => {
+    const c = e.target.closest('.gcell'); if (!c) return;
+    const prono = c.dataset.prono === '—' ? 'aucun prono' : c.dataset.prono;
+    tip.innerHTML = `<b>${c.dataset.player}</b> · ${c.dataset.match}<br>Pronostic : <b>${prono}</b> — ${WORD[c.dataset.status]}`;
+    tip.style.display = 'block';
+    move(e);
+  });
+  body.addEventListener('mousemove', (e) => { if (tip.style.display === 'block') move(e); });
+  body.addEventListener('mouseout', (e) => {
+    const to = e.relatedTarget;
+    if (!to || !to.closest || !to.closest('.gcell')) tip.style.display = 'none';
+  });
 }
 
 function showView(view) {
@@ -704,6 +732,15 @@ function showView(view) {
   else body.innerHTML = viewMatch(document.getElementById('selMatch').value);
 }
 
+const GRILLE_LEGEND = `
+  <div class="grid-legend">
+    <span><span class="pill st-exact">E</span> Score exact</span>
+    <span><span class="pill st-result">R</span> Bon résultat</span>
+    <span><span class="pill st-miss">✗</span> Raté</span>
+    <span><span class="pill st-pending">·</span> À venir</span>
+    <span class="grid-legend-hint">Survolez une case pour voir le pronostic</span>
+  </div>`;
+
 function viewGrille() {
   const { players, matches, forecasts } = window.__WC;
   const head = `<th>Match</th>` + players.map((p) => `<th class="vth" style="color:${p.color}">${p.name}</th>`).join('');
@@ -712,11 +749,11 @@ function viewGrille() {
       const pr = forecasts[p.uid]?.[m.id];
       const st = fStatus(pr, m);
       const lbl = pr ? `${pr.score1}-${pr.score2}` : '—';
-      return `<td>${pastille(st, lbl)}</td>`;
+      return `<td class="gcell" data-player="${p.name}" data-match="${m.team1}–${m.team2}" data-prono="${lbl}" data-status="${st}">${pastille(st)}</td>`;
     }).join('');
     return `<tr><td class="mcol">${matchLabel(m)}</td>${cells}</tr>`;
   }).join('');
-  return `<div class="twrap"><table class="tbl grid"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  return `${GRILLE_LEGEND}<div class="twrap"><table class="tbl grid"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function viewJoueur(uid) {
