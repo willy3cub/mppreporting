@@ -42,9 +42,15 @@ function renderHero(root) {
     <header class="hero">
       <div class="trophy">🏆</div>
       <h1>COUPE DU MONDE 2026</h1>
+      <svg class="hero-underline" viewBox="0 0 320 18" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="ug" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#FFD166"/></linearGradient></defs>
+        <path d="M6 11 Q 80 3, 160 11 T 314 11" fill="none" stroke="url(#ug)" stroke-width="3" stroke-linecap="round"/>
+      </svg>
       <p class="sub">Bilan SHRS Football Club — Ligue UDMSMC8T</p>
       <p class="upd">Dernière mise à jour&nbsp;: ${label}</p>
-    </header>
+    </header>`);
+  root.insertAdjacentHTML('beforeend', `
     <nav class="nav">
       <a href="#classement">Classement</a>
       <a href="#graphe">Évolution</a>
@@ -68,7 +74,7 @@ function renderPodium() {
       <div class="medal">${medals[s.rank - 1]}</div>
       ${avatarThumb(p, 'avt-lg')}
       <div class="pname">${p.name}</div>
-      <div class="ppts">${s.pts.toLocaleString('fr-FR')} pts</div>
+      <div class="ppts"><span data-count="${s.pts}">${s.pts.toLocaleString('fr-FR')}</span> pts</div>
     </div>`;
   }).join('');
 }
@@ -553,6 +559,40 @@ function openCardFromUrl() {
   if (p) renderPlayerCard(p.uid);
 }
 
+// Anime un nombre de 0 → valeur cible (easeOutCubic), format fr-FR.
+function countUp(el) {
+  if (el.dataset.done) return;
+  el.dataset.done = '1';
+  const to = +el.dataset.count;
+  if (!Number.isFinite(to)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    el.textContent = to.toLocaleString('fr-FR');
+    return;
+  }
+  const dur = 900, start = performance.now();
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / dur);
+    const v = Math.round(to * (1 - Math.pow(1 - t, 3)));
+    el.textContent = v.toLocaleString('fr-FR');
+    if (t < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+// Révélation fluide des sections au scroll + déclenche les compteurs internes.
+function initReveal() {
+  const targets = document.querySelectorAll('.card, .podium');
+  const io = new IntersectionObserver((entries, obs) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      e.target.classList.add('in');
+      e.target.querySelectorAll('[data-count]').forEach(countUp);
+      obs.unobserve(e.target);
+    }
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
+  targets.forEach((t) => io.observe(t));
+}
+
 // Nav sticky : surligne l'ancre correspondant à la section visible.
 function initNavScrollSpy() {
   const links = Array.from(document.querySelectorAll('.nav a'));
@@ -600,6 +640,7 @@ function initApp() {
   initCardTriggers();
   openCardFromUrl();
   initNavScrollSpy();
+  initReveal();
 }
 
 // -- Graphe : bump chart des rangs (1er en haut) + points cumulés --------
