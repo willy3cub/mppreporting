@@ -125,6 +125,12 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .badge-who{font-weight:700;font-size:15px}
 .badge-val{color:var(--gold);font-size:13px;font-weight:700}
 .badge-detail{color:var(--muted);font-size:11px;margin-top:4px}
+/* -- Pronos rares -- */
+.rare-sub{font-size:15px;color:var(--gold);margin:14px 0 8px}
+.rare-list{list-style:none;padding:0;margin:0}
+.rare-item{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid #ffffff10;font-size:14px}
+.tbl .ctr{text-align:center}
+.cons-wrong td{background:#ff6b6b14}
 </style>
 </head>
 <body>
@@ -210,8 +216,11 @@ function renderHero(root) {
     </header>
     <nav class="nav">
       <a href="#classement">Classement</a>
+      <a href="#compare">Duel</a>
       <a href="#graphe">Évolution</a>
       <a href="#pronos">Pronostics</a>
+      <a href="#awards">Superlatifs</a>
+      <a href="#rares">Rares</a>
       <a href="#bilan">Bilan</a>
     </nav>
     <section id="podium" class="podium"></section>`);
@@ -616,6 +625,49 @@ function renderAwards() {
     </section>`);
 }
 
+// -- Pronos rares + consensus vs réalité --------------------------------
+
+function renderRares() {
+  const { players, matches, forecasts } = window.__WC;
+  const byId = Object.fromEntries(matches.map((m) => [m.id, m]));
+  const top = topRareForecasts(matches, forecasts, players, 10);
+  const p = playerByUid;
+  const rareItems = top.length ? top.map((r) => {
+    const m = byId[r.matchId];
+    const pl = p(r.uid);
+    const st = r.result === 'exact' ? 'exact' : 'result';
+    return `<li class="rare-item">
+      ${pastille(st)}
+      <span style="color:${pl.color};font-weight:600">${pl.name}</span> a osé
+      <b>${m.flag1} ${r.score1}-${r.score2} ${m.flag2}</b>
+      <span class="muted">sur ${m.team1}–${m.team2}</span></li>`;
+  }).join('') : '<li class="muted">Aucun prono rare pour l’instant.</li>';
+
+  const played = matches.filter((m) => m.status === 'played');
+  const consLines = played.map((m) => {
+    const c = groupConsensus(m.id, forecasts);
+    if (!c) return '';
+    const wrong = c.score1 !== m.score1 || c.score2 !== m.score2;
+    return `<tr class="${wrong ? 'cons-wrong' : ''}">
+      <td class="mcol">${m.flag1} ${m.team1}–${m.team2} ${m.flag2}</td>
+      <td class="ctr">${c.score1}-${c.score2} <span class="muted">(${c.count}/${c.total})</span></td>
+      <td class="ctr">${m.score1}-${m.score2}</td>
+      <td class="ctr">${wrong ? '❌' : '✅'}</td></tr>`;
+  }).join('');
+
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="rares" class="card">
+      <h2>💎 Pronos rares</h2>
+      <h3 class="rare-sub">Les paris les plus gonflés (et justes)</h3>
+      <ul class="rare-list">${rareItems}</ul>
+      <h3 class="rare-sub">Le groupe avait-il raison ?</h3>
+      <div class="twrap"><table class="tbl">
+        <thead><tr><th>Match</th><th class="ctr">Consensus</th><th class="ctr">Réel</th><th class="ctr">✓</th></tr></thead>
+        <tbody>${consLines || '<tr><td class="muted" colspan="4">Pas encore de match joué.</td></tr>'}</tbody>
+      </table></div>
+    </section>`);
+}
+
 // Clic sur un nom de joueur (via [data-card-uid]) → ouvre sa carte.
 function initCardTriggers() {
   document.getElementById('app').addEventListener('click', (e) => {
@@ -673,6 +725,7 @@ function initApp() {
   initChart();
   renderPronosShell();
   renderAwards();
+  renderRares();
   renderBilan();
   initCardTriggers();
   openCardFromUrl();
