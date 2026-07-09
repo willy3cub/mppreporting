@@ -96,6 +96,25 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .cmp-tbl .cmp-b{text-align:left}
 .cmp-tbl .cmp-mid{color:var(--muted);font-size:13px}
 .cmp-tbl .lead{font-weight:800;color:var(--gold)}
+/* -- Carte joueur (modale) -- */
+.pname-link{cursor:pointer;text-decoration:underline dotted #ffffff44;text-underline-offset:3px}
+.card-overlay{position:fixed;inset:0;z-index:20;background:#04061aee;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.pcard{position:relative;width:min(560px,100%);background:linear-gradient(160deg,#0d1330,#161d40);
+  border:1px solid var(--c);border-radius:18px;padding:22px;box-shadow:0 0 40px color-mix(in srgb,var(--c) 55%,transparent)}
+.pcard-close{position:absolute;top:12px;right:12px;background:#ffffff14;color:var(--ink);border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:15px}
+.pcard-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.pcard-avatar{width:56px;height:56px;border-radius:50%;background:var(--c);color:#0a0e27;font-weight:800;font-size:24px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pcard-avatar img{width:100%;height:100%;object-fit:cover}
+.pcard-name{font-size:24px;font-weight:800;color:var(--c)}
+.pcard-rank{margin-left:auto;font-size:34px;font-weight:800;color:var(--gold)}
+.pcard-stats{display:flex;gap:12px;margin-bottom:14px}
+.pcard-stats .stat{flex:1;text-align:center}
+.pcard-line{padding:6px 0;border-top:1px solid #ffffff12;font-size:14px}
+.pcard-line .muted{display:inline-block;min-width:120px}
+.pcard-badges{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.card-badge{background:#ffffff12;border:1px solid var(--c);border-radius:20px;padding:4px 12px;font-size:13px}
+.pcard-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
 </style>
 </head>
 <body>
