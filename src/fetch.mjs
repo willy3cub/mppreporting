@@ -44,6 +44,14 @@ export function mergeForecasts(existing, incoming) {
   return out;
 }
 
+// Prochain label par défaut : max des numéros vus dans les clés + 1 (J22 → J23,
+// gère les libellés groupés type "J7-9" en prenant le plus grand nombre).
+export function nextLabelDefault(history) {
+  let max = 0;
+  for (const k of Object.keys(history)) for (const n of String(k).match(/\d+/g) || []) max = Math.max(max, +n);
+  return `J${max + 1}`;
+}
+
 function token() {
   if (process.env.MPP_TOKEN) return process.env.MPP_TOKEN.trim();
   if (existsSync(jpath('.mpp-token'))) return readFileSync(jpath('.mpp-token'), 'utf8').trim();
@@ -184,7 +192,7 @@ async function main() {
   // 1) Standings → history (delta) + avatars
   const standingsRaw = await get(EP.standings, tok);
   const std = normalizeStandings(standingsRaw);
-  const nextLabel = process.argv[2] || `J${Object.keys(readJson('data/history.json')).length + 1}`;
+  const nextLabel = process.argv[2] || nextLabelDefault(readJson('data/history.json'));
   writeJson('data/history.json', mergeHistory(readJson('data/history.json'), nextLabel, std.points));
   console.log(`OK  history ${nextLabel} (maxCalc=${std.maxCalc})`);
   await updateAvatars(standingsRaw);

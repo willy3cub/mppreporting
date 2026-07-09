@@ -79,18 +79,23 @@ function renderPodium() {
   }).join('');
 }
 
-// Résumé du match de la journée précédente (texte éditorial, data/recap.json).
+// Résumé des matchs de la journée précédente (texte éditorial, data/recap.json).
+// Accepte soit un objet unique {match,phase,html}, soit {matches:[…]}.
 function renderRecap() {
   const r = window.__WC.recap;
-  if (!r || !r.html) return;
-  document.getElementById('app').insertAdjacentHTML('beforeend', `
-    <section id="recap" class="card recap">
+  if (!r) return;
+  const items = Array.isArray(r.matches) ? r.matches : (r.html ? [r] : []);
+  if (!items.length) return;
+  const blocks = items.map((it) => `
+    <div class="recap-match">
       <div class="recap-head">
-        <span class="recap-score">${r.match || ''}</span>
-        ${r.phase ? `<span class="recap-phase">${r.phase}</span>` : ''}
+        <span class="recap-score">${it.match || ''}</span>
+        ${it.phase ? `<span class="recap-phase">${it.phase}</span>` : ''}
       </div>
-      <div class="recap-body">${r.html}</div>
-    </section>`);
+      <div class="recap-body">${it.html || ''}</div>
+    </div>`).join('');
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="recap" class="card recap">${blocks}</section>`);
 }
 
 function renderClassement() {
