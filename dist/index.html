@@ -86,6 +86,16 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .prose{line-height:1.7;font-size:16px;color:#dfe4ff}
 .prose b{color:#fff}
 .foot{text-align:center;color:var(--muted);font-size:12px;padding:26px 0}
+/* -- Comparateur 1v1 -- */
+.cmp-picks{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.cmp-sel{flex:1;min-width:120px;background:#141b3c;color:var(--ink);border:1px solid #ffffff33;border-radius:8px;padding:6px 10px}
+#cmpSwap{flex:0 0 auto}
+.cmp-tbl{margin-top:6px}
+.cmp-tbl td,.cmp-tbl th{text-align:center}
+.cmp-tbl .cmp-a{text-align:right}
+.cmp-tbl .cmp-b{text-align:left}
+.cmp-tbl .cmp-mid{color:var(--muted);font-size:13px}
+.cmp-tbl .lead{font-weight:800;color:var(--gold)}
 </style>
 </head>
 <body>
@@ -225,6 +235,110 @@ function renderClassement() {
     </section>`);
 }
 
+// -- Comparateur 1v1 : duel entre deux joueurs --------------------------
+// headToHead réimplémente src/lib/awards.mjs (Node-only) en <script> classique.
+
+function headToHead(uidA, uidB, history) {
+  const labels = Object.keys(history);
+  let devA = 0, devB = 0;
+  for (const l of labels) {
+    const a = history[l][uidA] ?? 0, b = history[l][uidB] ?? 0;
+    if (a > b) devA++; else if (b > a) devB++;
+  }
+  const last = labels[labels.length - 1] || null;
+  return { ptsA: last ? (history[last][uidA] ?? 0) : 0, ptsB: last ? (history[last][uidB] ?? 0) : 0,
+    journeesDevantA: devA, journeesDevantB: devB, journees: labels.length };
+}
+
+// Stats pronos d'un joueur (exacts / bons) sur les matchs joués.
+function pronoTally(uid) {
+  const { matches, forecasts } = window.__WC;
+  const pf = forecasts[uid] || {};
+  let exact = 0, good = 0;
+  for (const m of matches) {
+    const st = fStatus(pf[m.id], m);
+    if (st === 'exact') { exact++; good++; }
+    else if (st === 'result') good++;
+  }
+  return { exact, good };
+}
+
+let _cmpChart;
+function renderCompare() {
+  const { players } = window.__WC;
+  const opts = (sel) => players.map((p) => `<option value="${p.uid}">${p.name}</option>`).join('');
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="compare" class="card">
+      <h2>⚔️ Duel</h2>
+      <div class="cmp-picks">
+        <select id="cmpA" class="cmp-sel">${opts()}</select>
+        <button id="cmpSwap" class="tab" title="Échanger">⇄</button>
+        <select id="cmpB" class="cmp-sel">${opts()}</select>
+      </div>
+      <div id="cmpChart" style="height:300px"></div>
+      <div id="cmpTable"></div>
+    </section>`);
+  const selA = document.getElementById('cmpA');
+  const selB = document.getElementById('cmpB');
+  selA.selectedIndex = 0;
+  selB.selectedIndex = Math.min(1, players.length - 1);
+  _cmpChart = window.echarts.init(document.getElementById('cmpChart'), null, { renderer: 'canvas' });
+  selA.addEventListener('change', updateCompare);
+  selB.addEventListener('change', updateCompare);
+  document.getElementById('cmpSwap').addEventListener('click', () => {
+    const a = selA.value; selA.value = selB.value; selB.value = a; updateCompare();
+  });
+  window.addEventListener('resize', () => _cmpChart && _cmpChart.resize());
+  updateCompare();
+}
+
+function updateCompare() {
+  const { history, players } = window.__WC;
+  const labels = Object.keys(history);
+  const uidA = document.getElementById('cmpA').value;
+  const uidB = document.getElementById('cmpB').value;
+  const pA = playerByUid(uidA), pB = playerByUid(uidB);
+  const serie = (uid, color, name) => ({
+    name, type: 'line', smooth: true, symbol: 'circle', symbolSize: 7,
+    lineStyle: { width: 3, color }, itemStyle: { color },
+    data: labels.map((l) => history[l][uid] ?? null),
+  });
+  _cmpChart.setOption({
+    backgroundColor: 'transparent', textStyle: { color: '#cfd6f5' },
+    tooltip: { trigger: 'axis', backgroundColor: '#141b3c', borderColor: '#ffffff33', textStyle: { color: '#fff' },
+      valueFormatter: (v) => (v == null ? '—' : v.toLocaleString('fr-FR')) },
+    legend: { top: 0, textStyle: { color: '#cfd6f5' } },
+    grid: { left: 50, right: 20, top: 36, bottom: 30 },
+    xAxis: { type: 'category', data: labels, axisLine: { lineStyle: { color: '#ffffff33' } } },
+    yAxis: { type: 'value', axisLabel: { formatter: (v) => v.toLocaleString('fr-FR') }, splitLine: { lineStyle: { color: '#ffffff12' } } },
+    series: [serie(uidA, pA.color, pA.name), serie(uidB, pB.color, pB.name)],
+    animationDuration: 500,
+  }, true);
+  const h = headToHead(uidA, uidB, history);
+  const tA = pronoTally(uidA), tB = pronoTally(uidB);
+  const row = (label, va, vb) => {
+    const aLead = va > vb, bLead = vb > va;
+    return `<tr>
+      <td class="cmp-a ${aLead ? 'lead' : ''}">${va}</td>
+      <td class="cmp-mid">${label}</td>
+      <td class="cmp-b ${bLead ? 'lead' : ''}">${vb}</td></tr>`;
+  };
+  document.getElementById('cmpTable').innerHTML = `
+    <table class="tbl cmp-tbl">
+      <thead><tr>
+        <th class="cmp-a" style="color:${pA.color}">${pA.name}</th>
+        <th class="cmp-mid"></th>
+        <th class="cmp-b" style="color:${pB.color}">${pB.name}</th>
+      </tr></thead>
+      <tbody>
+        ${row('points', h.ptsA.toLocaleString('fr-FR'), h.ptsB.toLocaleString('fr-FR'))}
+        ${row('scores exacts', tA.exact, tB.exact)}
+        ${row('bons pronos', tA.good, tB.good)}
+        ${row(`journées devant / ${h.journees}`, h.journeesDevantA, h.journeesDevantB)}
+      </tbody>
+    </table>`;
+}
+
 // Nav sticky : surligne l'ancre correspondant à la section visible.
 function initNavScrollSpy() {
   const links = Array.from(document.querySelectorAll('.nav a'));
@@ -249,6 +363,7 @@ function initApp() {
   renderHero(app);
   renderPodium();
   renderClassement();
+  renderCompare();
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="graphe" class="card">
       <h2>📈 Évolution</h2>
