@@ -297,7 +297,7 @@ function allAwards() {
 function awardsForPlayer(uid) {
   const aw = allAwards();
   return Object.entries(aw)
-    .filter(([, v]) => v && v.uid === uid && v.value > 0 && v.value !== -Infinity)
+    .filter(([key, v]) => v && v.uid === uid && hasAward(key, v))
     .map(([key]) => AWARD_LABELS[key]);
 }
 
@@ -411,19 +411,29 @@ function exportCardImage(p, s) {
 // -- Superlatifs / trophées : 8 badges ----------------------------------
 
 function awardValueText(key, value) {
-  if (key === 'dernier' && value != null && value !== -Infinity) {
+  if (key === 'dernier') {
     // lateAvg = moyenne (editedAt - date du match) en ms ; on affiche en heures avant/après.
     const h = Math.round(value / 3600000);
     return h <= 0 ? `${-h} h avant le coup d'envoi` : `${h} h après le coup d'envoi`;
   }
+  if (key === 'kamikaze') return `rareté moy. ${value.toFixed(1)}`;
   return String(value);
+}
+
+// Un badge est attribué si la valeur est significative. Pour « Le Dernier »
+// (retard moyen), une valeur négative est normale (prono avant le match) :
+// on masque seulement l'absence de donnée (-Infinity).
+function hasAward(key, a) {
+  if (!a || !a.uid) return false;
+  if (key === 'dernier') return a.value !== -Infinity;
+  return a.value > 0;
 }
 
 function renderAwards() {
   const aw = allAwards();
   const cards = Object.entries(AWARD_LABELS).map(([key, [emo, title, detail]]) => {
     const a = aw[key];
-    const has = a && a.uid && a.value > 0 && a.value !== -Infinity;
+    const has = hasAward(key, a);
     const p = has ? playerByUid(a.uid) : null;
     const who = p ? `<div class="badge-who" style="color:${p.color}">${p.name}</div>` : '<div class="badge-who muted">—</div>';
     const val = has ? `<div class="badge-val">${awardValueText(key, a.value)}</div>` : '';

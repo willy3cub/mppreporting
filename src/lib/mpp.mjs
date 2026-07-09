@@ -18,6 +18,11 @@ const FLAGS = {
   'Côte d\'Ivoire': '🇨🇮', 'Autriche': '🇦🇹', 'Norvège': '🇳🇴', 'Écosse': '🏴', 'Turquie': '🇹🇷',
   'Iran': '🇮🇷', 'Arabie saoudite': '🇸🇦', 'Qatar': '🇶🇦', 'Ukraine': '🇺🇦', 'Grèce': '🇬🇷',
   'Paraguay': '🇵🇾', 'Costa Rica': '🇨🇷', 'Panama': '🇵🇦',
+  // Complété avec les noms exacts renvoyés par championship-clubs (CDM 2026).
+  // NB : « Côte d’Ivoire » utilise l'apostrophe typographique ’ (U+2019), pas '.
+  'Afrique du Sud': '🇿🇦', 'Tchéquie': '🇨🇿', 'Bosnie': '🇧🇦', 'Haïti': '🇭🇹',
+  'Curaçao': '🇨🇼', 'Côte d’Ivoire': '🇨🇮', 'Cap-Vert': '🇨🇻', 'Nouvelle-Zélande': '🇳🇿',
+  'Irak': '🇮🇶', 'Jordanie': '🇯🇴', 'RD Congo': '🇨🇩', 'Ouzbékistan': '🇺🇿',
 };
 export function flagFor(name) { return FLAGS[name] || ''; }
 
@@ -48,8 +53,11 @@ export function mapMatches(currentMatches, clubs, calendar) {
 export function mapForecasts(byMatchId, matchesById) {
   const out = {};
   for (const [matchId, byUid] of Object.entries(byMatchId)) {
+    if (!byUid) continue; // match sans aucun prono renvoyé
     const match = matchesById[matchId];
     for (const [uid, f] of Object.entries(byUid)) {
+      // L'API renvoie null pour un joueur qui n'a pas pronostiqué ce match.
+      if (!f || f.homeScore == null || f.awayScore == null) continue;
       const prono = { score1: f.homeScore, score2: f.awayScore };
       (out[uid] ||= {})[matchId] = {
         score1: f.homeScore, score2: f.awayScore,

@@ -65,3 +65,14 @@ test('mapForecasts mappe uid→match→prono avec result et rarity', () => {
   assert.deepEqual(out.u1.mA, { score1: 3, score2: 2, points: 69, result: 'exact', rarity: 3, editedAt: 'T1' });
   assert.equal(out.u2.mA.result, 'result'); // 1-0 même issue que 3-2
 });
+
+test('mapForecasts ignore les pronos null (joueur sans prono) et les matchs vides', () => {
+  const matchesById = { mA: { id: 'mA', score1: 1, score2: 0, status: 'played' } };
+  const byMatchId = {
+    mA: { u1: { homeScore: 1, awayScore: 0, points: { total: 60 } }, u2: null },
+    mB: null,
+  };
+  const out = mapForecasts(byMatchId, matchesById);
+  assert.ok(out.u1.mA);            // prono valide conservé
+  assert.equal(out.u2, undefined); // prono null ignoré
+});
