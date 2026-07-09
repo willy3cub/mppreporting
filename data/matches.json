@@ -1,0 +1,5 @@
+[
+  { "id": "m_arg_egy", "phase": "1/8", "date": "2026-07-07T18:00:00Z", "team1": "Argentine", "flag1": "🇦🇷", "team2": "Égypte",   "score1": 3, "score2": 2, "status": "played" },
+  { "id": "m_sui_col", "phase": "1/8", "date": "2026-07-07T22:00:00Z", "team1": "Suisse",    "flag1": "🇨🇭", "team2": "Colombie", "score1": 0, "score2": 0, "status": "played" },
+  { "id": "m_fra_mar", "phase": "1/4", "date": "2026-07-10T22:00:00Z", "team1": "France",    "flag1": "🇫🇷", "team2": "Maroc",    "score1": null, "score2": null, "status": "pending" }
+]
