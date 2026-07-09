@@ -26,6 +26,15 @@ function avatarThumb(p, extraClass = '') {
   return `<span class="avt ${extraClass}" style="--c:${p.color}">${inner}</span>`;
 }
 
+// Cellule "favori" (champion ou buteur pronostiqué) : image + nom, grisé si éliminé.
+function favCell(fav, round) {
+  if (!fav) return '<span class="muted">—</span>';
+  return `<span class="fav-item ${fav.eliminated ? 'fav-out' : ''}">
+      ${fav.img ? `<img class="fav-img ${round ? 'fav-round' : ''}" src="${fav.img}" alt="">` : ''}
+      <span>${fav.name}${fav.eliminated ? ' <span class="fav-x">éliminé</span>' : ''}</span></span>`;
+}
+function favOf(uid) { return (window.__WC.favorites || {})[uid] || {}; }
+
 function renderHero(root) {
   const label = latestLabel();
   root.insertAdjacentHTML('beforeend', `
@@ -42,7 +51,6 @@ function renderHero(root) {
       <a href="#pronos">Pronostics</a>
       <a href="#compare">Duel</a>
       <a href="#awards">Superlatifs</a>
-      <a href="#favoris">Paris</a>
       <a href="#rares">Rares</a>
       <a href="#bilan">Bilan</a>
     </nav>
@@ -73,6 +81,7 @@ function renderClassement() {
   const rankPrev = {}; rankStandings(prev).forEach((s) => (rankPrev[s.uid] = s.rank));
   const rows = rankStandings(cur).map((s) => {
     const p = players.find((x) => x.uid === s.uid);
+    const f = favOf(s.uid);
     const dp = s.pts - (prev[s.uid] ?? 0);
     const dr = (rankPrev[s.uid] ?? s.rank) - s.rank;
     const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || `${s.rank}.`;
@@ -83,6 +92,8 @@ function renderClassement() {
       <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">
         <span class="pname-cell">${avatarThumb(p)}${p.name}</span></td>
       <td class="ps">${p.pseudo}</td>
+      <td class="fav-col">${favCell(f.team, false)}</td>
+      <td class="fav-col">${favCell(f.scorer, true)}</td>
       <td class="ev">${arrow}</td>
       <td class="dp">+${dp.toLocaleString('fr-FR')}</td>
       <td class="tot">${s.pts.toLocaleString('fr-FR')}</td>
@@ -92,7 +103,7 @@ function renderClassement() {
     <section id="classement" class="card">
       <h2>🏆 Classement</h2>
       <div class="twrap"><table class="tbl">
-        <thead><tr><th>#</th><th>Joueur</th><th>Pseudo</th><th>Évol</th><th>+pts</th><th>Total</th></tr></thead>
+        <thead><tr><th>#</th><th>Joueur</th><th>Pseudo</th><th>🏆 Champion</th><th>⚽ Buteur</th><th>Évol</th><th>+pts</th><th>Total</th></tr></thead>
         <tbody>${rows}</tbody>
       </table></div>
     </section>`);
@@ -361,6 +372,7 @@ function renderPlayerCard(uid) {
   const badgeHtml = badges.length
     ? badges.map((key) => `<span class="card-badge" title="${AWARD_LABELS[key][2]}">${badgeImg(key, 'badge-img-sm')}${AWARD_LABELS[key][1]}</span>`).join('')
     : '<span class="muted">Aucun trophée… pour l’instant.</span>';
+  const f = favOf(uid);
   const pronos = playerPronoList(uid);
   const pronoRows = pronos.length ? pronos.map((r) => {
     const rl = rarityLabel(r.rarity);
@@ -395,6 +407,10 @@ function renderPlayerCard(uid) {
         <div class="stat"><b>${s.pts.toLocaleString('fr-FR')}</b><span>points</span></div>
         <div class="stat"><b>${s.exact}</b><span>scores exacts</span></div>
         <div class="stat"><b>${s.rate}%</b><span>taux d'exacts</span></div>
+      </div>
+      <div class="pcard-favs">
+        <div class="pcard-fav"><span class="pcard-fav-lbl">🏆 Champion</span>${favCell(f.team, false)}</div>
+        <div class="pcard-fav"><span class="pcard-fav-lbl">⚽ Buteur</span>${favCell(f.scorer, true)}</div>
       </div>
       <div class="pcard-section-title">Trophées</div>
       <div class="pcard-badges">${badgeHtml}</div>
@@ -496,34 +512,6 @@ function renderAwards() {
     </section>`);
 }
 
-// -- Paris long terme : champion + buteur pronostiqués ------------------
-
-function renderFavorites() {
-  const { players, favorites } = window.__WC;
-  if (!favorites) return;
-  const favItem = (f, round) => f
-    ? `<span class="fav-item ${f.eliminated ? 'fav-out' : ''}">
-        ${f.img ? `<img class="fav-img ${round ? 'fav-round' : ''}" src="${f.img}" alt="">` : ''}
-        <span>${f.name}${f.eliminated ? ' <span class="fav-x">éliminé</span>' : ''}</span></span>`
-    : '<span class="muted">—</span>';
-  const rows = players.map((p) => {
-    const f = favorites[p.uid] || {};
-    return `<tr>
-      <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">${p.name}</td>
-      <td>${favItem(f.team, false)}</td>
-      <td>${favItem(f.scorer, true)}</td></tr>`;
-  }).join('');
-  document.getElementById('app').insertAdjacentHTML('beforeend', `
-    <section id="favoris" class="card">
-      <h2>🔮 Paris long terme</h2>
-      <p class="muted" style="margin:0 0 12px">Le champion et le buteur pronostiqués par chacun (choix figés en début de compétition).</p>
-      <div class="twrap"><table class="tbl">
-        <thead><tr><th>Joueur</th><th>🏆 Champion</th><th>⚽ Buteur</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table></div>
-    </section>`);
-}
-
 // -- Pronos rares + consensus vs réalité --------------------------------
 
 function renderRares() {
@@ -607,7 +595,6 @@ function initApp() {
   renderPronosShell();
   renderCompare();
   renderAwards();
-  renderFavorites();
   renderRares();
   renderBilan();
   initCardTriggers();
