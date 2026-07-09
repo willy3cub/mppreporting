@@ -1,10 +1,11 @@
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 const readJson = (p) => JSON.parse(read(p));
+const readJsonOpt = (p, fallback) => (existsSync(join(ROOT, p)) ? readJson(p) : fallback);
 
 export function buildHtml({ players, history, matches, forecasts, bilan, echarts, appJs }) {
   const data = JSON.stringify({ players, history, matches, forecasts, bilan }).replace(/</g, '\\u003c');
@@ -15,8 +16,10 @@ export function buildHtml({ players, history, matches, forecasts, bilan, echarts
 }
 
 export function build() {
+  const avatars = readJsonOpt('data/avatars.json', {});
+  const players = readJson('data/players.json').map((p) => ({ ...p, avatar: avatars[p.uid] || null }));
   const html = buildHtml({
-    players: readJson('data/players.json'),
+    players,
     history: readJson('data/history.json'),
     matches: readJson('data/matches.json'),
     forecasts: readJson('data/forecasts.json'),

@@ -20,6 +20,12 @@ function ordinalFr(v) {
   return v === 1 ? '1er' : `${v}e`;
 }
 
+// Vignette avatar ronde : photo si dispo, sinon initiale sur fond couleur joueur.
+function avatarThumb(p, extraClass = '') {
+  const inner = p.avatar ? `<img src="${p.avatar}" alt="">` : p.name.slice(0, 1);
+  return `<span class="avt ${extraClass}" style="--c:${p.color}">${inner}</span>`;
+}
+
 function renderHero(root) {
   const label = latestLabel();
   root.insertAdjacentHTML('beforeend', `
@@ -51,6 +57,7 @@ function renderPodium() {
     const p = playerByUid(s.uid);
     return `<div class="step step-${s.rank}" style="--c:${p.color}">
       <div class="medal">${medals[s.rank - 1]}</div>
+      ${avatarThumb(p, 'avt-lg')}
       <div class="pname">${p.name}</div>
       <div class="ppts">${s.pts.toLocaleString('fr-FR')} pts</div>
     </div>`;
@@ -72,7 +79,8 @@ function renderClassement() {
       : dr < 0 ? `<span class="down">▼${-dr}</span>` : `<span class="flat">■</span>`;
     return `<tr>
       <td class="rk">${medal}</td>
-      <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">${p.name}</td>
+      <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">
+        <span class="pname-cell">${avatarThumb(p)}${p.name}</span></td>
       <td class="ps">${p.pseudo}</td>
       <td class="ev">${arrow}</td>
       <td class="dp">+${dp.toLocaleString('fr-FR')}</td>
@@ -343,7 +351,7 @@ function renderPlayerCard(uid) {
     <div class="pcard" style="--c:${p.color}">
       <button class="pcard-close" aria-label="Fermer">✕</button>
       <div class="pcard-head">
-        <div class="pcard-avatar">${p.avatarUrl ? `<img src="${p.avatarUrl}" alt="">` : p.name.slice(0, 1)}</div>
+        <div class="pcard-avatar">${p.avatar ? `<img src="${p.avatar}" alt="">` : p.name.slice(0, 1)}</div>
         <div>
           <div class="pcard-name">${p.name}</div>
           <div class="muted">${p.pseudo}</div>

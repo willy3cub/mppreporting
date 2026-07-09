@@ -1,6 +1,8 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { tmpdir } from 'node:os';
+import { execFileSync } from 'node:child_process';
 import { mapMatches, mapForecasts } from './lib/mpp.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -58,14 +60,56 @@ async function get(url, tok) {
   return r.json();
 }
 
+// Télécharge les avatars et les embarque en base64 dans data/avatars.json
+// (page auto-suffisante : aucune requête réseau au chargement).
+// Un même URL partagé par plusieurs joueurs = avatar par défaut → ignoré
+// (le front retombe sur la pastille colorée avec l'initiale).
+// Réduit une image à 96px et la ré-encode en JPEG léger via sips (macOS).
+// Renvoie null si sips échoue (l'appelant retombe sur l'image brute).
+function shrinkToJpegDataUri(buf, ext) {
+  try {
+    const src = join(tmpdir(), `mpp-avatar-src${ext}`);
+    const dst = join(tmpdir(), 'mpp-avatar.jpg');
+    writeFileSync(src, buf);
+    execFileSync('sips', ['-Z', '96', '-s', 'format', 'jpeg', '-s', 'formatOptions', '80', src, '--out', dst], { stdio: 'ignore' });
+    return `data:image/jpeg;base64,${readFileSync(dst).toString('base64')}`;
+  } catch {
+    return null;
+  }
+}
+
+export async function updateAvatars(standingsRaw) {
+  const entries = (standingsRaw.standings || [])
+    .map((s) => [s.user.id, s.user.avatarUrl])
+    .filter(([, url]) => url);
+  const count = {};
+  for (const [, url] of entries) count[url] = (count[url] || 0) + 1;
+  const out = existsSync(jpath('data/avatars.json')) ? readJson('data/avatars.json') : {};
+  for (const [uid, url] of entries) {
+    if (count[url] > 1) { delete out[uid]; continue; } // placeholder par défaut
+    try {
+      const r = await fetch(url);
+      if (!r.ok) continue;
+      const buf = Buffer.from(await r.arrayBuffer());
+      const ext = /\.jpe?g($|\?)/i.test(url) ? '.jpg' : '.png';
+      const mime = ext === '.jpg' ? 'image/jpeg' : 'image/png';
+      out[uid] = shrinkToJpegDataUri(buf, ext) || `data:${mime};base64,${buf.toString('base64')}`;
+    } catch { /* avatar indisponible : on garde l'ancien s'il existe */ }
+  }
+  writeJson('data/avatars.json', out);
+  console.log(`OK  avatars (${Object.keys(out).length} persos)`);
+}
+
 async function main() {
   const tok = token();
 
-  // 1) Standings → history (delta)
-  const std = normalizeStandings(await get(EP.standings, tok));
+  // 1) Standings → history (delta) + avatars
+  const standingsRaw = await get(EP.standings, tok);
+  const std = normalizeStandings(standingsRaw);
   const nextLabel = process.argv[2] || `J${Object.keys(readJson('data/history.json')).length + 1}`;
   writeJson('data/history.json', mergeHistory(readJson('data/history.json'), nextLabel, std.points));
   console.log(`OK  history ${nextLabel} (maxCalc=${std.maxCalc})`);
+  await updateAvatars(standingsRaw);
 
   // 2) Matchs (matchs courants + clubs + calendrier des phases)
   const [current, clubs, calendar] = await Promise.all([
