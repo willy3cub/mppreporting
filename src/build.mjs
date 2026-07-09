@@ -65,8 +65,8 @@ function resolveFavorites() {
   return out;
 }
 
-export function buildHtml({ players, history, matches, forecasts, bilan, badges, favorites, echarts, appJs }) {
-  const data = JSON.stringify({ players, history, matches, forecasts, bilan, badges, favorites }).replace(/</g, '\\u003c');
+export function buildHtml({ players, history, matches, forecasts, bilan, badges, favorites, recap, echarts, appJs }) {
+  const data = JSON.stringify({ players, history, matches, forecasts, bilan, badges, favorites, recap }).replace(/</g, '\\u003c');
   return read('src/template.html')
     .replace('/*__ECHARTS__*/', () => echarts)
     .replace('/*__DATA__*/', () => data)
@@ -84,6 +84,7 @@ export function build() {
     bilan: readJson('data/bilan.json'),
     badges: badgeDataUris(),
     favorites: resolveFavorites(),
+    recap: existsSync(join(ROOT, 'data/recap.json')) ? readJson('data/recap.json') : null,
     echarts: read('node_modules/echarts/dist/echarts.min.js'),
     appJs: read('src/app.js'),
   });

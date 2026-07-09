@@ -79,6 +79,20 @@ function renderPodium() {
   }).join('');
 }
 
+// Résumé du match de la journée précédente (texte éditorial, data/recap.json).
+function renderRecap() {
+  const r = window.__WC.recap;
+  if (!r || !r.html) return;
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="recap" class="card recap">
+      <div class="recap-head">
+        <span class="recap-score">${r.match || ''}</span>
+        ${r.phase ? `<span class="recap-phase">${r.phase}</span>` : ''}
+      </div>
+      <div class="recap-body">${r.html}</div>
+    </section>`);
+}
+
 function renderClassement() {
   const { history, players } = window.__WC;
   const labels = Object.keys(history);
@@ -616,6 +630,7 @@ function initApp() {
   app.innerHTML = '';
   renderHero(app);
   renderPodium();
+  renderRecap();
   renderClassement();
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="graphe" class="card">
