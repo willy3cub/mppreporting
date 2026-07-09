@@ -32,9 +32,9 @@ function renderHero(root) {
     </header>
     <nav class="nav">
       <a href="#classement">Classement</a>
-      <a href="#compare">Duel</a>
       <a href="#graphe">Évolution</a>
       <a href="#pronos">Pronostics</a>
+      <a href="#compare">Duel</a>
       <a href="#awards">Superlatifs</a>
       <a href="#rares">Rares</a>
       <a href="#bilan">Bilan</a>
@@ -516,7 +516,6 @@ function initApp() {
   renderHero(app);
   renderPodium();
   renderClassement();
-  renderCompare();
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="graphe" class="card">
       <h2>📈 Évolution</h2>
@@ -533,6 +532,7 @@ function initApp() {
     </section>`);
   initChart();
   renderPronosShell();
+  renderCompare();
   renderAwards();
   renderRares();
   renderBilan();
