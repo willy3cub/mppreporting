@@ -27,3 +27,26 @@ export function computeDeltas(current, previous) {
   }
   return out;
 }
+
+export function labelsOf(history) {
+  return Object.keys(history);
+}
+
+export function seriesPoints(history, uids) {
+  const labels = labelsOf(history);
+  const out = {};
+  for (const uid of uids) {
+    out[uid] = labels.map((l) => (uid in history[l] ? history[l][uid] : null));
+  }
+  return out;
+}
+
+export function seriesRanks(history, uids) {
+  const labels = labelsOf(history);
+  const rankByLabel = labels.map((l) => ranksOf(history[l]));
+  const out = {};
+  for (const uid of uids) {
+    out[uid] = rankByLabel.map((r) => r[uid] ?? null);
+  }
+  return out;
+}
