@@ -50,3 +50,42 @@ export function seriesRanks(history, uids) {
   }
   return out;
 }
+
+export function outcome(s1, s2) {
+  if (s1 > s2) return '1';
+  if (s1 < s2) return '2';
+  return 'N';
+}
+
+export function forecastStatus(prono, match) {
+  if (!prono || !match || match.status !== 'played') return 'pending';
+  if (prono.score1 === match.score1 && prono.score2 === match.score2) return 'exact';
+  if (outcome(prono.score1, prono.score2) === outcome(match.score1, match.score2)) return 'result';
+  return 'miss';
+}
+
+export function playerStats(uid, forecasts, matches) {
+  const pf = forecasts[uid] || {};
+  let played = 0, exact = 0, result = 0, miss = 0, points = 0;
+  let best = null, worst = null;
+  for (const m of matches) {
+    const prono = pf[m.id];
+    const st = forecastStatus(prono, m);
+    if (st === 'pending') continue;
+    played++;
+    if (st === 'exact') exact++;
+    else if (st === 'result') result++;
+    else miss++;
+    const pts = prono?.points ?? 0;
+    points += pts;
+    if (!best || pts > best.points) best = { matchId: m.id, points: pts };
+    if (!worst || pts < worst.points) worst = { matchId: m.id, points: pts };
+  }
+  return {
+    played, exact, result, miss, points,
+    exactRate: played ? exact / played : 0,
+    resultRate: played ? (exact + result) / played : 0,
+    ptsPerMatch: played ? points / played : 0,
+    best, worst,
+  };
+}

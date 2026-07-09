@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { rankStandings, ranksOf, computeDeltas, labelsOf, seriesPoints, seriesRanks } from './compute.mjs';
+import { rankStandings, ranksOf, computeDeltas, labelsOf, seriesPoints, seriesRanks, forecastStatus, outcome, playerStats } from './compute.mjs';
 
 test('rankStandings trie par points décroissants et numérote', () => {
   const out = rankStandings({ a: 100, b: 300, c: 200 });
@@ -47,4 +47,39 @@ test('seriesRanks donne le rang par journee', () => {
 test('seriesPoints met null si le joueur manque une journee', () => {
   const h = { J1: { a: 10 }, J2: { a: 20, b: 5 } };
   assert.deepEqual(seriesPoints(h, ['a', 'b']), { a: [10, 20], b: [null, 5] });
+});
+
+test('outcome donne l\'issue', () => {
+  assert.equal(outcome(2, 0), '1');
+  assert.equal(outcome(1, 1), 'N');
+  assert.equal(outcome(0, 3), '2');
+});
+
+test('forecastStatus: exact / result / miss / pending', () => {
+  const m = { score1: 2, score2: 1, status: 'played' };
+  assert.equal(forecastStatus({ score1: 2, score2: 1 }, m), 'exact');
+  assert.equal(forecastStatus({ score1: 3, score2: 1 }, m), 'result');
+  assert.equal(forecastStatus({ score1: 0, score2: 2 }, m), 'miss');
+  assert.equal(forecastStatus({ score1: 2, score2: 1 }, { ...m, status: 'pending' }), 'pending');
+  assert.equal(forecastStatus(null, m), 'pending');
+});
+
+test('playerStats agrège les pronos joués', () => {
+  const matches = [
+    { id: 'm1', score1: 2, score2: 1, status: 'played' },
+    { id: 'm2', score1: 0, score2: 0, status: 'played' },
+    { id: 'm3', score1: 1, score2: 1, status: 'pending' },
+  ];
+  const forecasts = { u: {
+    m1: { score1: 2, score2: 1, points: 24 }, // exact
+    m2: { score1: 1, score2: 2, points: 0 },  // miss
+    m3: { score1: 1, score2: 1, points: 0 },  // pending (match non joué)
+  } };
+  const s = playerStats('u', forecasts, matches);
+  assert.equal(s.played, 2);
+  assert.equal(s.exact, 1);
+  assert.equal(s.miss, 1);
+  assert.equal(s.points, 24);
+  assert.equal(s.best.matchId, 'm1');
+  assert.equal(s.exactRate, 0.5);
 });
