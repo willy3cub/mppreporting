@@ -7,7 +7,7 @@ const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 const readJson = (p) => JSON.parse(read(p));
 
 export function buildHtml({ players, history, matches, forecasts, bilan, echarts, appJs }) {
-  const data = JSON.stringify({ players, history, matches, forecasts, bilan });
+  const data = JSON.stringify({ players, history, matches, forecasts, bilan }).replace(/</g, '\\u003c');
   return read('src/template.html')
     .replace('/*__ECHARTS__*/', () => echarts)
     .replace('/*__DATA__*/', () => data)
