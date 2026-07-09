@@ -6,8 +6,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 const readJson = (p) => JSON.parse(read(p));
 
-export function buildHtml({ players, history, matches, forecasts, echarts, appJs }) {
-  const data = JSON.stringify({ players, history, matches, forecasts });
+export function buildHtml({ players, history, matches, forecasts, bilan, echarts, appJs }) {
+  const data = JSON.stringify({ players, history, matches, forecasts, bilan });
   return read('src/template.html')
     .replace('/*__ECHARTS__*/', () => echarts)
     .replace('/*__DATA__*/', () => data)
@@ -20,6 +20,7 @@ export function build() {
     history: readJson('data/history.json'),
     matches: readJson('data/matches.json'),
     forecasts: readJson('data/forecasts.json'),
+    bilan: readJson('data/bilan.json'),
     echarts: read('node_modules/echarts/dist/echarts.min.js'),
     appJs: read('src/app.js'),
   });

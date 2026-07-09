@@ -127,6 +127,7 @@ function initApp() {
   initChart();
   renderPronosShell();
   initNavScrollSpy();
+  renderBilan();
 }
 
 // -- Graphe : bump chart des rangs (1er en haut) + points cumulés --------
@@ -342,4 +343,16 @@ function viewMatch(id) {
   return `<p class="mhead">${matchLabel(m)} <span class="muted">(${m.phase})</span></p>
     <div class="twrap"><table class="tbl"><thead><tr><th>Joueur</th><th>Prono</th><th>Statut</th><th>Pts</th></tr></thead>
     <tbody>${rows}</tbody></table></div>`;
+}
+
+// -- Bilan éditorial : mot du jour, ton chambreur ------------------------
+
+function renderBilan() {
+  const b = window.__WC.bilan || { html: '', updated: '' };
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="bilan" class="card">
+      <h2>🔍 Le mot du bilan <span class="muted">${b.updated}</span></h2>
+      <div class="prose">${b.html}</div>
+    </section>
+    <footer class="foot">SHRS Football Club — Coupe du Monde 2026 • généré statiquement</footer>`);
 }
