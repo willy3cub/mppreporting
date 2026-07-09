@@ -63,20 +63,50 @@ function renderHero(root) {
     <section id="podium" class="podium"></section>`);
 }
 
+const FLAMES_SVG = `
+  <svg class="flames" viewBox="0 0 120 96" aria-hidden="true">
+    <defs><linearGradient id="fl" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#ff2d00"/><stop offset=".55" stop-color="#ff8c00"/><stop offset="1" stop-color="#ffe100"/>
+    </linearGradient></defs>
+    <g fill="url(#fl)">
+      <path class="fl fl1" d="M30 94 C25 70 34 60 40 34 C47 60 57 70 52 94 C46 84 36 84 30 94 Z"/>
+      <path class="fl fl3" d="M72 94 C67 72 77 62 82 38 C89 62 98 72 92 94 C86 84 78 84 72 94 Z"/>
+      <path class="fl fl2" d="M44 94 C37 62 52 52 60 6 C68 52 83 62 76 94 C67 82 53 82 44 94 Z"/>
+    </g>
+    <path class="fl flcore" fill="#ffe680" d="M52 94 C48 74 56 66 60 34 C64 66 72 74 68 94 C63 86 57 86 52 94 Z"/>
+  </svg>`;
+
 function renderPodium() {
-  const top3 = rankStandings(latestPoints()).slice(0, 3);
+  const full = rankStandings(latestPoints());
+  const top3 = full.slice(0, 3);
   const medals = ['🥇', '🥈', '🥉'];
   const order = [1, 0, 2]; // 2e, 1er, 3e pour l'effet marches
-  document.getElementById('podium').innerHTML = order.map((i) => {
+  const steps = order.map((i) => {
     const s = top3[i]; if (!s) return '';
     const p = playerByUid(s.uid);
     return `<div class="step step-${s.rank}" style="--c:${p.color}">
+      ${s.rank === 1 ? FLAMES_SVG : ''}
       <div class="medal">${medals[s.rank - 1]}</div>
       ${avatarThumb(p, 'avt-lg')}
       <div class="pname">${p.name}</div>
       <div class="ppts"><span data-count="${s.pts}">${s.pts.toLocaleString('fr-FR')}</span> pts</div>
     </div>`;
   }).join('');
+  // Récompense de l'avant-dernier : la cuillère de bois.
+  const avd = full[full.length - 2];
+  let consol = '';
+  if (avd) {
+    const p = playerByUid(avd.uid);
+    consol = `<div class="step consol" style="--c:#c8863c" data-card-uid="${avd.uid}"
+        data-hint="Cuillère de bois : la récompense de l'avant-dernier. Si près du fond, si loin de la gloire.">
+      <div class="medal">🥄</div>
+      ${avatarThumb(p, 'avt-lg')}
+      <div class="pname">${p.name}</div>
+      <div class="ppts"><span data-count="${avd.pts}">${avd.pts.toLocaleString('fr-FR')}</span> pts</div>
+      <div class="consol-label">Cuillère de bois · ${ordinalFr(avd.rank)}</div>
+    </div>`;
+  }
+  document.getElementById('podium').innerHTML = steps + consol;
 }
 
 // Résumé des matchs de la journée précédente (texte éditorial, data/recap.json).
@@ -104,16 +134,19 @@ function renderClassement() {
   const cur = history[labels[labels.length - 1]];
   const prev = history[labels[labels.length - 2]] || cur;
   const rankPrev = {}; rankStandings(prev).forEach((s) => (rankPrev[s.uid] = s.rank));
-  const rows = rankStandings(cur).map((s) => {
+  const standings = rankStandings(cur);
+  const avdRank = standings.length - 1; // avant-dernier
+  const rows = standings.map((s) => {
     const p = players.find((x) => x.uid === s.uid);
     const f = favOf(s.uid);
     const dp = s.pts - (prev[s.uid] ?? 0);
     const dr = (rankPrev[s.uid] ?? s.rank) - s.rank;
-    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || `${s.rank}.`;
+    const isAvd = s.rank === avdRank;
+    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || (isAvd ? '🥄' : `${s.rank}.`);
     const arrow = dr > 0 ? `<span class="up">▲${dr}</span>`
       : dr < 0 ? `<span class="down">▼${-dr}</span>` : `<span class="flat">■</span>`;
-    return `<tr>
-      <td class="rk">${medal}</td>
+    return `<tr class="${isAvd ? 'row-avd' : ''}">
+      <td class="rk"${isAvd ? ' data-hint="Cuillère de bois : récompense de l’avant-dernier"' : ''}>${medal}</td>
       <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">
         <span class="pname-cell">${avatarThumb(p)}${p.name}</span></td>
       <td class="ps">${p.pseudo}</td>
