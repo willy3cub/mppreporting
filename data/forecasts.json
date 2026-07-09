@@ -1,0 +1,12 @@
+{
+  "user_10698233": {
+    "m_arg_egy": { "score1": 2, "score2": 2, "points": 16, "result": "result" },
+    "m_sui_col": { "score1": 1, "score2": 0, "points": 16, "result": "result" },
+    "m_fra_mar": { "score1": 2, "score2": 0, "points": 0,  "result": "pending" }
+  },
+  "user_8701920": {
+    "m_arg_egy": { "score1": 3, "score2": 2, "points": 32, "result": "exact" },
+    "m_sui_col": { "score1": 2, "score2": 1, "points": 0,  "result": "miss" },
+    "m_fra_mar": { "score1": 1, "score2": 1, "points": 0,  "result": "pending" }
+  }
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CDM 2026 — Bilan SHRS Football Club</title>
+<style>
+:root{--bg1:#0a0e27;--bg2:#141b3c;--gold:#FFD166;--ink:#eef1ff;--muted:#9aa3c7;}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--ink);font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;position:relative;min-height:100vh;overflow-x:hidden;}
+#app{max-width:1100px;margin:0 auto;padding:20px;position:relative;}
+
+/* -- Ambiance "stade nocturne" : faisceaux de projecteurs très discrets -- */
+.beams{position:absolute;top:0;left:50%;width:1400px;height:520px;translate:-50% 0;pointer-events:none;z-index:0;
+  background:
+    conic-gradient(from 200deg at 20% 0%, #ffffff14 0deg 8deg, transparent 9deg 360deg),
+    conic-gradient(from 160deg at 80% 0%, #ffffff14 0deg 8deg, transparent 9deg 360deg);
+  filter:blur(2px);opacity:.8;}
+@media (prefers-reduced-motion: no-preference){
+  .beams{animation:sway 10s ease-in-out infinite alternate}
+}
+@keyframes sway{from{opacity:.55}to{opacity:.9}}
+
+.hero{text-align:center;padding:34px 12px 10px;position:relative;z-index:1}
+.hero .trophy{font-size:44px;filter:drop-shadow(0 0 14px var(--gold));animation:float 3.6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hero h1{margin:6px 0;font-size:30px;letter-spacing:2px;
+  background:linear-gradient(90deg,#fff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{color:var(--muted);margin:2px}
+.hero .upd{color:var(--gold);font-size:13px;letter-spacing:1px}
+.nav{position:sticky;top:0;z-index:5;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+  padding:10px;background:rgba(10,14,39,.75);backdrop-filter:blur(8px);border-bottom:1px solid #ffffff14}
+.nav a{color:var(--ink);text-decoration:none;font-size:14px;padding:6px 12px;border-radius:20px;border:1px solid #ffffff22;transition:background .15s,box-shadow .15s,border-color .15s}
+.nav a:hover{background:#ffffff14;box-shadow:0 0 12px #ffffff22}
+.nav a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.nav a.active{background:#ffffff1f;border-color:var(--gold);color:var(--gold);box-shadow:0 0 12px #ffd16655}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:14px;margin:26px 0;position:relative;z-index:1}
+.podium .step{text-align:center;background:#ffffff0d;border:1px solid var(--c);border-radius:12px;padding:14px 16px;min-width:96px;
+  box-shadow:0 0 18px color-mix(in srgb,var(--c) 45%,transparent)}
+.podium .step-1{padding-bottom:38px}
+.podium .step-2{padding-bottom:22px}
+.podium .medal{font-size:30px}
+.podium .pname{font-weight:700;color:var(--c)}
+.podium .ppts{color:var(--muted);font-size:13px}
+@keyframes pop{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.podium .step{animation:pop .5s ease both}
+.podium .step-1{animation-delay:.15s}
+@media (prefers-reduced-motion: reduce){
+  .hero .trophy{animation:none}
+  .podium .step{animation:none}
+  .beams{animation:none}
+}
+
+.card{background:#ffffff0a;border:1px solid #ffffff1a;border-radius:16px;padding:16px 18px;margin:22px 0;
+  box-shadow:0 8px 30px #00000040}
+.card h2{margin:0 0 12px;font-size:20px}
+.tabs{display:flex;gap:8px;margin-bottom:10px}
+.tab{background:#ffffff10;color:var(--ink);border:1px solid #ffffff22;border-radius:20px;padding:6px 14px;cursor:pointer}
+.tab.active{background:var(--gold);color:#141b3c;font-weight:700}
+.replay{display:flex;align-items:center;gap:12px;margin-top:12px}
+.replay input[type=range]{flex:1;accent-color:var(--gold)}
+.muted{color:var(--muted);font-size:13px;min-width:52px}
+.twrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:15px}
+.tbl th{color:var(--muted);text-align:left;font-weight:500;padding:8px 10px;border-bottom:1px solid #ffffff22}
+.tbl td{padding:9px 10px;border-bottom:1px solid #ffffff10}
+.tbl .rk{font-size:18px;text-align:center;width:44px}
+.tbl .ps{color:var(--muted)}
+.tbl .dp{text-align:right;color:var(--muted)}
+.tbl .tot{text-align:right;font-weight:700;color:var(--gold)}
+.tbl .ev{text-align:center}
+.up{color:#38d996}.down{color:#ff6b6b}.flat{color:#6b739c}
+.pv{background:#ffffff10;color:var(--ink);border:1px solid #ffffff22;border-radius:20px;padding:6px 14px;cursor:pointer}
+.pv.active{background:var(--gold);color:#141b3c;font-weight:700}
+.pv-controls{margin:6px 0 12px}
+.pv-controls select{background:#141b3c;color:var(--ink);border:1px solid #ffffff33;border-radius:8px;padding:6px 10px}
+.pill{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-size:12px;font-weight:700;color:#0a0e27}
+.st-exact{background:#38d996}.st-result{background:var(--gold)}.st-miss{background:#ff6b6b}
+.st-pending{background:#3a4270;color:#aab}
+.tbl.grid th.vth{writing-mode:vertical-rl;transform:rotate(180deg);height:70px;font-size:12px}
+.tbl .mcol{white-space:nowrap;font-size:13px}
+.stats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.stat{background:#ffffff0d;border:1px solid #ffffff1a;border-radius:12px;padding:10px 14px;min-width:110px}
+.stat b{display:block;font-size:20px}.stat span{color:var(--muted);font-size:12px}
+.mhead{font-size:17px;font-weight:600}
+.prose{line-height:1.7;font-size:16px;color:#dfe4ff}
+.prose b{color:#fff}
+.foot{text-align:center;color:var(--muted);font-size:12px;padding:26px 0}
+</style>
+</head>
+<body>
+<div id="app">Chargement…</div>
+<script>/*__ECHARTS__*/</script>
+<script>window.__WC=/*__DATA__*/;</script>
+<script>/*__APP__*/</script>
+<script>initApp();</script>
+</body>
+</html>
