@@ -405,6 +405,39 @@ function exportCardImage(p, s) {
   img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
+// -- Superlatifs / trophées : 8 badges ----------------------------------
+
+function awardValueText(key, value) {
+  if (key === 'dernier' && value != null && value !== -Infinity) {
+    // lateAvg = moyenne (editedAt - date du match) en ms ; on affiche en heures avant/après.
+    const h = Math.round(value / 3600000);
+    return h <= 0 ? `${-h} h avant le coup d'envoi` : `${h} h après le coup d'envoi`;
+  }
+  return String(value);
+}
+
+function renderAwards() {
+  const aw = allAwards();
+  const cards = Object.entries(AWARD_LABELS).map(([key, [emo, title, detail]]) => {
+    const a = aw[key];
+    const has = a && a.uid && a.value > 0 && a.value !== -Infinity;
+    const p = has ? playerByUid(a.uid) : null;
+    const who = p ? `<div class="badge-who" style="color:${p.color}">${p.name}</div>` : '<div class="badge-who muted">—</div>';
+    const val = has ? `<div class="badge-val">${awardValueText(key, a.value)}</div>` : '';
+    return `<div class="badge">
+      <div class="badge-emo">${emo}</div>
+      <div class="badge-title">${title}</div>
+      ${who}${val}
+      <div class="badge-detail">${detail}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="awards" class="card">
+      <h2>🏅 Superlatifs</h2>
+      <div class="badges-grid">${cards}</div>
+    </section>`);
+}
+
 // Clic sur un nom de joueur (via [data-card-uid]) → ouvre sa carte.
 function initCardTriggers() {
   document.getElementById('app').addEventListener('click', (e) => {
@@ -461,6 +494,7 @@ function initApp() {
     </section>`);
   initChart();
   renderPronosShell();
+  renderAwards();
   renderBilan();
   initCardTriggers();
   openCardFromUrl();

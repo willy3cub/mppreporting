@@ -115,6 +115,16 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .pcard-badges{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
 .card-badge{background:#ffffff12;border:1px solid var(--c);border-radius:20px;padding:4px 12px;font-size:13px}
 .pcard-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+/* -- Superlatifs / trophées -- */
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.badge{background:#ffffff0d;border:1px solid #ffffff1a;border-radius:14px;padding:14px;text-align:center;
+  transition:transform .15s,box-shadow .15s}
+.badge:hover{transform:translateY(-3px);box-shadow:0 0 20px #ffd16633}
+.badge-emo{font-size:30px}
+.badge-title{font-weight:700;font-size:14px;margin:4px 0}
+.badge-who{font-weight:700;font-size:15px}
+.badge-val{color:var(--gold);font-size:13px;font-weight:700}
+.badge-detail{color:var(--muted);font-size:11px;margin-top:4px}
 </style>
 </head>
 <body>
