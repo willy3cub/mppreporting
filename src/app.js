@@ -301,12 +301,25 @@ function allAwards() {
   return _awardsCache;
 }
 
-// Badges gagnés par un joueur donné.
+// Clés des badges gagnés par un joueur donné.
 function awardsForPlayer(uid) {
   const aw = allAwards();
   return Object.entries(aw)
     .filter(([key, v]) => v && v.uid === uid && hasAward(key, v))
-    .map(([key]) => AWARD_LABELS[key]);
+    .map(([key]) => key);
+}
+
+// Libellés de rareté d'un prono (rarity 0..5). 0 = commun (pas de chip).
+const RARITY_LABELS = [null, 'Rare', 'Très rare', 'Méga rare', 'Ultra rare', 'Légendaire'];
+function rarityLabel(level) { return RARITY_LABELS[level] || (level > 5 ? 'Légendaire' : null); }
+
+// Image d'un badge (SVG embarqué au build) ; fallback sur l'emoji.
+function badgeImg(key, cls = '') {
+  const src = (window.__WC.badges || {})[key];
+  const [emo, title] = AWARD_LABELS[key];
+  return src
+    ? `<img class="badge-img ${cls}" src="${src}" alt="${title}" title="${title}">`
+    : `<span class="badge-emo ${cls}">${emo}</span>`;
 }
 
 // -- Carte joueur partageable (modale + export PNG local) ----------------
@@ -317,16 +330,26 @@ function playerCardStats(uid) {
   const cur = latestPoints();
   const rank = rankStandings(cur).find((s) => s.uid === uid)?.rank ?? null;
   const pts = cur[uid] ?? 0;
-  let played = 0, exact = 0, best = null, worst = null;
+  let played = 0, exact = 0;
   for (const m of matches) {
     const pr = pf[m.id]; const st = fStatus(pr, m);
     if (st === 'pending') continue;
     played++; if (st === 'exact') exact++;
-    const pp = pr?.points ?? 0;
-    if (!best || pp > best.pts) best = { m, pts: pp };
-    if (!worst || pp < worst.pts) worst = { m, pts: pp };
   }
-  return { rank, pts, played, exact, rate: played ? Math.round((exact / played) * 100) : 0, best, worst };
+  return { rank, pts, played, exact, rate: played ? Math.round((exact / played) * 100) : 0 };
+}
+
+// Liste des pronos joués d'un joueur, triée par points décroissants.
+function playerPronoList(uid) {
+  const { matches, forecasts } = window.__WC;
+  const pf = forecasts[uid] || {};
+  const rows = [];
+  for (const m of matches) {
+    const pr = pf[m.id]; const st = fStatus(pr, m);
+    if (st === 'pending' || !pr) continue;
+    rows.push({ m, pr, st, pts: pr.points ?? 0, rarity: pr.rarity ?? 0 });
+  }
+  return rows.sort((a, b) => b.pts - a.pts);
 }
 
 function renderPlayerCard(uid) {
@@ -335,10 +358,19 @@ function renderPlayerCard(uid) {
   const s = playerCardStats(uid);
   const badges = awardsForPlayer(uid);
   const badgeHtml = badges.length
-    ? badges.map(([emo, title]) => `<span class="card-badge" title="${title}">${emo} ${title}</span>`).join('')
+    ? badges.map((key) => `<span class="card-badge" title="${AWARD_LABELS[key][2]}">${badgeImg(key, 'badge-img-sm')}${AWARD_LABELS[key][1]}</span>`).join('')
     : '<span class="muted">Aucun trophée… pour l’instant.</span>';
-  const bestTxt = s.best ? `${matchLabel(s.best.m)} · ${s.best.pts} pts` : '—';
-  const worstTxt = s.worst ? `${matchLabel(s.worst.m)} · ${s.worst.pts} pts` : '—';
+  const pronos = playerPronoList(uid);
+  const pronoRows = pronos.length ? pronos.map((r) => {
+    const rl = rarityLabel(r.rarity);
+    const chip = rl ? `<span class="rar rar-${r.rarity}">${rl}</span>` : '';
+    return `<tr>
+      <td class="mcol">${r.m.flag1} ${r.m.team1}–${r.m.team2} ${r.m.flag2}</td>
+      <td class="ctr">${r.pr.score1}-${r.pr.score2}</td>
+      <td>${pastille(r.st)}</td>
+      <td class="dp">${r.pts}</td>
+      <td>${chip}</td></tr>`;
+  }).join('') : '<tr><td class="muted" colspan="5">Aucun prono joué.</td></tr>';
   let overlay = document.getElementById('cardOverlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -363,9 +395,13 @@ function renderPlayerCard(uid) {
         <div class="stat"><b>${s.exact}</b><span>scores exacts</span></div>
         <div class="stat"><b>${s.rate}%</b><span>taux d'exacts</span></div>
       </div>
-      <div class="pcard-line"><span class="muted">Meilleur prono</span> ${bestTxt}</div>
-      <div class="pcard-line"><span class="muted">Pire prono</span> ${worstTxt}</div>
+      <div class="pcard-section-title">Trophées</div>
       <div class="pcard-badges">${badgeHtml}</div>
+      <div class="pcard-section-title">Ses pronos <span class="muted">(${pronos.length} joués)</span></div>
+      <div class="pcard-pronos"><table class="tbl">
+        <thead><tr><th>Match</th><th class="ctr">Prono</th><th></th><th class="dp">Pts</th><th>Rareté</th></tr></thead>
+        <tbody>${pronoRows}</tbody>
+      </table></div>
       <div class="pcard-actions">
         <button id="cardLink" class="tab">🔗 Copier le lien</button>
         <button id="cardImg" class="tab">⬇︎ Télécharger l'image</button>
@@ -439,14 +475,14 @@ function hasAward(key, a) {
 
 function renderAwards() {
   const aw = allAwards();
-  const cards = Object.entries(AWARD_LABELS).map(([key, [emo, title, detail]]) => {
+  const cards = Object.entries(AWARD_LABELS).map(([key, [, title, detail]]) => {
     const a = aw[key];
     const has = hasAward(key, a);
     const p = has ? playerByUid(a.uid) : null;
     const who = p ? `<div class="badge-who" style="color:${p.color}">${p.name}</div>` : '<div class="badge-who muted">—</div>';
     const val = has ? `<div class="badge-val">${awardValueText(key, a.value)}</div>` : '';
     return `<div class="badge">
-      <div class="badge-emo">${emo}</div>
+      ${badgeImg(key)}
       <div class="badge-title">${title}</div>
       ${who}${val}
       <div class="badge-detail">${detail}</div>

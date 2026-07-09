@@ -26,8 +26,23 @@ function avatarDataUris() {
   return out;
 }
 
-export function buildHtml({ players, history, matches, forecasts, bilan, echarts, appJs }) {
-  const data = JSON.stringify({ players, history, matches, forecasts, bilan }).replace(/</g, '\\u003c');
+const BADGE_DIR = 'assets/badges';
+
+// Images des superlatifs (SVG dans assets/badges/<key>.svg) → base64 data URI.
+function badgeDataUris() {
+  const dir = join(ROOT, BADGE_DIR);
+  if (!existsSync(dir)) return {};
+  const out = {};
+  for (const f of readdirSync(dir)) {
+    if (!f.endsWith('.svg')) continue;
+    const key = f.slice(0, -4);
+    out[key] = `data:image/svg+xml;base64,${readFileSync(join(dir, f)).toString('base64')}`;
+  }
+  return out;
+}
+
+export function buildHtml({ players, history, matches, forecasts, bilan, badges, echarts, appJs }) {
+  const data = JSON.stringify({ players, history, matches, forecasts, bilan, badges }).replace(/</g, '\\u003c');
   return read('src/template.html')
     .replace('/*__ECHARTS__*/', () => echarts)
     .replace('/*__DATA__*/', () => data)
@@ -43,6 +58,7 @@ export function build() {
     matches: readJson('data/matches.json'),
     forecasts: readJson('data/forecasts.json'),
     bilan: readJson('data/bilan.json'),
+    badges: badgeDataUris(),
     echarts: read('node_modules/echarts/dist/echarts.min.js'),
     appJs: read('src/app.js'),
   });

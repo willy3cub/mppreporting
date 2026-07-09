@@ -127,16 +127,30 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .pcard-stats .stat{flex:1;text-align:center}
 .pcard-line{padding:6px 0;border-top:1px solid #ffffff12;font-size:14px}
 .pcard-line .muted{display:inline-block;min-width:120px}
-.pcard-badges{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
-.card-badge{background:#ffffff12;border:1px solid var(--c);border-radius:20px;padding:4px 12px;font-size:13px}
-.pcard-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.pcard-section-title{margin:16px 0 8px;font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
+.pcard-badges{display:flex;flex-wrap:wrap;gap:8px}
+.card-badge{display:inline-flex;align-items:center;gap:7px;background:#ffffff12;border:1px solid var(--c);border-radius:20px;padding:3px 12px 3px 4px;font-size:13px}
+.pcard-pronos{max-height:260px;overflow:auto;border:1px solid #ffffff12;border-radius:10px}
+.pcard-pronos table{font-size:13px}
+.pcard-pronos th{position:sticky;top:0;background:#141b3c;z-index:1}
+.pcard-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.ctr{text-align:center}
+/* Chips de rareté */
+.rar{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.rar-1{background:#5aa9e633;color:#9cc9f0;border:1px solid #5aa9e6}
+.rar-2{background:#2ec4b633;color:#8fe3d9;border:1px solid #2ec4b6}
+.rar-3{background:#c77dff33;color:#dcb6ff;border:1px solid #c77dff}
+.rar-4{background:#fb850033;color:#ffc078;border:1px solid #fb8500}
+.rar-5{background:#ffd16633;color:var(--gold);border:1px solid var(--gold);box-shadow:0 0 8px #ffd16655}
 /* -- Superlatifs / trophées -- */
 .badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
 .badge{background:#ffffff0d;border:1px solid #ffffff1a;border-radius:14px;padding:14px;text-align:center;
   transition:transform .15s,box-shadow .15s}
 .badge:hover{transform:translateY(-3px);box-shadow:0 0 20px #ffd16633}
 .badge-emo{font-size:30px}
-.badge-title{font-weight:700;font-size:14px;margin:4px 0}
+.badge-img{width:56px;height:56px;display:block;margin:0 auto}
+.badge-img-sm{width:26px;height:26px}
+.badge-title{font-weight:700;font-size:14px;margin:6px 0 2px}
 .badge-who{font-weight:700;font-size:15px}
 .badge-val{color:var(--gold);font-size:13px;font-weight:700}
 .badge-detail{color:var(--muted);font-size:11px;margin-top:4px}
