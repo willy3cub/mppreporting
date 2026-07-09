@@ -50,6 +50,13 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   .podium .step{animation:none}
   .beams{animation:none}
 }
+
+.card{background:#ffffff0a;border:1px solid #ffffff1a;border-radius:16px;padding:16px 18px;margin:22px 0;
+  box-shadow:0 8px 30px #00000040}
+.card h2{margin:0 0 12px;font-size:20px}
+.tabs{display:flex;gap:8px;margin-bottom:10px}
+.tab{background:#ffffff10;color:var(--ink);border:1px solid #ffffff22;border-radius:20px;padding:6px 14px;cursor:pointer}
+.tab.active{background:var(--gold);color:#141b3c;font-weight:700}
 </style>
 </head>
 <body>
@@ -176,7 +183,85 @@ function initApp() {
   app.innerHTML = '';
   renderHero(app);
   renderPodium();
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="graphe" class="card">
+      <h2>📈 Évolution</h2>
+      <div class="tabs">
+        <button class="tab active" data-mode="ranks">Rangs</button>
+        <button class="tab" data-mode="points">Points</button>
+      </div>
+      <div id="chart" style="height:460px"></div>
+    </section>`);
+  initChart();
   initNavScrollSpy();
+}
+
+// -- Graphe : bump chart des rangs (1er en haut) + points cumulés --------
+
+function seriesFor(mode) {
+  const { history, players } = window.__WC;
+  const labels = Object.keys(history);
+  const rankByLabel = labels.map((l) => {
+    const r = {}; rankStandings(history[l]).forEach((s) => (r[s.uid] = s.rank)); return r;
+  });
+  return players.map((p) => ({
+    name: p.name,
+    type: 'line',
+    smooth: true,
+    symbol: 'circle',
+    symbolSize: 8,
+    lineStyle: { width: 2, color: p.color },
+    itemStyle: { color: p.color },
+    emphasis: { focus: 'series', lineStyle: { width: 4 } },
+    data: labels.map((l, i) =>
+      mode === 'ranks' ? (rankByLabel[i][p.uid] ?? null) : (history[l][p.uid] ?? null)),
+  }));
+}
+
+function baseOption(mode) {
+  const labels = Object.keys(window.__WC.history);
+  return {
+    backgroundColor: 'transparent',
+    textStyle: { color: '#cfd6f5' },
+    tooltip: {
+      trigger: 'axis',
+      order: mode === 'ranks' ? 'valueAsc' : 'valueDesc',
+      axisPointer: { type: 'line', lineStyle: { color: '#ffffff55' } },
+      backgroundColor: '#141b3c', borderColor: '#ffffff33', textStyle: { color: '#fff' },
+      valueFormatter: (v) => (v == null ? '—' : mode === 'ranks' ? `${v}e` : v.toLocaleString('fr-FR')),
+    },
+    legend: { type: 'scroll', top: 0, textStyle: { color: '#cfd6f5' }, inactiveColor: '#555' },
+    grid: { left: 44, right: 20, top: 40, bottom: 60 },
+    xAxis: { type: 'category', data: labels, axisLine: { lineStyle: { color: '#ffffff33' } } },
+    yAxis: mode === 'ranks'
+      ? {
+          type: 'value', inverse: true, min: 1, max: 16, interval: 1,
+          axisLabel: { formatter: (v) => (v === 1 ? '1er' : `${v}e`) },
+          splitLine: { lineStyle: { color: '#ffffff12' } },
+        }
+      : {
+          type: 'value',
+          axisLabel: { formatter: (v) => v.toLocaleString('fr-FR') },
+          splitLine: { lineStyle: { color: '#ffffff12' } },
+        },
+    dataZoom: [{ type: 'inside' }, { type: 'slider', bottom: 16, height: 18 }],
+    series: seriesFor(mode),
+    animationDuration: 700,
+  };
+}
+const chartOptionRanks = () => baseOption('ranks');
+const chartOptionPoints = () => baseOption('points');
+
+let _chart;
+function initChart() {
+  _chart = window.echarts.init(document.getElementById('chart'), null, { renderer: 'canvas' });
+  _chart.setOption(chartOptionRanks());
+  document.querySelectorAll('.tab').forEach((btn) => btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    _chart.setOption(btn.dataset.mode === 'ranks' ? chartOptionRanks() : chartOptionPoints(), true);
+  }));
+  window.addEventListener('resize', () => _chart.resize());
 }
 </script>
 <script>initApp();</script>
