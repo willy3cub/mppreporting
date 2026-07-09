@@ -32,8 +32,11 @@ function renderHero(root) {
     </header>
     <nav class="nav">
       <a href="#classement">Classement</a>
+      <a href="#compare">Duel</a>
       <a href="#graphe">Évolution</a>
       <a href="#pronos">Pronostics</a>
+      <a href="#awards">Superlatifs</a>
+      <a href="#rares">Rares</a>
       <a href="#bilan">Bilan</a>
     </nav>
     <section id="podium" class="podium"></section>`);
@@ -69,7 +72,7 @@ function renderClassement() {
       : dr < 0 ? `<span class="down">▼${-dr}</span>` : `<span class="flat">■</span>`;
     return `<tr>
       <td class="rk">${medal}</td>
-      <td style="color:${p.color};font-weight:600">${p.name}</td>
+      <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">${p.name}</td>
       <td class="ps">${p.pseudo}</td>
       <td class="ev">${arrow}</td>
       <td class="dp">+${dp.toLocaleString('fr-FR')}</td>
@@ -84,6 +87,426 @@ function renderClassement() {
         <tbody>${rows}</tbody>
       </table></div>
     </section>`);
+}
+
+// -- Comparateur 1v1 : duel entre deux joueurs --------------------------
+// headToHead réimplémente src/lib/awards.mjs (Node-only) en <script> classique.
+
+function headToHead(uidA, uidB, history) {
+  const labels = Object.keys(history);
+  let devA = 0, devB = 0;
+  for (const l of labels) {
+    const a = history[l][uidA] ?? 0, b = history[l][uidB] ?? 0;
+    if (a > b) devA++; else if (b > a) devB++;
+  }
+  const last = labels[labels.length - 1] || null;
+  return { ptsA: last ? (history[last][uidA] ?? 0) : 0, ptsB: last ? (history[last][uidB] ?? 0) : 0,
+    journeesDevantA: devA, journeesDevantB: devB, journees: labels.length };
+}
+
+// Stats pronos d'un joueur (exacts / bons) sur les matchs joués.
+function pronoTally(uid) {
+  const { matches, forecasts } = window.__WC;
+  const pf = forecasts[uid] || {};
+  let exact = 0, good = 0;
+  for (const m of matches) {
+    const st = fStatus(pf[m.id], m);
+    if (st === 'exact') { exact++; good++; }
+    else if (st === 'result') good++;
+  }
+  return { exact, good };
+}
+
+let _cmpChart;
+function renderCompare() {
+  const { players } = window.__WC;
+  const opts = (sel) => players.map((p) => `<option value="${p.uid}">${p.name}</option>`).join('');
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="compare" class="card">
+      <h2>⚔️ Duel</h2>
+      <div class="cmp-picks">
+        <select id="cmpA" class="cmp-sel">${opts()}</select>
+        <button id="cmpSwap" class="tab" title="Échanger">⇄</button>
+        <select id="cmpB" class="cmp-sel">${opts()}</select>
+      </div>
+      <div id="cmpChart" style="height:300px"></div>
+      <div id="cmpTable"></div>
+    </section>`);
+  const selA = document.getElementById('cmpA');
+  const selB = document.getElementById('cmpB');
+  selA.selectedIndex = 0;
+  selB.selectedIndex = Math.min(1, players.length - 1);
+  _cmpChart = window.echarts.init(document.getElementById('cmpChart'), null, { renderer: 'canvas' });
+  selA.addEventListener('change', updateCompare);
+  selB.addEventListener('change', updateCompare);
+  document.getElementById('cmpSwap').addEventListener('click', () => {
+    const a = selA.value; selA.value = selB.value; selB.value = a; updateCompare();
+  });
+  window.addEventListener('resize', () => _cmpChart && _cmpChart.resize());
+  updateCompare();
+}
+
+function updateCompare() {
+  const { history, players } = window.__WC;
+  const labels = Object.keys(history);
+  const uidA = document.getElementById('cmpA').value;
+  const uidB = document.getElementById('cmpB').value;
+  const pA = playerByUid(uidA), pB = playerByUid(uidB);
+  const serie = (uid, color, name) => ({
+    name, type: 'line', smooth: true, symbol: 'circle', symbolSize: 7,
+    lineStyle: { width: 3, color }, itemStyle: { color },
+    data: labels.map((l) => history[l][uid] ?? null),
+  });
+  _cmpChart.setOption({
+    backgroundColor: 'transparent', textStyle: { color: '#cfd6f5' },
+    tooltip: { trigger: 'axis', backgroundColor: '#141b3c', borderColor: '#ffffff33', textStyle: { color: '#fff' },
+      valueFormatter: (v) => (v == null ? '—' : v.toLocaleString('fr-FR')) },
+    legend: { top: 0, textStyle: { color: '#cfd6f5' } },
+    grid: { left: 50, right: 20, top: 36, bottom: 30 },
+    xAxis: { type: 'category', data: labels, axisLine: { lineStyle: { color: '#ffffff33' } } },
+    yAxis: { type: 'value', axisLabel: { formatter: (v) => v.toLocaleString('fr-FR') }, splitLine: { lineStyle: { color: '#ffffff12' } } },
+    series: [serie(uidA, pA.color, pA.name), serie(uidB, pB.color, pB.name)],
+    animationDuration: 500,
+  }, true);
+  const h = headToHead(uidA, uidB, history);
+  const tA = pronoTally(uidA), tB = pronoTally(uidB);
+  const row = (label, va, vb) => {
+    const aLead = va > vb, bLead = vb > va;
+    return `<tr>
+      <td class="cmp-a ${aLead ? 'lead' : ''}">${va}</td>
+      <td class="cmp-mid">${label}</td>
+      <td class="cmp-b ${bLead ? 'lead' : ''}">${vb}</td></tr>`;
+  };
+  document.getElementById('cmpTable').innerHTML = `
+    <table class="tbl cmp-tbl">
+      <thead><tr>
+        <th class="cmp-a" style="color:${pA.color}">${pA.name}</th>
+        <th class="cmp-mid"></th>
+        <th class="cmp-b" style="color:${pB.color}">${pB.name}</th>
+      </tr></thead>
+      <tbody>
+        ${row('points', h.ptsA.toLocaleString('fr-FR'), h.ptsB.toLocaleString('fr-FR'))}
+        ${row('scores exacts', tA.exact, tB.exact)}
+        ${row('bons pronos', tA.good, tB.good)}
+        ${row(`journées devant / ${h.journees}`, h.journeesDevantA, h.journeesDevantB)}
+      </tbody>
+    </table>`;
+}
+
+// -- Logique features (réimplémentée depuis src/lib/awards.mjs, Node-only) --
+// Réutilisée par la carte joueur, les superlatifs et les pronos rares.
+
+function groupConsensus(matchId, forecasts) {
+  const tally = new Map();
+  for (const uid of Object.keys(forecasts)) {
+    const f = forecasts[uid]?.[matchId];
+    if (!f || f.score1 == null) continue;
+    const k = `${f.score1}-${f.score2}`;
+    tally.set(k, (tally.get(k) || 0) + 1);
+  }
+  let best = null, total = 0;
+  for (const [k, c] of tally) { total += c; if (!best || c > best[1]) best = [k, c]; }
+  if (!best) return null;
+  const [s1, s2] = best[0].split('-').map(Number);
+  return { score1: s1, score2: s2, count: best[1], total };
+}
+
+function topRareForecasts(matches, forecasts, players, n = 10) {
+  const nameOf = Object.fromEntries(players.map((p) => [p.uid, p.name]));
+  const rows = [];
+  for (const uid of Object.keys(forecasts)) {
+    for (const m of matches) {
+      const f = forecasts[uid]?.[m.id];
+      if (!f || (f.result !== 'exact' && f.result !== 'result')) continue;
+      rows.push({ uid, name: nameOf[uid] || uid, matchId: m.id, score1: f.score1, score2: f.score2, rarity: f.rarity ?? 0, result: f.result });
+    }
+  }
+  rows.sort((a, b) => b.rarity - a.rarity);
+  return rows.slice(0, n);
+}
+
+function computeAwards(players, matches, forecasts) {
+  const uids = players.map((p) => p.uid);
+  const played = matches.filter((m) => m.status === 'played');
+  const byGw = {};
+  for (const m of played) (byGw[m.gameWeek] ||= []).push(m.id);
+  const consensus = {};
+  for (const m of played) consensus[m.id] = groupConsensus(m.id, forecasts);
+  const stat = {};
+  for (const uid of uids) {
+    const f = forecasts[uid] || {};
+    let exact = 0, zero = 0, rar = 0, rarN = 0, follow = 0, contrarianRight = 0, lateSum = 0, lateN = 0;
+    let streak = 0, bestStreak = 0;
+    for (const m of played) {
+      const p = f[m.id]; if (!p) { streak = 0; continue; }
+      if (p.result === 'exact') exact++;
+      if ((p.points ?? 0) === 0) zero++;
+      if (p.rarity != null) { rar += p.rarity; rarN++; }
+      const c = consensus[m.id];
+      const isConsensus = c && p.score1 === c.score1 && p.score2 === c.score2;
+      if (isConsensus) follow++;
+      if (!isConsensus && (p.result === 'exact' || p.result === 'result')) contrarianRight++;
+      if (p.editedAt && m.date) { lateSum += (new Date(p.editedAt) - new Date(m.date)); lateN++; }
+      if ((p.points ?? 0) > 0) { streak++; bestStreak = Math.max(bestStreak, streak); } else streak = 0;
+    }
+    let bestGw = 0;
+    for (const ids of Object.values(byGw)) {
+      const s = ids.reduce((acc, id) => acc + (f[id]?.points ?? 0), 0);
+      bestGw = Math.max(bestGw, s);
+    }
+    stat[uid] = { exact, zero, rarAvg: rarN ? rar / rarN : 0, follow, contrarianRight,
+      lateAvg: lateN ? lateSum / lateN : -Infinity, bestStreak, bestGw };
+  }
+  const pick = (metric, dir = 'max') => {
+    let best = null;
+    for (const uid of uids) {
+      const v = stat[uid][metric];
+      if (best === null || (dir === 'max' ? v > best.value : v < best.value)) best = { uid, value: v };
+    }
+    return best;
+  };
+  return {
+    sniper: pick('exact'), serie: pick('bestStreak'), kamikaze: pick('rarAvg'),
+    mouton: pick('follow'), visionnaire: pick('contrarianRight'), carton: pick('bestGw'),
+    frileux: pick('zero'), dernier: pick('lateAvg'),
+  };
+}
+
+// Libellés des 8 superlatifs (partagés carte + section awards).
+const AWARD_LABELS = {
+  sniper: ['🎯', 'Le Sniper', 'scores exacts'],
+  serie: ['🔥', 'La Série', "matchs d'affilée avec des points"],
+  kamikaze: ['🃏', 'Le Kamikaze', 'scores les plus rares'],
+  mouton: ['🐑', 'Le Mouton', 'suit le groupe'],
+  visionnaire: ['🧠', 'Le Visionnaire', 'juste à contre-courant'],
+  carton: ['💥', 'Le Carton', 'record sur une journée'],
+  frileux: ['🧊', 'Le Frileux', 'matchs à 0 point'],
+  dernier: ['⏱️', 'Le Dernier', 'pronos tardifs'],
+};
+
+let _awardsCache;
+function allAwards() {
+  if (!_awardsCache) {
+    const { players, matches, forecasts } = window.__WC;
+    _awardsCache = computeAwards(players, matches, forecasts);
+  }
+  return _awardsCache;
+}
+
+// Badges gagnés par un joueur donné.
+function awardsForPlayer(uid) {
+  const aw = allAwards();
+  return Object.entries(aw)
+    .filter(([key, v]) => v && v.uid === uid && hasAward(key, v))
+    .map(([key]) => AWARD_LABELS[key]);
+}
+
+// -- Carte joueur partageable (modale + export PNG local) ----------------
+
+function playerCardStats(uid) {
+  const { matches, forecasts } = window.__WC;
+  const pf = forecasts[uid] || {};
+  const cur = latestPoints();
+  const rank = rankStandings(cur).find((s) => s.uid === uid)?.rank ?? null;
+  const pts = cur[uid] ?? 0;
+  let played = 0, exact = 0, best = null, worst = null;
+  for (const m of matches) {
+    const pr = pf[m.id]; const st = fStatus(pr, m);
+    if (st === 'pending') continue;
+    played++; if (st === 'exact') exact++;
+    const pp = pr?.points ?? 0;
+    if (!best || pp > best.pts) best = { m, pts: pp };
+    if (!worst || pp < worst.pts) worst = { m, pts: pp };
+  }
+  return { rank, pts, played, exact, rate: played ? Math.round((exact / played) * 100) : 0, best, worst };
+}
+
+function renderPlayerCard(uid) {
+  const p = playerByUid(uid);
+  if (!p) return;
+  const s = playerCardStats(uid);
+  const badges = awardsForPlayer(uid);
+  const badgeHtml = badges.length
+    ? badges.map(([emo, title]) => `<span class="card-badge" title="${title}">${emo} ${title}</span>`).join('')
+    : '<span class="muted">Aucun trophée… pour l’instant.</span>';
+  const bestTxt = s.best ? `${matchLabel(s.best.m)} · ${s.best.pts} pts` : '—';
+  const worstTxt = s.worst ? `${matchLabel(s.worst.m)} · ${s.worst.pts} pts` : '—';
+  let overlay = document.getElementById('cardOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'cardOverlay';
+    overlay.className = 'card-overlay';
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+  }
+  overlay.innerHTML = `
+    <div class="pcard" style="--c:${p.color}">
+      <button class="pcard-close" aria-label="Fermer">✕</button>
+      <div class="pcard-head">
+        <div class="pcard-avatar">${p.avatarUrl ? `<img src="${p.avatarUrl}" alt="">` : p.name.slice(0, 1)}</div>
+        <div>
+          <div class="pcard-name">${p.name}</div>
+          <div class="muted">${p.pseudo}</div>
+        </div>
+        <div class="pcard-rank">${s.rank ? ordinalFr(s.rank) : '—'}</div>
+      </div>
+      <div class="pcard-stats">
+        <div class="stat"><b>${s.pts.toLocaleString('fr-FR')}</b><span>points</span></div>
+        <div class="stat"><b>${s.exact}</b><span>scores exacts</span></div>
+        <div class="stat"><b>${s.rate}%</b><span>taux d'exacts</span></div>
+      </div>
+      <div class="pcard-line"><span class="muted">Meilleur prono</span> ${bestTxt}</div>
+      <div class="pcard-line"><span class="muted">Pire prono</span> ${worstTxt}</div>
+      <div class="pcard-badges">${badgeHtml}</div>
+      <div class="pcard-actions">
+        <button id="cardLink" class="tab">🔗 Copier le lien</button>
+        <button id="cardImg" class="tab">⬇︎ Télécharger l'image</button>
+      </div>
+    </div>`;
+  overlay.querySelector('.pcard-close').addEventListener('click', () => overlay.remove());
+  overlay.querySelector('#cardLink').addEventListener('click', (e) => {
+    const url = location.origin + location.pathname + '?joueur=' + encodeURIComponent(p.name);
+    navigator.clipboard?.writeText(url);
+    e.target.textContent = '✓ Lien copié';
+  });
+  overlay.querySelector('#cardImg').addEventListener('click', () => exportCardImage(p, s));
+}
+
+// Export sans dépendance : SVG (texte/formes uniquement) → canvas → PNG.
+function exportCardImage(p, s) {
+  const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const W = 640, H = 360;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0e27"/><stop offset="1" stop-color="#141b3c"/></linearGradient></defs>
+    <rect width="${W}" height="${H}" fill="url(#g)"/>
+    <rect x="8" y="8" width="${W - 16}" height="${H - 16}" rx="18" fill="none" stroke="${p.color}" stroke-width="3"/>
+    <text x="40" y="66" fill="#fff" font-family="Arial" font-size="34" font-weight="bold">${esc(p.name)}</text>
+    <text x="40" y="98" fill="#9aa3c7" font-family="Arial" font-size="18">${esc(p.pseudo)}</text>
+    <text x="${W - 40}" y="80" text-anchor="end" fill="${p.color}" font-family="Arial" font-size="40" font-weight="bold">${s.rank ? esc(ordinalFr(s.rank)) : '—'}</text>
+    <text x="40" y="180" fill="#FFD166" font-family="Arial" font-size="52" font-weight="bold">${esc(s.pts.toLocaleString('fr-FR'))}</text>
+    <text x="40" y="208" fill="#9aa3c7" font-family="Arial" font-size="18">points</text>
+    <text x="300" y="180" fill="#fff" font-family="Arial" font-size="40" font-weight="bold">${s.exact}</text>
+    <text x="300" y="208" fill="#9aa3c7" font-family="Arial" font-size="18">scores exacts</text>
+    <text x="480" y="180" fill="#fff" font-family="Arial" font-size="40" font-weight="bold">${s.rate}%</text>
+    <text x="480" y="208" fill="#9aa3c7" font-family="Arial" font-size="18">taux d'exacts</text>
+    <text x="40" y="300" fill="#dfe4ff" font-family="Arial" font-size="20">CDM 2026 — SHRS Football Club</text>
+  </svg>`;
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    canvas.getContext('2d').drawImage(img, 0, 0);
+    canvas.toBlob((blob) => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `carte-${p.name}.png`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  };
+  img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+// -- Superlatifs / trophées : 8 badges ----------------------------------
+
+function awardValueText(key, value) {
+  if (key === 'dernier') {
+    // lateAvg = moyenne (editedAt - date du match) en ms ; on affiche en heures avant/après.
+    const h = Math.round(value / 3600000);
+    return h <= 0 ? `${-h} h avant le coup d'envoi` : `${h} h après le coup d'envoi`;
+  }
+  if (key === 'kamikaze') return `rareté moy. ${value.toFixed(1)}`;
+  return String(value);
+}
+
+// Un badge est attribué si la valeur est significative. Pour « Le Dernier »
+// (retard moyen), une valeur négative est normale (prono avant le match) :
+// on masque seulement l'absence de donnée (-Infinity).
+function hasAward(key, a) {
+  if (!a || !a.uid) return false;
+  if (key === 'dernier') return a.value !== -Infinity;
+  return a.value > 0;
+}
+
+function renderAwards() {
+  const aw = allAwards();
+  const cards = Object.entries(AWARD_LABELS).map(([key, [emo, title, detail]]) => {
+    const a = aw[key];
+    const has = hasAward(key, a);
+    const p = has ? playerByUid(a.uid) : null;
+    const who = p ? `<div class="badge-who" style="color:${p.color}">${p.name}</div>` : '<div class="badge-who muted">—</div>';
+    const val = has ? `<div class="badge-val">${awardValueText(key, a.value)}</div>` : '';
+    return `<div class="badge">
+      <div class="badge-emo">${emo}</div>
+      <div class="badge-title">${title}</div>
+      ${who}${val}
+      <div class="badge-detail">${detail}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="awards" class="card">
+      <h2>🏅 Superlatifs</h2>
+      <div class="badges-grid">${cards}</div>
+    </section>`);
+}
+
+// -- Pronos rares + consensus vs réalité --------------------------------
+
+function renderRares() {
+  const { players, matches, forecasts } = window.__WC;
+  const byId = Object.fromEntries(matches.map((m) => [m.id, m]));
+  const top = topRareForecasts(matches, forecasts, players, 10);
+  const p = playerByUid;
+  const rareItems = top.length ? top.map((r) => {
+    const m = byId[r.matchId];
+    const pl = p(r.uid);
+    const st = r.result === 'exact' ? 'exact' : 'result';
+    return `<li class="rare-item">
+      ${pastille(st)}
+      <span style="color:${pl.color};font-weight:600">${pl.name}</span> a osé
+      <b>${m.flag1} ${r.score1}-${r.score2} ${m.flag2}</b>
+      <span class="muted">sur ${m.team1}–${m.team2}</span></li>`;
+  }).join('') : '<li class="muted">Aucun prono rare pour l’instant.</li>';
+
+  const played = matches.filter((m) => m.status === 'played');
+  const consLines = played.map((m) => {
+    const c = groupConsensus(m.id, forecasts);
+    if (!c) return '';
+    const wrong = c.score1 !== m.score1 || c.score2 !== m.score2;
+    return `<tr class="${wrong ? 'cons-wrong' : ''}">
+      <td class="mcol">${m.flag1} ${m.team1}–${m.team2} ${m.flag2}</td>
+      <td class="ctr">${c.score1}-${c.score2} <span class="muted">(${c.count}/${c.total})</span></td>
+      <td class="ctr">${m.score1}-${m.score2}</td>
+      <td class="ctr">${wrong ? '❌' : '✅'}</td></tr>`;
+  }).join('');
+
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="rares" class="card">
+      <h2>💎 Pronos rares</h2>
+      <h3 class="rare-sub">Les paris les plus gonflés (et justes)</h3>
+      <ul class="rare-list">${rareItems}</ul>
+      <h3 class="rare-sub">Le groupe avait-il raison ?</h3>
+      <div class="twrap"><table class="tbl">
+        <thead><tr><th>Match</th><th class="ctr">Consensus</th><th class="ctr">Réel</th><th class="ctr">✓</th></tr></thead>
+        <tbody>${consLines || '<tr><td class="muted" colspan="4">Pas encore de match joué.</td></tr>'}</tbody>
+      </table></div>
+    </section>`);
+}
+
+// Clic sur un nom de joueur (via [data-card-uid]) → ouvre sa carte.
+function initCardTriggers() {
+  document.getElementById('app').addEventListener('click', (e) => {
+    const el = e.target.closest('[data-card-uid]');
+    if (el) renderPlayerCard(el.dataset.cardUid);
+  });
+}
+// Deep link ?joueur=<name> → ouvre la carte au chargement.
+function openCardFromUrl() {
+  const name = new URLSearchParams(location.search).get('joueur');
+  if (!name) return;
+  const p = window.__WC.players.find((x) => x.name === name);
+  if (p) renderPlayerCard(p.uid);
 }
 
 // Nav sticky : surligne l'ancre correspondant à la section visible.
@@ -110,6 +533,7 @@ function initApp() {
   renderHero(app);
   renderPodium();
   renderClassement();
+  renderCompare();
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="graphe" class="card">
       <h2>📈 Évolution</h2>
@@ -126,7 +550,11 @@ function initApp() {
     </section>`);
   initChart();
   renderPronosShell();
+  renderAwards();
+  renderRares();
   renderBilan();
+  initCardTriggers();
+  openCardFromUrl();
   initNavScrollSpy();
 }
 
