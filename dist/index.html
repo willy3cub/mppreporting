@@ -560,7 +560,7 @@ function playerPronoList(uid) {
     if (st === 'pending' || !pr) continue;
     rows.push({ m, pr, st, pts: pr.points ?? 0, rarity: pr.rarity ?? 0 });
   }
-  return rows.sort((a, b) => b.pts - a.pts);
+  return rows.sort((a, b) => (a.m.date < b.m.date ? -1 : a.m.date > b.m.date ? 1 : 0));
 }
 
 function renderPlayerCard(uid) {
