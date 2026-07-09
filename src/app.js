@@ -54,6 +54,38 @@ function renderPodium() {
   }).join('');
 }
 
+function renderClassement() {
+  const { history, players } = window.__WC;
+  const labels = Object.keys(history);
+  const cur = history[labels[labels.length - 1]];
+  const prev = history[labels[labels.length - 2]] || cur;
+  const rankPrev = {}; rankStandings(prev).forEach((s) => (rankPrev[s.uid] = s.rank));
+  const rows = rankStandings(cur).map((s) => {
+    const p = players.find((x) => x.uid === s.uid);
+    const dp = s.pts - (prev[s.uid] ?? 0);
+    const dr = (rankPrev[s.uid] ?? s.rank) - s.rank;
+    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || `${s.rank}.`;
+    const arrow = dr > 0 ? `<span class="up">▲${dr}</span>`
+      : dr < 0 ? `<span class="down">▼${-dr}</span>` : `<span class="flat">■</span>`;
+    return `<tr>
+      <td class="rk">${medal}</td>
+      <td style="color:${p.color};font-weight:600">${p.name}</td>
+      <td class="ps">${p.pseudo}</td>
+      <td class="ev">${arrow}</td>
+      <td class="dp">+${dp.toLocaleString('fr-FR')}</td>
+      <td class="tot">${s.pts.toLocaleString('fr-FR')}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="classement" class="card">
+      <h2>🏆 Classement</h2>
+      <div class="twrap"><table class="tbl">
+        <thead><tr><th>#</th><th>Joueur</th><th>Pseudo</th><th>Évol</th><th>+pts</th><th>Total</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>
+    </section>`);
+}
+
 // Nav sticky : surligne l'ancre correspondant à la section visible.
 function initNavScrollSpy() {
   const links = Array.from(document.querySelectorAll('.nav a'));
@@ -77,6 +109,7 @@ function initApp() {
   app.innerHTML = '';
   renderHero(app);
   renderPodium();
+  renderClassement();
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="graphe" class="card">
       <h2>📈 Évolution</h2>
