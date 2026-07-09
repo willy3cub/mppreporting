@@ -126,8 +126,8 @@ function initApp() {
     </section>`);
   initChart();
   renderPronosShell();
-  initNavScrollSpy();
   renderBilan();
+  initNavScrollSpy();
 }
 
 // -- Graphe : bump chart des rangs (1er en haut) + points cumulés --------
