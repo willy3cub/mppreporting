@@ -15,6 +15,7 @@ const EP = {
   clubs: `${API}/championship-clubs`,
   calendar: `${API}/championship-calendar/${CHAMPIONSHIP}`,
   forecastsForMatch: (mid) => `${API}/user-match-forecasts/contest/${CHALLENGE}/match/${mid}`,
+  championshipStats: (uid) => `${API}/user-championship-stats/championship/${CHAMPIONSHIP}?userId=${uid}&season=2025`,
 };
 
 const jpath = (p) => join(ROOT, p);
@@ -118,6 +119,65 @@ export async function updateAvatars(standingsRaw) {
   console.log(`OK  avatars (${n} persos → ${AV_DIR}/)`);
 }
 
+// Paris long terme : équipe championne + buteur pronostiqués par chaque joueur.
+// Images (logos équipes, photos buteurs) téléchargées dans data/favorites/,
+// dédupliquées par id source, redimensionnées (format conservé → transparence PNG ok).
+const FAV_DIR = 'data/favorites';
+
+function resizeKeepFormat(srcPath, dstPath) {
+  const attempts = [
+    ['sips', ['-Z', '120', srcPath, '--out', dstPath]],
+    ['magick', [srcPath, '-resize', '120x120>', dstPath]],
+    ['convert', [srcPath, '-resize', '120x120>', dstPath]],
+  ];
+  for (const [cmd, args] of attempts) {
+    try { execFileSync(cmd, args, { stdio: 'ignore' }); return true; } catch { /* outil suivant */ }
+  }
+  return false;
+}
+
+// Télécharge une image → data/favorites/<name>.<ext> (dédup via `seen`). Renvoie le basename.
+async function fetchFavImage(url, name, seen) {
+  const ext = /\.jpe?g($|\?)/i.test(url) ? 'jpg' : /\.webp($|\?)/i.test(url) ? 'webp' : 'png';
+  const base = `${name}.${ext}`;
+  if (seen.has(base)) return base;
+  seen.add(base);
+  const r = await fetch(url);
+  if (!r.ok) return null;
+  const buf = Buffer.from(await r.arrayBuffer());
+  const tmp = join(tmpdir(), `mpp-fav-src.${ext}`);
+  writeFileSync(tmp, buf);
+  const dst = jpath(`${FAV_DIR}/${base}`);
+  if (!resizeKeepFormat(tmp, dst)) writeFileSync(dst, buf);
+  return base;
+}
+
+export async function updateFavorites(tok) {
+  const players = readJson('data/players.json');
+  mkdirSync(jpath(FAV_DIR), { recursive: true });
+  const seen = new Set();
+  const out = {};
+  for (const p of players) {
+    try {
+      const j = await get(EP.championshipStats(p.uid), tok);
+      const t = j.favorites?.selection, s = j.favorites?.player;
+      const fav = {};
+      if (t?.id) {
+        fav.team = { name: t.name?.['fr-FR'] || t.name?.['en-GB'] || '', points: t.points ?? 0, eliminated: !!t.eliminated,
+          img: t.imageUrl ? await fetchFavImage(t.imageUrl, `team-${t.id.split('_').pop()}`, seen) : null };
+      }
+      if (s?.id && (s.firstName || s.lastName)) {
+        fav.scorer = { name: `${s.firstName || ''} ${s.lastName || ''}`.trim(), points: s.points ?? 0, eliminated: !!s.eliminated,
+          img: s.imageUrl ? await fetchFavImage(s.imageUrl, `scorer-${s.id.split('_').pop()}`, seen) : null };
+      }
+      out[p.uid] = fav;
+    } catch (e) { console.log(`  favoris ${p.name}: ${e.message}`); }
+    await new Promise((r) => setTimeout(r, 40));
+  }
+  writeJson('data/favorites.json', out);
+  console.log(`OK  favoris (${Object.keys(out).length} joueurs, ${seen.size} images → ${FAV_DIR}/)`);
+}
+
 async function main() {
   const tok = token();
 
@@ -128,6 +188,7 @@ async function main() {
   writeJson('data/history.json', mergeHistory(readJson('data/history.json'), nextLabel, std.points));
   console.log(`OK  history ${nextLabel} (maxCalc=${std.maxCalc})`);
   await updateAvatars(standingsRaw);
+  await updateFavorites(tok);
 
   // 2) Matchs (matchs courants + clubs + calendrier des phases)
   const [current, clubs, calendar] = await Promise.all([

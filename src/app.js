@@ -42,6 +42,7 @@ function renderHero(root) {
       <a href="#pronos">Pronostics</a>
       <a href="#compare">Duel</a>
       <a href="#awards">Superlatifs</a>
+      <a href="#favoris">Paris</a>
       <a href="#rares">Rares</a>
       <a href="#bilan">Bilan</a>
     </nav>
@@ -495,6 +496,34 @@ function renderAwards() {
     </section>`);
 }
 
+// -- Paris long terme : champion + buteur pronostiqués ------------------
+
+function renderFavorites() {
+  const { players, favorites } = window.__WC;
+  if (!favorites) return;
+  const favItem = (f, round) => f
+    ? `<span class="fav-item ${f.eliminated ? 'fav-out' : ''}">
+        ${f.img ? `<img class="fav-img ${round ? 'fav-round' : ''}" src="${f.img}" alt="">` : ''}
+        <span>${f.name}${f.eliminated ? ' <span class="fav-x">éliminé</span>' : ''}</span></span>`
+    : '<span class="muted">—</span>';
+  const rows = players.map((p) => {
+    const f = favorites[p.uid] || {};
+    return `<tr>
+      <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">${p.name}</td>
+      <td>${favItem(f.team, false)}</td>
+      <td>${favItem(f.scorer, true)}</td></tr>`;
+  }).join('');
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="favoris" class="card">
+      <h2>🔮 Paris long terme</h2>
+      <p class="muted" style="margin:0 0 12px">Le champion et le buteur pronostiqués par chacun (choix figés en début de compétition).</p>
+      <div class="twrap"><table class="tbl">
+        <thead><tr><th>Joueur</th><th>🏆 Champion</th><th>⚽ Buteur</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>
+    </section>`);
+}
+
 // -- Pronos rares + consensus vs réalité --------------------------------
 
 function renderRares() {
@@ -578,6 +607,7 @@ function initApp() {
   renderPronosShell();
   renderCompare();
   renderAwards();
+  renderFavorites();
   renderRares();
   renderBilan();
   initCardTriggers();

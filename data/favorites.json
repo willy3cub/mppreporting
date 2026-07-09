@@ -1,0 +1,220 @@
+{
+  "user_10698233": {
+    "team": {
+      "name": "France",
+      "points": 90,
+      "eliminated": false,
+      "img": "team-368.png"
+    },
+    "scorer": {
+      "name": "Kylian Mbappé",
+      "points": 80,
+      "eliminated": false,
+      "img": "scorer-220160.png"
+    }
+  },
+  "user_8701920": {
+    "team": {
+      "name": "Allemagne",
+      "points": 150,
+      "eliminated": true,
+      "img": "team-357.png"
+    },
+    "scorer": {
+      "name": "Un Autre",
+      "points": 150,
+      "eliminated": false,
+      "img": "scorer-0.png"
+    }
+  },
+  "user_8702965": {
+    "team": {
+      "name": "Portugal",
+      "points": 110,
+      "eliminated": true,
+      "img": "team-359.png"
+    },
+    "scorer": {
+      "name": "Luis Díaz",
+      "points": 900,
+      "eliminated": true,
+      "img": "scorer-244731.png"
+    }
+  },
+  "user_8616704": {
+    "team": {
+      "name": "France",
+      "points": 90,
+      "eliminated": false,
+      "img": "team-368.png"
+    },
+    "scorer": {
+      "name": "Lamine Yamal",
+      "points": 100,
+      "eliminated": false,
+      "img": "scorer-593109.png"
+    }
+  },
+  "user_8422848": {
+    "team": {
+      "name": "Espagne",
+      "points": 80,
+      "eliminated": false,
+      "img": "team-118.png"
+    },
+    "scorer": {
+      "name": "Un Autre",
+      "points": 150,
+      "eliminated": false,
+      "img": "scorer-0.png"
+    }
+  },
+  "user_8620122": {
+    "team": {
+      "name": "France",
+      "points": 90,
+      "eliminated": false,
+      "img": "team-368.png"
+    },
+    "scorer": {
+      "name": "Un Autre",
+      "points": 150,
+      "eliminated": false,
+      "img": "scorer-0.png"
+    }
+  },
+  "user_10189113": {
+    "team": {
+      "name": "France",
+      "points": 90,
+      "eliminated": false,
+      "img": "team-368.png"
+    },
+    "scorer": {
+      "name": "Un Autre",
+      "points": 150,
+      "eliminated": false,
+      "img": "scorer-0.png"
+    }
+  },
+  "user_8619563": {
+    "team": {
+      "name": "Belgique",
+      "points": 250,
+      "eliminated": false,
+      "img": "team-360.png"
+    },
+    "scorer": {
+      "name": "Harry Kane",
+      "points": 100,
+      "eliminated": false,
+      "img": "scorer-78830.png"
+    }
+  },
+  "user_8736186": {
+    "team": {
+      "name": "France",
+      "points": 90,
+      "eliminated": false,
+      "img": "team-368.png"
+    },
+    "scorer": {
+      "name": "Kylian Mbappé",
+      "points": 80,
+      "eliminated": false,
+      "img": "scorer-220160.png"
+    }
+  },
+  "user_9239662": {
+    "team": {
+      "name": "France",
+      "points": 90,
+      "eliminated": false,
+      "img": "team-368.png"
+    },
+    "scorer": {
+      "name": "Un Autre",
+      "points": 150,
+      "eliminated": false,
+      "img": "scorer-0.png"
+    }
+  },
+  "user_8619031": {
+    "team": {
+      "name": "Allemagne",
+      "points": 150,
+      "eliminated": true,
+      "img": "team-357.png"
+    },
+    "scorer": {
+      "name": "Un Autre",
+      "points": 150,
+      "eliminated": false,
+      "img": "scorer-0.png"
+    }
+  },
+  "user_10595758": {
+    "team": {
+      "name": "Italie",
+      "points": 3000,
+      "eliminated": true,
+      "img": "team-119.png"
+    }
+  },
+  "user_8620746": {
+    "team": {
+      "name": "France",
+      "points": 90,
+      "eliminated": false,
+      "img": "team-368.png"
+    },
+    "scorer": {
+      "name": "Kylian Mbappé",
+      "points": 80,
+      "eliminated": false,
+      "img": "scorer-220160.png"
+    }
+  },
+  "user_8745208": {
+    "team": {
+      "name": "France",
+      "points": 90,
+      "eliminated": false,
+      "img": "team-368.png"
+    },
+    "scorer": {
+      "name": "Un Autre",
+      "points": 150,
+      "eliminated": false,
+      "img": "scorer-0.png"
+    }
+  },
+  "user_8742869": {
+    "team": {
+      "name": "France",
+      "points": 90,
+      "eliminated": false,
+      "img": "team-368.png"
+    },
+    "scorer": {
+      "name": "Kylian Mbappé",
+      "points": 80,
+      "eliminated": false,
+      "img": "scorer-220160.png"
+    }
+  },
+  "user_8738144": {
+    "team": {
+      "name": "Allemagne",
+      "points": 150,
+      "eliminated": true,
+      "img": "team-357.png"
+    },
+    "scorer": {
+      "name": "Nick Woltemade",
+      "points": 300,
+      "eliminated": true,
+      "img": "scorer-470313.png"
+    }
+  }
+}
