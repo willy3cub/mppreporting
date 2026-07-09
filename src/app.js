@@ -64,16 +64,24 @@ function renderHero(root) {
 }
 
 const FLAMES_SVG = `
-  <svg class="flames" viewBox="0 0 120 96" aria-hidden="true">
-    <defs><linearGradient id="fl" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0" stop-color="#ff2d00"/><stop offset=".55" stop-color="#ff8c00"/><stop offset="1" stop-color="#ffe100"/>
-    </linearGradient></defs>
+  <svg class="flames" viewBox="0 0 160 112" aria-hidden="true">
+    <defs>
+      <linearGradient id="fl" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="#ff2d00"/><stop offset=".55" stop-color="#ff8c00"/><stop offset="1" stop-color="#ffe100"/>
+      </linearGradient>
+      <radialGradient id="flglow" cx="50%" cy="72%" r="58%">
+        <stop offset="0" stop-color="#ff8c00" stop-opacity=".5"/><stop offset="1" stop-color="#ff8c00" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <ellipse class="flglow" cx="80" cy="74" rx="74" ry="44" fill="url(#flglow)"/>
     <g fill="url(#fl)">
-      <path class="fl fl1" d="M30 94 C25 70 34 60 40 34 C47 60 57 70 52 94 C46 84 36 84 30 94 Z"/>
-      <path class="fl fl3" d="M72 94 C67 72 77 62 82 38 C89 62 98 72 92 94 C86 84 78 84 72 94 Z"/>
-      <path class="fl fl2" d="M44 94 C37 62 52 52 60 6 C68 52 83 62 76 94 C67 82 53 82 44 94 Z"/>
+      <path class="fl fl4" d="M28 106 C25 86 31 78 34 58 C38 78 45 86 40 106 C35 98 31 98 28 106 Z"/>
+      <path class="fl fl1" d="M42 106 C37 76 47 66 52 40 C58 66 68 76 62 106 C56 96 48 96 42 106 Z"/>
+      <path class="fl fl3" d="M98 106 C93 76 103 66 108 40 C114 66 124 76 118 106 C112 96 104 96 98 106 Z"/>
+      <path class="fl fl5" d="M120 106 C117 86 123 78 126 58 C130 78 137 86 132 106 C127 98 123 98 120 106 Z"/>
+      <path class="fl fl2" d="M60 106 C52 72 72 60 80 10 C88 60 108 72 100 106 C90 94 70 94 60 106 Z"/>
     </g>
-    <path class="fl flcore" fill="#ffe680" d="M52 94 C48 74 56 66 60 34 C64 66 72 74 68 94 C63 86 57 86 52 94 Z"/>
+    <path class="fl flcore" fill="#ffe680" d="M70 106 C66 82 76 72 80 40 C84 72 94 82 90 106 C84 96 76 96 70 106 Z"/>
   </svg>`;
 
 function renderPodium() {

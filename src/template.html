@@ -42,15 +42,20 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .podium .medal{font-size:30px}
 .podium .pname{font-weight:700;color:var(--c)}
 .podium .ppts{color:var(--muted);font-size:13px}
-/* Flammes SVG autour du 1er */
-.flames{position:absolute;left:50%;top:-52px;translate:-50% 0;width:112px;height:92px;z-index:0;pointer-events:none;
-  filter:drop-shadow(0 0 9px #ff6a00aa)}
+/* Flammes SVG autour du 1er (diffuses au-dessus de la carte) */
+.flames{position:absolute;left:50%;top:-62px;translate:-50% 0;width:160px;height:112px;z-index:0;pointer-events:none;
+  filter:blur(.6px) drop-shadow(0 0 18px #ff6a0088)}
 .step-1 .medal,.step-1 .avt-lg,.step-1 .pname,.step-1 .ppts{position:relative;z-index:1}
 .fl{transform-origin:50% 100%;animation:flick 1s ease-in-out infinite alternate}
+.fl1{animation-duration:.9s}
 .fl2{animation-duration:.72s}
 .fl3{animation-duration:1.25s;animation-delay:.15s}
+.fl4{animation-duration:1.4s;animation-delay:.2s}
+.fl5{animation-duration:1.1s;animation-delay:.08s}
 .flcore{transform-origin:50% 100%;animation:flick .6s ease-in-out infinite alternate}
-@keyframes flick{0%{transform:scaleY(.88) scaleX(1.03);opacity:.8}100%{transform:scaleY(1.14) scaleX(.92);opacity:1}}
+.flglow{transform-origin:50% 74%;animation:glowpulse 2.2s ease-in-out infinite alternate}
+@keyframes flick{0%{transform:scaleY(.88) scaleX(1.03);opacity:.78}100%{transform:scaleY(1.14) scaleX(.92);opacity:1}}
+@keyframes glowpulse{0%{opacity:.55;transform:scale(.94)}100%{opacity:.9;transform:scale(1.06)}}
 /* Cuillère de bois (avant-dernier) à côté du podium */
 .podium .consol{margin-left:26px;padding-bottom:10px;border-style:dashed;cursor:pointer}
 .podium .consol .medal{font-size:26px;filter:drop-shadow(0 0 6px #c8863c)}
@@ -61,7 +66,7 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 @media (prefers-reduced-motion: reduce){
   .hero .trophy{animation:none}
   .podium .step{animation:none}
-  .fl,.flcore{animation:none}
+  .fl,.flcore,.flglow{animation:none}
   .beams{animation:none}
 }
 
