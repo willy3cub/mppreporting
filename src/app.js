@@ -1054,7 +1054,7 @@ function renderBracket() {
   rounds[lastRi].list.slice().sort(byDate).forEach((m) => place(m, lastRi));
   for (const r of rounds) for (const m of r.list) if (m._y == null) { m._y = slot + 0.5; slot += 1; }
 
-  const SLOT = 46, BOXH = 40, COLW = 172;
+  const SLOT = 84, BOXH = 76, COLW = 208;
   const H = Math.max(rounds[0].list.length, 1) * SLOT;
   const trophyX = rounds.length * COLW;
   const W = trophyX + 92;
