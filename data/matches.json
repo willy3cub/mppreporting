@@ -1269,9 +1269,9 @@
     "flag1": "🇪🇸",
     "team2": "Belgique",
     "flag2": "🇧🇪",
-    "score1": null,
-    "score2": null,
-    "status": "pending"
+    "score1": 2,
+    "score2": 1,
+    "status": "played"
   },
   {
     "id": "mpp_championship_match_2608357",
@@ -1295,6 +1295,19 @@
     "flag1": "🇦🇷",
     "team2": "Suisse",
     "flag2": "🇨🇭",
+    "score1": null,
+    "score2": null,
+    "status": "pending"
+  },
+  {
+    "id": "mpp_championship_match_2608359",
+    "gameWeek": 7,
+    "phase": "Demies",
+    "date": "2026-07-14T19:00:00.000Z",
+    "team1": "France",
+    "flag1": "🇫🇷",
+    "team2": "Espagne",
+    "flag2": "🇪🇸",
     "score1": null,
     "score2": null,
     "status": "pending"
