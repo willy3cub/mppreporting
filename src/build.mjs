@@ -51,15 +51,52 @@ function imgDataUri(dir, base) {
   return mime ? `data:${mime};base64,${readFileSync(f).toString('base64')}` : null;
 }
 
-// Résout les basenames d'images des favoris en data URIs (page auto-suffisante).
-function resolveFavorites() {
+// Nations éliminées, déduites des résultats réels des phases finales (même logique
+// que le bracket : le vaincu de chaque match KO joué). Le flag `eliminated` de l'API
+// a du retard sur les éliminations récentes → on le recalcule ici.
+function eliminatedNationsFrom(matches) {
+  const PH = ['16es', '8es', 'Quarts', 'Demies', 'Finale'];
+  const rounds = PH.map((ph) => matches.filter((m) => m.phase === ph)).filter((l) => l.length);
+  const sets = rounds.map((l) => new Set(l.flatMap((m) => [m.team1, m.team2])));
+  const elim = new Set();
+  rounds.forEach((list, ri) => {
+    for (const m of list) {
+      if (m.status !== 'played') continue;
+      let w = null;
+      if (ri + 1 < rounds.length) {
+        if (sets[ri + 1].has(m.team1)) w = m.team1;
+        else if (sets[ri + 1].has(m.team2)) w = m.team2;
+      }
+      if (!w) {
+        if (m.score1 == null || m.score2 == null || m.score1 === m.score2) continue;
+        w = m.score1 > m.score2 ? m.team1 : m.team2;
+      }
+      elim.add(w === m.team1 ? m.team2 : m.team1);
+    }
+  });
+  return elim;
+}
+
+// Résout les images des favoris en data URIs (page auto-suffisante) ET réconcilie le
+// statut « éliminé » des colonnes Champion (nation) et Buteur (via data/scorer-nations.json)
+// avec les résultats réels — sans jamais « ressusciter » un favori déjà marqué éliminé par l'API.
+function resolveFavorites(matches) {
   if (!existsSync(join(ROOT, 'data/favorites.json'))) return {};
   const fav = readJson('data/favorites.json');
+  const elim = eliminatedNationsFrom(matches || []);
+  const scorerNat = existsSync(join(ROOT, 'data/scorer-nations.json')) ? readJson('data/scorer-nations.json') : {};
   const out = {};
   for (const [uid, f] of Object.entries(fav)) {
     const r = {};
-    if (f.team) r.team = { ...f.team, img: f.team.img ? imgDataUri(FAV_DIR, f.team.img) : null };
-    if (f.scorer) r.scorer = { ...f.scorer, img: f.scorer.img ? imgDataUri(FAV_DIR, f.scorer.img) : null };
+    if (f.team) {
+      const gone = !!f.team.eliminated || elim.has(f.team.name);
+      r.team = { ...f.team, eliminated: gone, img: f.team.img ? imgDataUri(FAV_DIR, f.team.img) : null };
+    }
+    if (f.scorer) {
+      const nat = scorerNat[f.scorer.name];
+      const gone = !!f.scorer.eliminated || (nat != null && elim.has(nat));
+      r.scorer = { ...f.scorer, eliminated: gone, img: f.scorer.img ? imgDataUri(FAV_DIR, f.scorer.img) : null };
+    }
     out[uid] = r;
   }
   return out;
@@ -120,7 +157,7 @@ export function build() {
     forecasts: readJson('data/forecasts.json'),
     bilan: readJson('data/bilan.json'),
     badges: badgeDataUris(),
-    favorites: resolveFavorites(),
+    favorites: resolveFavorites(matches),
     captains: resolveCaptains(matches),
     recap: existsSync(join(ROOT, 'data/recap.json')) ? readJson('data/recap.json') : null,
     echarts: read('node_modules/echarts/dist/echarts.min.js'),

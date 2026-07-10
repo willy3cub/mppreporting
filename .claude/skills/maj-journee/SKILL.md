@@ -66,6 +66,13 @@ Consignes par match :
 ### 6. Superlatifs & pronos rares
 Ils sont **recalculés automatiquement** côté front à partir de `data/forecasts.json` au build — aucun fichier à éditer. Vérifie juste, dans la sortie de `facts.mjs`, que les détenteurs ont du sens, et n'hésite pas à en citer dans le bilan.
 
+### 6bis. Statut « éliminé » des colonnes Champion & Buteur
+Le flag `eliminated` de l'API **a du retard** sur les éliminations récentes (une nation qui perd son match de la journée n'est pas encore marquée). Le build **réconcilie** donc ce statut à partir des **résultats réels** des phases finales (`data/matches.json`), sans jamais « ressusciter » un favori déjà éliminé par l'API :
+- **Champion (nation)** : 100 % automatique — le vaincu de chaque match KO joué est marqué éliminé (`eliminatedNationsFrom` dans `src/build.mjs`).
+- **Buteur (joueur)** : éliminé si **sa nation** l'est. L'API ne donne pas la nation du buteur → elle vient de **`data/scorer-nations.json`** (table `nom du buteur → nation`).
+  - **À vérifier à chaque journée** : dans la sortie de `facts.mjs` / les favoris, si un joueur a choisi un **nouveau buteur** absent de `data/scorer-nations.json`, **ajoute-le** (ex. `"Erling Haaland": "Norvège"`) — sinon son élimination ne suivra pas les résultats (on retombe alors sur le flag API, potentiellement en retard).
+- Rien d'autre à faire : `npm run build` applique la réconciliation. Contrôle visuel : les colonnes Champion/Buteur des nations/joueurs sortis affichent bien le badge `éliminé`.
+
 ### 7. Build + tests
 - `npm run build` → doit afficher `OK dist/index.html (…Ko)`.
 - `npm test` → **tout vert** (26 tests actuellement).
