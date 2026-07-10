@@ -228,6 +228,18 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .bwin .bcap{border-color:var(--gold)}
 .blose{opacity:.6}
 @keyframes capPulse{0%,100%{box-shadow:0 0 16px 3px #ffd16655}50%{box-shadow:0 0 28px 8px #ffd166aa}}
+/* tampon « ÉLIMINÉ » qui tombe sur le vaincu, cadencé sur le remplissage du fil */
+.elim-stamp{position:absolute;z-index:10;pointer-events:none;
+  font:800 9px/1 -apple-system,system-ui,sans-serif;letter-spacing:.6px;color:#fff;
+  background:#e03131;border:2px solid #fff;border-radius:5px;padding:3px 5px;white-space:nowrap;
+  box-shadow:0 4px 12px #00000080,0 0 0 3px #e0313140;
+  transform:translate(-50%,-50%) rotate(-13deg);
+  animation:stampDrop .5s cubic-bezier(.3,1.35,.45,1) both}
+@keyframes stampDrop{
+  0%{opacity:0;transform:translate(-50%,-320%) rotate(-13deg) scale(1.8)}
+  55%{opacity:1;transform:translate(-50%,-50%) rotate(-13deg) scale(.82)}
+  75%{transform:translate(-50%,-50%) rotate(-13deg) scale(1.1)}
+  100%{opacity:1;transform:translate(-50%,-50%) rotate(-13deg) scale(1)}}
 .btrophy{position:absolute;font-size:34px;z-index:3;filter:drop-shadow(0 0 10px var(--gold));animation:float 3.6s ease-in-out infinite}
 .btrophy-halo{position:absolute;left:50%;top:50%;width:70px;height:70px;translate:-50% -50%;border-radius:50%;z-index:-1;
   background:radial-gradient(circle,#ffd16655,transparent 70%);animation:halo 2.4s ease-in-out infinite}
@@ -273,6 +285,7 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   .bracket.focus-live .bpath.bpath-live.hl,.bracket.focus-out .bpath.bpath-out.hl{animation:none;stroke-dashoffset:0}
   .bracket.focus-live .bpath.bpath-alive.hl{animation:none;opacity:1}
   .bracket.focus-live .bteam.hl .bcap-wrap::after{animation:none}
+  .elim-stamp{animation:none;opacity:1}
 }
 /* -- Favoris (champion / buteur) : classement + carte -- */
 .fav-item{display:inline-flex;align-items:center;gap:8px;font-weight:600;white-space:nowrap}

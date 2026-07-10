@@ -1060,12 +1060,16 @@ function renderBracket() {
   const W = trophyX + 92;
 
   // Équipes éliminées = perdantes d'un match joué (les autres sont encore en course).
+  // wins[équipe] = liste des victoires { vaincu, tour, matchId } pour cadencer les tampons « ÉLIMINÉ ».
   const eliminated = new Set();
+  const wins = {};
   for (let ri = 0; ri < rounds.length; ri++) {
     for (const m of rounds[ri].list) {
       if (m.status !== 'played') continue;
       const w = winnerOf(m, ri); if (!w) continue;
-      eliminated.add(w === m.team1 ? m.team2 : m.team1);
+      const loser = w === m.team1 ? m.team2 : m.team1;
+      eliminated.add(loser);
+      (wins[w] || (wins[w] = [])).push({ loser, round: ri, matchId: m.id });
     }
   }
   const isAlive = (t) => !eliminated.has(t);
@@ -1086,7 +1090,7 @@ function renderBracket() {
     const w = winnerOf(m, ri);
     const top = m._y * SLOT - BOXH / 2;
     const d = (ri * 0.22 + m._y * 0.02).toFixed(2);
-    return `<div class="bmatch" style="left:${ri * COLW}px;top:${top}px;width:${COLW - 24}px;--d:${d}s">
+    return `<div class="bmatch" data-match="${m.id}" style="left:${ri * COLW}px;top:${top}px;width:${COLW - 24}px;--d:${d}s">
       ${teamRow(m.team1, m.status === 'played' ? m.score1 : null, w)}
       ${teamRow(m.team2, m.status === 'played' ? m.score2 : null, w)}
     </div>`;
@@ -1134,21 +1138,47 @@ function renderBracket() {
   document.querySelectorAll('#parcours .bpath').forEach((p) => {
     try { p.style.setProperty('--len', p.getTotalLength().toFixed(1)); } catch (e) { /* jsdom */ }
   });
-  initBracketHover();
+  initBracketHover(wins);
 }
 
-function initBracketHover() {
+function initBracketHover(wins) {
   const b = document.querySelector('#parcours .bracket');
   if (!b) return;
-  const clear = () => { b.classList.remove('focus', 'focus-live', 'focus-out'); b.querySelectorAll('.hl').forEach((x) => x.classList.remove('hl')); };
+  wins = wins || {};
+  const STEP = 0.34; // doit coller au timing CSS du remplissage (bfill)
+  let cur = null;
+  const clearStamps = () => b.querySelectorAll('.elim-stamp').forEach((s) => s.remove());
+  const clear = () => {
+    b.classList.remove('focus', 'focus-live', 'focus-out');
+    b.querySelectorAll('.hl').forEach((x) => x.classList.remove('hl'));
+    clearStamps(); cur = null;
+  };
+  // Tampon « ÉLIMINÉ » qui tombe sur l'avatar du vaincu, cadencé sur le remplissage du fil.
+  const dropStamp = ({ loser, round, matchId }) => {
+    const box = b.querySelector(`.bmatch[data-match="${matchId}"]`);
+    if (!box) return;
+    const row = box.querySelector(`.bteam[data-team="${loser}"]`);
+    if (!row) return;
+    const s = document.createElement('span');
+    s.className = 'elim-stamp';
+    s.textContent = 'ÉLIMINÉ';
+    s.style.left = `${box.offsetLeft + 44}px`;
+    s.style.top = `${box.offsetTop + row.offsetTop + row.offsetHeight / 2}px`;
+    s.style.animationDelay = `${(round * STEP + 0.12).toFixed(2)}s`;
+    b.appendChild(s);
+  };
   b.addEventListener('mouseover', (e) => {
     const el = e.target.closest('[data-team]'); if (!el) return;
     const t = el.dataset.team;
+    if (t === cur) return; // évite de rejouer l'anim en glissant sur la même équipe
+    cur = t;
+    clearStamps();
     const alive = el.dataset.alive === '1';
     b.classList.add('focus');
     b.classList.toggle('focus-live', alive);
     b.classList.toggle('focus-out', !alive);
     b.querySelectorAll('[data-team]').forEach((x) => x.classList.toggle('hl', x.dataset.team === t));
+    (wins[t] || []).forEach(dropStamp);
   });
   b.addEventListener('mouseout', (e) => {
     const to = e.relatedTarget;
