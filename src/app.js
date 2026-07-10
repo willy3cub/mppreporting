@@ -100,18 +100,18 @@ function renderPodium() {
       <div class="ppts"><span data-count="${s.pts}">${s.pts.toLocaleString('fr-FR')}</span> pts</div>
     </div>`;
   }).join('');
-  // Récompense de l'avant-dernier : la cuillère de bois.
+  // Récompense de l'avant-dernier : un vrai trophée (« Le Rescapé »).
   const avd = full[full.length - 2];
   let consol = '';
   if (avd) {
     const p = playerByUid(avd.uid);
-    consol = `<div class="step consol" style="--c:#c8863c" data-card-uid="${avd.uid}"
-        data-hint="Cuillère de bois : la récompense de l'avant-dernier. Si près du fond, si loin de la gloire.">
-      <div class="medal">🥄</div>
+    consol = `<div class="step consol" style="--c:#d9a441" data-card-uid="${avd.uid}"
+        data-hint="Le Rescapé : l’avant-dernier échappe à la lanterne rouge… et repart avec un vrai trophée.">
+      <div class="medal">🏅</div>
       ${avatarThumb(p, 'avt-lg')}
       <div class="pname">${p.name}</div>
       <div class="ppts"><span data-count="${avd.pts}">${avd.pts.toLocaleString('fr-FR')}</span> pts</div>
-      <div class="consol-label">Cuillère de bois · ${ordinalFr(avd.rank)}</div>
+      <div class="consol-label">Le Rescapé · ${ordinalFr(avd.rank)}</div>
     </div>`;
   }
   document.getElementById('podium').innerHTML = steps + consol;
@@ -150,11 +150,11 @@ function renderClassement() {
     const dp = s.pts - (prev[s.uid] ?? 0);
     const dr = (rankPrev[s.uid] ?? s.rank) - s.rank;
     const isAvd = s.rank === avdRank;
-    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || (isAvd ? '🥄' : `${s.rank}.`);
+    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || (isAvd ? '🏅' : `${s.rank}.`);
     const arrow = dr > 0 ? `<span class="up">▲${dr}</span>`
       : dr < 0 ? `<span class="down">▼${-dr}</span>` : `<span class="flat">■</span>`;
     return `<tr class="${isAvd ? 'row-avd' : ''}">
-      <td class="rk"${isAvd ? ' data-hint="Cuillère de bois : récompense de l’avant-dernier"' : ''}>${medal}</td>
+      <td class="rk"${isAvd ? ' data-hint="Le Rescapé : l’avant-dernier repart avec un vrai trophée"' : ''}>${medal}</td>
       <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">
         <span class="pname-cell">${avatarThumb(p)}${p.name}</span></td>
       <td class="ps">${p.pseudo}</td>
@@ -942,13 +942,17 @@ const GRILLE_LEGEND = `
 function viewGrille() {
   const { players, forecasts } = window.__WC;
   const matches = matchesDesc();
-  const head = `<th>Match</th>` + players.map((p) => `<th class="vth" style="color:${p.color}">${p.name}</th>`).join('');
+  const leaderUid = rankStandings(latestPoints())[0]?.uid;
+  const head = `<th>Match</th>` + players.map((p) => {
+    const lead = p.uid === leaderUid;
+    return `<th class="vth${lead ? ' vth-leader' : ''}" style="color:${p.color}">${lead ? '👑 ' : ''}${p.name}</th>`;
+  }).join('');
   const rows = matches.map((m) => {
     const cells = players.map((p) => {
       const pr = forecasts[p.uid]?.[m.id];
       const st = fStatus(pr, m);
       const lbl = pr ? `${pr.score1}-${pr.score2}` : '—';
-      return `<td class="gcell" data-player="${p.name}" data-match="${m.team1}–${m.team2}" data-prono="${lbl}" data-status="${st}">${pastille(st)}</td>`;
+      return `<td class="gcell${p.uid === leaderUid ? ' gcol-leader' : ''}" data-player="${p.name}" data-match="${m.team1}–${m.team2}" data-prono="${lbl}" data-status="${st}">${pastille(st)}</td>`;
     }).join('');
     return `<tr><td class="mcol">${matchLabel(m)}</td>${cells}</tr>`;
   }).join('');

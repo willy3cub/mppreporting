@@ -56,10 +56,10 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .flglow{transform-origin:50% 74%;animation:glowpulse 2.2s ease-in-out infinite alternate}
 @keyframes flick{0%{transform:scaleY(.88) scaleX(1.03);opacity:.78}100%{transform:scaleY(1.14) scaleX(.92);opacity:1}}
 @keyframes glowpulse{0%{opacity:.55;transform:scale(.94)}100%{opacity:.9;transform:scale(1.06)}}
-/* Cuillère de bois (avant-dernier) à côté du podium */
-.podium .consol{margin-left:26px;padding-bottom:10px;border-style:dashed;cursor:pointer}
-.podium .consol .medal{font-size:26px;filter:drop-shadow(0 0 6px #c8863c)}
-.consol-label{margin-top:6px;font-size:11px;font-weight:700;color:#e0a866;white-space:nowrap}
+/* Le Rescapé (avant-dernier) : vrai trophée, à côté du podium */
+.podium .consol{margin-left:26px;padding-bottom:10px;cursor:pointer}
+.podium .consol .medal{font-size:26px;filter:drop-shadow(0 0 7px #d9a441)}
+.consol-label{margin-top:6px;font-size:11px;font-weight:700;color:#e6bd63;white-space:nowrap}
 @keyframes pop{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
 .podium .step{animation:pop .5s ease both}
 .podium .step-1{animation-delay:.15s}
@@ -89,8 +89,8 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .tbl .tot{text-align:right;font-weight:700;color:var(--gold)}
 .tbl .ev{text-align:center}
 .up{color:#38d996}.down{color:#ff6b6b}.flat{color:#6b739c}
-.tbl .row-avd{background:#c8863c1f}
-.tbl .row-avd .rk{cursor:help;filter:drop-shadow(0 0 4px #c8863c)}
+.tbl .row-avd{background:#d9a4411f}
+.tbl .row-avd .rk{cursor:help;filter:drop-shadow(0 0 4px #d9a441)}
 .avt{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;
   background:var(--c);color:#0a0e27;font-weight:800;font-size:16px;overflow:hidden;flex:0 0 auto;
   border:2px solid color-mix(in srgb,var(--c) 70%,#fff)}
@@ -106,6 +106,9 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .st-exact{background:#38d996}.st-result{background:var(--gold)}.st-miss{background:#ff6b6b}
 .st-pending{background:#3a4270;color:#aab}
 .tbl.grid th.vth{writing-mode:vertical-rl;transform:rotate(180deg);height:70px;font-size:12px}
+.tbl.grid th.vth-leader{background:#ffd16626;border-radius:6px 6px 0 0;font-weight:800}
+.tbl.grid td.gcol-leader{background:#ffd16614}
+.tbl.grid tbody tr:hover td.gcol-leader{background:#ffd16622}
 .grid-legend{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:2px 0 14px;font-size:13px;color:var(--muted)}
 .grid-legend .pill{margin-right:6px;width:20px;height:20px}
 .grid-legend-hint{font-style:italic;opacity:.8}
@@ -403,18 +406,18 @@ function renderPodium() {
       <div class="ppts"><span data-count="${s.pts}">${s.pts.toLocaleString('fr-FR')}</span> pts</div>
     </div>`;
   }).join('');
-  // Récompense de l'avant-dernier : la cuillère de bois.
+  // Récompense de l'avant-dernier : un vrai trophée (« Le Rescapé »).
   const avd = full[full.length - 2];
   let consol = '';
   if (avd) {
     const p = playerByUid(avd.uid);
-    consol = `<div class="step consol" style="--c:#c8863c" data-card-uid="${avd.uid}"
-        data-hint="Cuillère de bois : la récompense de l'avant-dernier. Si près du fond, si loin de la gloire.">
-      <div class="medal">🥄</div>
+    consol = `<div class="step consol" style="--c:#d9a441" data-card-uid="${avd.uid}"
+        data-hint="Le Rescapé : l’avant-dernier échappe à la lanterne rouge… et repart avec un vrai trophée.">
+      <div class="medal">🏅</div>
       ${avatarThumb(p, 'avt-lg')}
       <div class="pname">${p.name}</div>
       <div class="ppts"><span data-count="${avd.pts}">${avd.pts.toLocaleString('fr-FR')}</span> pts</div>
-      <div class="consol-label">Cuillère de bois · ${ordinalFr(avd.rank)}</div>
+      <div class="consol-label">Le Rescapé · ${ordinalFr(avd.rank)}</div>
     </div>`;
   }
   document.getElementById('podium').innerHTML = steps + consol;
@@ -453,11 +456,11 @@ function renderClassement() {
     const dp = s.pts - (prev[s.uid] ?? 0);
     const dr = (rankPrev[s.uid] ?? s.rank) - s.rank;
     const isAvd = s.rank === avdRank;
-    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || (isAvd ? '🥄' : `${s.rank}.`);
+    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || (isAvd ? '🏅' : `${s.rank}.`);
     const arrow = dr > 0 ? `<span class="up">▲${dr}</span>`
       : dr < 0 ? `<span class="down">▼${-dr}</span>` : `<span class="flat">■</span>`;
     return `<tr class="${isAvd ? 'row-avd' : ''}">
-      <td class="rk"${isAvd ? ' data-hint="Cuillère de bois : récompense de l’avant-dernier"' : ''}>${medal}</td>
+      <td class="rk"${isAvd ? ' data-hint="Le Rescapé : l’avant-dernier repart avec un vrai trophée"' : ''}>${medal}</td>
       <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">
         <span class="pname-cell">${avatarThumb(p)}${p.name}</span></td>
       <td class="ps">${p.pseudo}</td>
@@ -1245,13 +1248,17 @@ const GRILLE_LEGEND = `
 function viewGrille() {
   const { players, forecasts } = window.__WC;
   const matches = matchesDesc();
-  const head = `<th>Match</th>` + players.map((p) => `<th class="vth" style="color:${p.color}">${p.name}</th>`).join('');
+  const leaderUid = rankStandings(latestPoints())[0]?.uid;
+  const head = `<th>Match</th>` + players.map((p) => {
+    const lead = p.uid === leaderUid;
+    return `<th class="vth${lead ? ' vth-leader' : ''}" style="color:${p.color}">${lead ? '👑 ' : ''}${p.name}</th>`;
+  }).join('');
   const rows = matches.map((m) => {
     const cells = players.map((p) => {
       const pr = forecasts[p.uid]?.[m.id];
       const st = fStatus(pr, m);
       const lbl = pr ? `${pr.score1}-${pr.score2}` : '—';
-      return `<td class="gcell" data-player="${p.name}" data-match="${m.team1}–${m.team2}" data-prono="${lbl}" data-status="${st}">${pastille(st)}</td>`;
+      return `<td class="gcell${p.uid === leaderUid ? ' gcol-leader' : ''}" data-player="${p.name}" data-match="${m.team1}–${m.team2}" data-prono="${lbl}" data-status="${st}">${pastille(st)}</td>`;
     }).join('');
     return `<tr><td class="mcol">${matchLabel(m)}</td>${cells}</tr>`;
   }).join('');
