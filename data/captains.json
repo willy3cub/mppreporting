@@ -1,0 +1,9 @@
+{
+  "France":     { "file": "france.png",     "captain": "Kylian Mbappé" },
+  "Espagne":    { "file": "espagne.png",    "captain": "Álvaro Morata" },
+  "Belgique":   { "file": "belgique.png",   "captain": "Kevin De Bruyne" },
+  "Norvège":    { "file": "norvege.png",    "captain": "Martin Ødegaard" },
+  "Angleterre": { "file": "angleterre.png", "captain": "Harry Kane" },
+  "Argentine":  { "file": "argentine.png",  "captain": "Lionel Messi" },
+  "Suisse":     { "file": "suisse.png",     "captain": "Granit Xhaka" }
+}

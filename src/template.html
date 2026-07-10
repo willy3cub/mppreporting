@@ -209,9 +209,14 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .bteam+.bteam{border-top:1px solid #ffffff12}
 .bteam .bname{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bteam .bscore{font-weight:700;color:var(--gold)}
+.bcap{width:20px;height:20px;border-radius:50%;object-fit:cover;flex:none;
+  background:#0c1230;border:1px solid #ffffff33;box-shadow:0 1px 3px #00000055;transition:transform .18s,border-color .18s}
+.bteam:hover .bcap{transform:scale(1.12);border-color:var(--gold)}
 .bwin{background:linear-gradient(90deg,transparent,#ffd16612)}
 .bwin .bname{font-weight:800;color:#fff}
+.bwin .bcap{border-color:var(--gold)}
 .blose{opacity:.5}
+.blose .bcap{filter:grayscale(1)}
 .btrophy{position:absolute;font-size:34px;z-index:3;filter:drop-shadow(0 0 10px var(--gold));animation:float 3.6s ease-in-out infinite}
 .btrophy-halo{position:absolute;left:50%;top:50%;width:70px;height:70px;translate:-50% -50%;border-radius:50%;z-index:-1;
   background:radial-gradient(circle,#ffd16655,transparent 70%);animation:halo 2.4s ease-in-out infinite}

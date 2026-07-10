@@ -65,8 +65,22 @@ function resolveFavorites() {
   return out;
 }
 
-export function buildHtml({ players, history, matches, forecasts, bilan, badges, favorites, recap, echarts, appJs }) {
-  const data = JSON.stringify({ players, history, matches, forecasts, bilan, badges, favorites, recap }).replace(/</g, '\\u003c');
+const CAP_DIR = 'data/captains';
+
+// Résout les avatars des capitaines (par nom d'équipe) en data URIs — page auto-suffisante.
+function resolveCaptains() {
+  if (!existsSync(join(ROOT, 'data/captains.json'))) return {};
+  const cap = readJson('data/captains.json');
+  const out = {};
+  for (const [team, c] of Object.entries(cap)) {
+    const img = c.file ? imgDataUri(CAP_DIR, c.file) : null;
+    if (img) out[team] = { img, captain: c.captain || '' };
+  }
+  return out;
+}
+
+export function buildHtml({ players, history, matches, forecasts, bilan, badges, favorites, captains, recap, echarts, appJs }) {
+  const data = JSON.stringify({ players, history, matches, forecasts, bilan, badges, favorites, captains, recap }).replace(/</g, '\\u003c');
   return read('src/template.html')
     .replace('/*__ECHARTS__*/', () => echarts)
     .replace('/*__DATA__*/', () => data)
@@ -84,6 +98,7 @@ export function build() {
     bilan: readJson('data/bilan.json'),
     badges: badgeDataUris(),
     favorites: resolveFavorites(),
+    captains: resolveCaptains(),
     recap: existsSync(join(ROOT, 'data/recap.json')) ? readJson('data/recap.json') : null,
     echarts: read('node_modules/echarts/dist/echarts.min.js'),
     appJs: read('src/app.js'),

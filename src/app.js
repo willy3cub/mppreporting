@@ -1070,10 +1070,16 @@ function renderBracket() {
   }
   const isAlive = (t) => !eliminated.has(t);
 
+  const caps = window.__WC.captains || {};
+  const capAvatar = (t) => {
+    const c = caps[t];
+    if (!c || !c.img) return '';
+    return `<img class="bcap" src="${c.img}" alt="" loading="lazy" title="Capitaine ${t} : ${c.captain}">`;
+  };
   const teamRow = (t, s, w) => {
     const cls = w === t ? 'bwin' : (w ? 'blose' : '');
     return `<div class="bteam ${cls}" data-team="${t}" data-alive="${isAlive(t) ? 1 : 0}">
-      <span class="bflag">${flagOf[t] || ''}</span><span class="bname">${t}</span>
+      ${capAvatar(t)}<span class="bflag">${flagOf[t] || ''}</span><span class="bname">${t}</span>
       <span class="bscore">${s ?? '–'}</span></div>`;
   };
   const boxHtml = rounds.map((r, ri) => r.list.map((m) => {
