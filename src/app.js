@@ -1055,6 +1055,7 @@ function renderBracket() {
   // Layout récursif : chaque match centré sur ses deux qualifiés (feuilles = 1er tour présent).
   let slot = 0;
   const place = (m, ri) => {
+    if (m._y != null) return m._y; // déjà posé (sous-arbre partagé)
     if (ri === 0) { m._y = slot + 0.5; slot += 1; return m._y; }
     const feeders = rounds[ri - 1].list
       .filter((f) => { const w = winnerOf(f, ri - 1); return w === m.team1 || w === m.team2; })
@@ -1065,8 +1066,12 @@ function renderBracket() {
     return m._y;
   };
   const lastRi = rounds.length - 1;
-  rounds[lastRi].list.slice().sort(byDate).forEach((m) => place(m, lastRi));
-  for (const r of rounds) for (const m of r.list) if (m._y == null) { m._y = slot + 0.5; slot += 1; }
+  // On pose chaque sous-arbre de façon contiguë : du dernier tour vers le premier, on lance
+  // le placement depuis toute affiche encore non posée (robuste aux tours supérieurs incomplets,
+  // ex. une seule demie connue → l'autre demi-tableau reste néanmoins groupé).
+  for (let ri = lastRi; ri >= 0; ri--) {
+    rounds[ri].list.slice().sort(byDate).forEach((m) => place(m, ri));
+  }
 
   const SLOT = 170, BOXH = 154, COLW = 236;
   const H = Math.max(rounds[0].list.length, 1) * SLOT;
