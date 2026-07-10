@@ -91,6 +91,10 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .up{color:#38d996}.down{color:#ff6b6b}.flat{color:#6b739c}
 .tbl .row-avd{background:#d9a4411f}
 .tbl .row-avd .rk{cursor:help;filter:drop-shadow(0 0 4px #d9a441)}
+.tbl .row-leader{background:linear-gradient(90deg,#ffd16630,#ffd1660a)}
+.tbl .row-leader td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
+.tbl .row-leader .rk{cursor:help;filter:drop-shadow(0 0 5px var(--gold))}
+.tbl .row-leader .pname-cell{font-weight:800}
 .avt{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;
   background:var(--c);color:#0a0e27;font-weight:800;font-size:16px;overflow:hidden;flex:0 0 auto;
   border:2px solid color-mix(in srgb,var(--c) 70%,#fff)}
@@ -571,11 +575,14 @@ function renderClassement() {
     const dp = s.pts - (prev[s.uid] ?? 0);
     const dr = (rankPrev[s.uid] ?? s.rank) - s.rank;
     const isAvd = s.rank === avdRank;
+    const isLeader = s.rank === 1;
     const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || (isAvd ? '🏅' : `${s.rank}.`);
     const arrow = dr > 0 ? `<span class="up">▲${dr}</span>`
       : dr < 0 ? `<span class="down">▼${-dr}</span>` : `<span class="flat">■</span>`;
-    return `<tr class="${isAvd ? 'row-avd' : ''}">
-      <td class="rk"${isAvd ? ' data-hint="Le Rescapé : l’avant-dernier repart avec un vrai trophée"' : ''}>${medal}</td>
+    const rkHint = isLeader ? ' data-hint="En tête du classement — le patron"'
+      : isAvd ? ' data-hint="Le Rescapé : l’avant-dernier repart avec un vrai trophée"' : '';
+    return `<tr class="${isLeader ? 'row-leader' : ''}${isAvd ? ' row-avd' : ''}">
+      <td class="rk"${rkHint}>${medal}</td>
       <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">
         <span class="pname-cell">${avatarThumb(p)}${p.name}</span></td>
       <td class="ps">${p.pseudo}</td>

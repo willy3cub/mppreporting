@@ -165,11 +165,14 @@ function renderClassement() {
     const dp = s.pts - (prev[s.uid] ?? 0);
     const dr = (rankPrev[s.uid] ?? s.rank) - s.rank;
     const isAvd = s.rank === avdRank;
+    const isLeader = s.rank === 1;
     const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || (isAvd ? '🏅' : `${s.rank}.`);
     const arrow = dr > 0 ? `<span class="up">▲${dr}</span>`
       : dr < 0 ? `<span class="down">▼${-dr}</span>` : `<span class="flat">■</span>`;
-    return `<tr class="${isAvd ? 'row-avd' : ''}">
-      <td class="rk"${isAvd ? ' data-hint="Le Rescapé : l’avant-dernier repart avec un vrai trophée"' : ''}>${medal}</td>
+    const rkHint = isLeader ? ' data-hint="En tête du classement — le patron"'
+      : isAvd ? ' data-hint="Le Rescapé : l’avant-dernier repart avec un vrai trophée"' : '';
+    return `<tr class="${isLeader ? 'row-leader' : ''}${isAvd ? ' row-avd' : ''}">
+      <td class="rk"${rkHint}>${medal}</td>
       <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">
         <span class="pname-cell">${avatarThumb(p)}${p.name}</span></td>
       <td class="ps">${p.pseudo}</td>
