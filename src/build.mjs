@@ -67,14 +67,36 @@ function resolveFavorites() {
 
 const CAP_DIR = 'data/captains';
 
-// Résout les avatars des capitaines (par nom d'équipe) en data URIs — page auto-suffisante.
-function resolveCaptains() {
-  if (!existsSync(join(ROOT, 'data/captains.json'))) return {};
-  const cap = readJson('data/captains.json');
+// Slug ASCII : "Côte d'Ivoire" → "cote-d-ivoire", "Brésil" → "bresil".
+function slugify(s) {
+  return s.normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/['’]/g, '-').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+// Auto-mappe chaque équipe du tableau à son avatar de capitaine (fichier slug),
+// puis résout en data URI (page auto-suffisante). Match exact du slug, sinon préfixe
+// (ex. "Bosnie" ↔ "bosnie-herzegovine").
+function resolveCaptains(matches) {
+  if (!existsSync(join(ROOT, CAP_DIR))) return {};
+  const bySlug = {};
+  for (const f of readdirSync(join(ROOT, CAP_DIR))) {
+    if (!/\.(png|jpe?g|webp)$/i.test(f)) continue;
+    bySlug[slugify(f.replace(/\.[^.]+$/, ''))] = f;
+  }
+  const teams = new Set();
+  for (const m of matches) { teams.add(m.team1); teams.add(m.team2); }
   const out = {};
-  for (const [team, c] of Object.entries(cap)) {
-    const img = c.file ? imgDataUri(CAP_DIR, c.file) : null;
-    if (img) out[team] = { img, captain: c.captain || '' };
+  for (const team of teams) {
+    const ts = slugify(team);
+    let file = bySlug[ts];
+    if (!file) {
+      const hit = Object.keys(bySlug).find((s) => s.startsWith(ts) || ts.startsWith(s));
+      if (hit) file = bySlug[hit];
+    }
+    if (!file) continue;
+    const img = imgDataUri(CAP_DIR, file);
+    if (img) out[team] = { img };
   }
   return out;
 }
@@ -90,15 +112,16 @@ export function buildHtml({ players, history, matches, forecasts, bilan, badges,
 export function build() {
   const avatars = avatarDataUris();
   const players = readJson('data/players.json').map((p) => ({ ...p, avatar: avatars[p.uid] || null }));
+  const matches = readJson('data/matches.json');
   const html = buildHtml({
     players,
     history: readJson('data/history.json'),
-    matches: readJson('data/matches.json'),
+    matches,
     forecasts: readJson('data/forecasts.json'),
     bilan: readJson('data/bilan.json'),
     badges: badgeDataUris(),
     favorites: resolveFavorites(),
-    captains: resolveCaptains(),
+    captains: resolveCaptains(matches),
     recap: existsSync(join(ROOT, 'data/recap.json')) ? readJson('data/recap.json') : null,
     echarts: read('node_modules/echarts/dist/echarts.min.js'),
     appJs: read('src/app.js'),

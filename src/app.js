@@ -1074,7 +1074,7 @@ function renderBracket() {
   const capAvatar = (t) => {
     const c = caps[t];
     if (!c || !c.img) return '';
-    return `<img class="bcap" src="${c.img}" alt="" loading="lazy" title="Capitaine ${t} : ${c.captain}">`;
+    return `<span class="bcap-wrap"><img class="bcap" src="${c.img}" alt="" loading="lazy" title="Capitaine — ${t}"></span>`;
   };
   const teamRow = (t, s, w) => {
     const cls = w === t ? 'bwin' : (w ? 'blose' : '');
@@ -1100,7 +1100,7 @@ function renderBracket() {
       const ax = ri * COLW + (COLW - 24), ay = m._y * SLOT, bx = (ri + 1) * COLW, by = nm._y * SLOT, mid = (ax + bx) / 2;
       const d = (ri * 0.22 + 0.28).toFixed(2);
       const cls = isAlive(w) ? 'bpath-live' : 'bpath-out';
-      paths += `<path class="bpath ${cls}" data-team="${w}" data-alive="${isAlive(w) ? 1 : 0}" style="--d:${d}s" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
+      paths += `<path class="bpath ${cls}" data-team="${w}" data-alive="${isAlive(w) ? 1 : 0}" style="--d:${d}s;--seg:${ri}" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
     }
   }
   // Trace vers le trophée : uniquement pour les équipes encore en course, révélée au survol.
@@ -1112,7 +1112,7 @@ function renderBracket() {
   const trophyY = H / 2;
   for (const a of alive) {
     const x0 = lastRi * COLW + (COLW - 24), y0 = a.y * SLOT;
-    paths += `<path class="bpath bpath-alive" data-team="${a.t}" data-alive="1" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
+    paths += `<path class="bpath bpath-alive" data-team="${a.t}" data-alive="1" style="--seg:${lastRi}" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
   }
   const trophyDelay = (rounds.length * 0.22 + 0.55).toFixed(2);
 
@@ -1130,6 +1130,10 @@ function renderBracket() {
         <div class="btrophy" style="left:${trophyX}px;top:${trophyY - 22}px;--d:${trophyDelay}s"><span class="btrophy-halo"></span>🏆</div>
       </div></div>
     </section>`);
+  // Longueur réelle de chaque trace → var --len (remplissage/dessin exacts, quelle que soit la trace).
+  document.querySelectorAll('#parcours .bpath').forEach((p) => {
+    try { p.style.setProperty('--len', p.getTotalLength().toFixed(1)); } catch (e) { /* jsdom */ }
+  });
   initBracketHover();
 }
 

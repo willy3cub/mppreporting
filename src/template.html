@@ -193,7 +193,7 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .bracket{position:relative;margin:4px auto}
 .bracket-svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .bpath{fill:none;stroke:#5b6488;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.5;
-  stroke-dasharray:680;pointer-events:stroke;transition:opacity .18s,stroke-width .18s,filter .18s}
+  stroke-dasharray:var(--len,680);pointer-events:stroke;transition:opacity .18s,stroke-width .18s,filter .18s}
 /* équipe encore en course : trace dorée ; éliminée : trace froide et estompée */
 .bpath-live{stroke:#ffd166;opacity:.7;stroke-width:2.6}
 .bpath-out{stroke:#5b6488;opacity:.32;stroke-width:1.7}
@@ -209,14 +209,25 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .bteam+.bteam{border-top:1px solid #ffffff12}
 .bteam .bname{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bteam .bscore{font-weight:700;color:var(--gold)}
-.bcap{width:60px;height:60px;border-radius:50%;object-fit:cover;flex:none;
-  background:#0c1230;border:2px solid #ffffff33;box-shadow:0 2px 6px #00000066;transition:transform .18s,border-color .18s}
-.bteam:hover .bcap{transform:scale(1.12);border-color:var(--gold)}
+.bcap-wrap{position:relative;flex:none;line-height:0;border-radius:50%}
+.bcap{width:60px;height:60px;border-radius:50%;object-fit:cover;display:block;
+  background:#0c1230;border:2px solid #ffffff33;box-shadow:0 2px 6px #00000066,0 0 0 1px #ffffff10;
+  transition:transform .22s,border-color .22s,box-shadow .22s,filter .22s}
+/* reflet lumineux (bulle brillante) */
+.bcap-wrap::before{content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:2;
+  background:radial-gradient(circle at 33% 24%,#ffffff70,transparent 46%);mix-blend-mode:screen;opacity:.7}
+/* halo lumineux derrière l'avatar */
+.bcap-wrap::after{content:'';position:absolute;inset:-6px;border-radius:50%;pointer-events:none;z-index:0;
+  box-shadow:0 0 14px 3px transparent;opacity:0;transition:box-shadow .3s,opacity .3s}
+.bteam[data-alive="1"] .bcap{box-shadow:0 2px 6px #00000066,0 0 14px #ffd16633}
+.bteam[data-alive="1"] .bcap-wrap::after{opacity:.5;box-shadow:0 0 14px 2px #ffd16640}
+.bteam[data-alive="0"] .bcap{filter:grayscale(1) brightness(.9);box-shadow:0 2px 6px #00000066,0 0 10px #5b648833}
+.bteam:hover .bcap{transform:scale(1.14);border-color:var(--gold)}
 .bwin{background:linear-gradient(90deg,transparent,#ffd16612)}
 .bwin .bname{font-weight:800;color:#fff}
 .bwin .bcap{border-color:var(--gold)}
-.blose{opacity:.5}
-.blose .bcap{filter:grayscale(1)}
+.blose{opacity:.6}
+@keyframes capPulse{0%,100%{box-shadow:0 0 16px 3px #ffd16655}50%{box-shadow:0 0 28px 8px #ffd166aa}}
 .btrophy{position:absolute;font-size:34px;z-index:3;filter:drop-shadow(0 0 10px var(--gold));animation:float 3.6s ease-in-out infinite}
 .btrophy-halo{position:absolute;left:50%;top:50%;width:70px;height:70px;translate:-50% -50%;border-radius:50%;z-index:-1;
   background:radial-gradient(circle,#ffd16655,transparent 70%);animation:halo 2.4s ease-in-out infinite}
@@ -224,23 +235,34 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .bracket.focus .bteam{opacity:.2}
 .bracket.focus .bpath{opacity:.06}
 .bracket.focus .bpath-alive{opacity:0}
-/* équipe encore en course : or + flux + trace qui file vers le trophée */
+/* équipe encore en course : le chemin se REMPLIT jusqu'à sa position (staggeré par tour),
+   puis CONTINUE en pointillé animé vers le trophée */
 .bracket.focus-live .bteam.hl{opacity:1;background:#ffd1662a;transform:scale(1.04)}
-.bracket.focus-live .bpath-live.hl,.bracket.focus-live .bpath-alive.hl{opacity:1;stroke:var(--gold);stroke-width:3.6;
-  stroke-dasharray:9 7;filter:drop-shadow(0 0 5px #ffd16699);animation:flow .8s linear infinite}
-/* équipe éliminée : argenté, statique, sans trace vers le trophée */
+.bracket.focus-live .bteam.hl .bcap{border-color:var(--gold);transform:scale(1.16)}
+.bracket.focus-live .bteam.hl .bcap-wrap::after{opacity:1;animation:capPulse 1.8s ease-in-out infinite}
+.bracket.focus-live .bpath-live.hl{opacity:1;stroke:var(--gold);stroke-width:3.6;
+  filter:drop-shadow(0 0 6px #ffd166aa);animation:bfill .38s calc(var(--seg,0)*.16s) cubic-bezier(.4,.7,.3,1) both}
+.bracket.focus-live .bpath-alive.hl{opacity:1;stroke:var(--gold);stroke-width:3;stroke-dasharray:9 7;
+  filter:drop-shadow(0 0 6px #ffd16699);
+  animation:bdashin .3s calc(var(--seg,0)*.16s + .12s) ease both, flow .7s calc(var(--seg,0)*.16s + .12s) linear infinite}
+/* équipe éliminée : argenté, se remplit jusqu'au point d'élimination, sans trace vers le trophée */
 .bracket.focus-out .bteam.hl{opacity:1;background:#9aa3c733;transform:scale(1.04)}
-.bracket.focus-out .bpath-out.hl{opacity:1;stroke:#c9d0f5;stroke-width:3}
+.bracket.focus-out .bteam.hl .bcap{border-color:#c9d0f5;transform:scale(1.14);filter:grayscale(.35) brightness(1)}
+.bracket.focus-out .bteam.hl .bcap-wrap::after{opacity:1;box-shadow:0 0 18px 5px #c9d0f566}
+.bracket.focus-out .bpath-out.hl{opacity:1;stroke:#c9d0f5;stroke-width:3.2;
+  filter:drop-shadow(0 0 5px #c9d0f577);animation:bfill .38s calc(var(--seg,0)*.16s) cubic-bezier(.4,.7,.3,1) both}
 /* entrée cinématique au scroll (déclenchée par .played) */
 .bracket:not(.played) .bmatch{opacity:0;transform:translateX(-16px) scale(.95)}
-.bracket:not(.played) .bpath{stroke-dashoffset:680}
+.bracket:not(.played) .bpath{stroke-dashoffset:var(--len,680)}
 .bracket:not(.played) .bpath-alive{opacity:0}
 .bracket:not(.played) .btrophy{opacity:0}
 .bracket.played .bmatch{animation:bmIn .5s var(--d,0s) cubic-bezier(.2,.75,.2,1) both}
-.bracket.played .bpath:not(.bpath-alive){stroke-dasharray:680;animation:bdraw .6s var(--d,0s) ease both}
+.bracket.played .bpath:not(.bpath-alive){stroke-dasharray:var(--len,680);animation:bdraw .6s var(--d,0s) ease both}
 .bracket.played .btrophy{animation:btIn .7s var(--d,0s) cubic-bezier(.2,.85,.25,1.4) both, float 3.6s var(--d,0s) ease-in-out infinite}
 @keyframes bmIn{from{opacity:0;transform:translateX(-16px) scale(.95)}to{opacity:1;transform:none}}
-@keyframes bdraw{from{stroke-dashoffset:680}to{stroke-dashoffset:0}}
+@keyframes bdraw{from{stroke-dashoffset:var(--len,680)}to{stroke-dashoffset:0}}
+@keyframes bfill{from{stroke-dashoffset:var(--len,680)}to{stroke-dashoffset:0}}
+@keyframes bdashin{from{opacity:0}to{opacity:1}}
 @keyframes flow{to{stroke-dashoffset:-32}}
 @keyframes btIn{from{opacity:0;transform:scale(.3) rotate(-18deg)}to{opacity:1;transform:none}}
 @keyframes halo{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(.9)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
@@ -248,7 +270,9 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   .btrophy,.btrophy-halo{animation:none}
   .bracket:not(.played) .bmatch,.bracket:not(.played) .bpath,.bracket:not(.played) .bpath-alive,.bracket:not(.played) .btrophy{opacity:1;transform:none;stroke-dashoffset:0}
   .bracket.played .bmatch,.bracket.played .bpath,.bracket.played .btrophy{animation:none}
-  .bracket.focus-live .bpath-live.hl,.bracket.focus-live .bpath-alive.hl{animation:none}
+  .bracket.focus-live .bpath-live.hl,.bracket.focus-out .bpath-out.hl{animation:none;stroke-dashoffset:0}
+  .bracket.focus-live .bpath-alive.hl{animation:none;opacity:1}
+  .bracket.focus-live .bteam.hl .bcap-wrap::after{animation:none}
 }
 /* -- Favoris (champion / buteur) : classement + carte -- */
 .fav-item{display:inline-flex;align-items:center;gap:8px;font-weight:600;white-space:nowrap}
