@@ -197,7 +197,8 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 /* équipe encore en course : trace dorée ; éliminée : trace froide et estompée */
 .bpath-live{stroke:#ffd166;opacity:.7;stroke-width:2.6}
 .bpath-out{stroke:#5b6488;opacity:.32;stroke-width:1.7}
-.bpath-alive{stroke:#ffd166;opacity:.65;stroke-dasharray:5 7;filter:drop-shadow(0 0 3px #ffd16655)}
+/* trace vers le trophée : cachée par défaut, révélée seulement au survol d'une équipe en course */
+.bpath-alive{stroke:#ffd166;stroke-dasharray:9 7;opacity:0;pointer-events:none}
 .brk-leg{display:inline-flex;align-items:center;gap:5px;margin-left:14px;font-size:12px}
 .brk-swatch{display:inline-block;width:16px;height:3px;border-radius:2px}
 .brk-swatch.live{background:#ffd166}
@@ -214,32 +215,35 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .btrophy{position:absolute;font-size:34px;z-index:3;filter:drop-shadow(0 0 10px var(--gold));animation:float 3.6s ease-in-out infinite}
 .btrophy-halo{position:absolute;left:50%;top:50%;width:70px;height:70px;translate:-50% -50%;border-radius:50%;z-index:-1;
   background:radial-gradient(circle,#ffd16655,transparent 70%);animation:halo 2.4s ease-in-out infinite}
-/* survol : parcours d'une équipe mis en valeur */
+/* survol : parcours d'une équipe mis en valeur, différencié selon le statut */
 .bracket.focus .bteam{opacity:.2}
-.bracket.focus .bteam.hl{opacity:1;background:#ffd1662a;transform:scale(1.04)}
 .bracket.focus .bpath{opacity:.06}
-.bracket.focus .bpath.hl{opacity:1;stroke:var(--gold);stroke-width:3.6;filter:drop-shadow(0 0 5px #ffd16699);
-  stroke-dasharray:9 7;animation:flow .8s linear infinite}
+.bracket.focus .bpath-alive{opacity:0}
+/* équipe encore en course : or + flux + trace qui file vers le trophée */
+.bracket.focus-live .bteam.hl{opacity:1;background:#ffd1662a;transform:scale(1.04)}
+.bracket.focus-live .bpath-live.hl,.bracket.focus-live .bpath-alive.hl{opacity:1;stroke:var(--gold);stroke-width:3.6;
+  stroke-dasharray:9 7;filter:drop-shadow(0 0 5px #ffd16699);animation:flow .8s linear infinite}
+/* équipe éliminée : argenté, statique, sans trace vers le trophée */
+.bracket.focus-out .bteam.hl{opacity:1;background:#9aa3c733;transform:scale(1.04)}
+.bracket.focus-out .bpath-out.hl{opacity:1;stroke:#c9d0f5;stroke-width:3}
 /* entrée cinématique au scroll (déclenchée par .played) */
 .bracket:not(.played) .bmatch{opacity:0;transform:translateX(-16px) scale(.95)}
 .bracket:not(.played) .bpath{stroke-dashoffset:680}
 .bracket:not(.played) .bpath-alive{opacity:0}
 .bracket:not(.played) .btrophy{opacity:0}
 .bracket.played .bmatch{animation:bmIn .5s var(--d,0s) cubic-bezier(.2,.75,.2,1) both}
-.bracket.played .bpath{stroke-dasharray:680;animation:bdraw .6s var(--d,0s) ease both}
-.bracket.played .bpath-alive{stroke-dasharray:5 7;animation:aIn .5s var(--d,0s) ease both, flow 1.1s linear infinite}
+.bracket.played .bpath:not(.bpath-alive){stroke-dasharray:680;animation:bdraw .6s var(--d,0s) ease both}
 .bracket.played .btrophy{animation:btIn .7s var(--d,0s) cubic-bezier(.2,.85,.25,1.4) both, float 3.6s var(--d,0s) ease-in-out infinite}
 @keyframes bmIn{from{opacity:0;transform:translateX(-16px) scale(.95)}to{opacity:1;transform:none}}
 @keyframes bdraw{from{stroke-dashoffset:680}to{stroke-dashoffset:0}}
-@keyframes aIn{from{opacity:0}to{opacity:.6}}
 @keyframes flow{to{stroke-dashoffset:-32}}
 @keyframes btIn{from{opacity:0;transform:scale(.3) rotate(-18deg)}to{opacity:1;transform:none}}
 @keyframes halo{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(.9)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
 @media (prefers-reduced-motion: reduce){
   .btrophy,.btrophy-halo{animation:none}
   .bracket:not(.played) .bmatch,.bracket:not(.played) .bpath,.bracket:not(.played) .bpath-alive,.bracket:not(.played) .btrophy{opacity:1;transform:none;stroke-dashoffset:0}
-  .bracket.played .bmatch,.bracket.played .bpath,.bracket.played .bpath-alive,.bracket.played .btrophy{animation:none}
-  .bracket.focus .bpath.hl{animation:none}
+  .bracket.played .bmatch,.bracket.played .bpath,.bracket.played .btrophy{animation:none}
+  .bracket.focus-live .bpath-live.hl,.bracket.focus-live .bpath-alive.hl{animation:none}
 }
 /* -- Favoris (champion / buteur) : classement + carte -- */
 .fav-item{display:inline-flex;align-items:center;gap:8px;font-weight:600;white-space:nowrap}
@@ -1417,9 +1421,20 @@ function renderBracket() {
   const trophyX = rounds.length * COLW;
   const W = trophyX + 92;
 
+  // Équipes éliminées = perdantes d'un match joué (les autres sont encore en course).
+  const eliminated = new Set();
+  for (let ri = 0; ri < rounds.length; ri++) {
+    for (const m of rounds[ri].list) {
+      if (m.status !== 'played') continue;
+      const w = winnerOf(m, ri); if (!w) continue;
+      eliminated.add(w === m.team1 ? m.team2 : m.team1);
+    }
+  }
+  const isAlive = (t) => !eliminated.has(t);
+
   const teamRow = (t, s, w) => {
     const cls = w === t ? 'bwin' : (w ? 'blose' : '');
-    return `<div class="bteam ${cls}" data-team="${t}">
+    return `<div class="bteam ${cls}" data-team="${t}" data-alive="${isAlive(t) ? 1 : 0}">
       <span class="bflag">${flagOf[t] || ''}</span><span class="bname">${t}</span>
       <span class="bscore">${s ?? '–'}</span></div>`;
   };
@@ -1433,17 +1448,6 @@ function renderBracket() {
     </div>`;
   }).join('')).join('');
 
-  // Équipes éliminées = perdantes d'un match joué (les autres sont encore en course).
-  const eliminated = new Set();
-  for (let ri = 0; ri < rounds.length; ri++) {
-    for (const m of rounds[ri].list) {
-      if (m.status !== 'played') continue;
-      const w = winnerOf(m, ri); if (!w) continue;
-      eliminated.add(w === m.team1 ? m.team2 : m.team1);
-    }
-  }
-  const isAlive = (t) => !eliminated.has(t);
-
   let paths = '';
   for (let ri = 0; ri + 1 < rounds.length; ri++) {
     for (const m of rounds[ri].list) {
@@ -1452,20 +1456,19 @@ function renderBracket() {
       const ax = ri * COLW + (COLW - 24), ay = m._y * SLOT, bx = (ri + 1) * COLW, by = nm._y * SLOT, mid = (ax + bx) / 2;
       const d = (ri * 0.22 + 0.28).toFixed(2);
       const cls = isAlive(w) ? 'bpath-live' : 'bpath-out';
-      paths += `<path class="bpath ${cls}" data-team="${w}" style="--d:${d}s" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
+      paths += `<path class="bpath ${cls}" data-team="${w}" data-alive="${isAlive(w) ? 1 : 0}" style="--d:${d}s" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
     }
   }
-  // Traces « encore en course » vers le trophée (non-éliminés du dernier tour présent).
+  // Trace vers le trophée : uniquement pour les équipes encore en course, révélée au survol.
   const alive = [];
   for (const m of rounds[lastRi].list) {
     if (m.status === 'played') { const w = winnerOf(m, lastRi); if (w) alive.push({ t: w, y: m._y }); }
     else alive.push({ t: m.team1, y: m._y }, { t: m.team2, y: m._y });
   }
   const trophyY = H / 2;
-  const aliveDelay = (lastRi * 0.22 + 0.45).toFixed(2);
   for (const a of alive) {
     const x0 = lastRi * COLW + (COLW - 24), y0 = a.y * SLOT;
-    paths += `<path class="bpath bpath-alive" data-team="${a.t}" style="--d:${aliveDelay}s" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
+    paths += `<path class="bpath bpath-alive" data-team="${a.t}" data-alive="1" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
   }
   const trophyDelay = (rounds.length * 0.22 + 0.55).toFixed(2);
 
@@ -1489,11 +1492,14 @@ function renderBracket() {
 function initBracketHover() {
   const b = document.querySelector('#parcours .bracket');
   if (!b) return;
-  const clear = () => { b.classList.remove('focus'); b.querySelectorAll('.hl').forEach((x) => x.classList.remove('hl')); };
+  const clear = () => { b.classList.remove('focus', 'focus-live', 'focus-out'); b.querySelectorAll('.hl').forEach((x) => x.classList.remove('hl')); };
   b.addEventListener('mouseover', (e) => {
     const el = e.target.closest('[data-team]'); if (!el) return;
     const t = el.dataset.team;
+    const alive = el.dataset.alive === '1';
     b.classList.add('focus');
+    b.classList.toggle('focus-live', alive);
+    b.classList.toggle('focus-out', !alive);
     b.querySelectorAll('[data-team]').forEach((x) => x.classList.toggle('hl', x.dataset.team === t));
   });
   b.addEventListener('mouseout', (e) => {

@@ -1059,9 +1059,20 @@ function renderBracket() {
   const trophyX = rounds.length * COLW;
   const W = trophyX + 92;
 
+  // Équipes éliminées = perdantes d'un match joué (les autres sont encore en course).
+  const eliminated = new Set();
+  for (let ri = 0; ri < rounds.length; ri++) {
+    for (const m of rounds[ri].list) {
+      if (m.status !== 'played') continue;
+      const w = winnerOf(m, ri); if (!w) continue;
+      eliminated.add(w === m.team1 ? m.team2 : m.team1);
+    }
+  }
+  const isAlive = (t) => !eliminated.has(t);
+
   const teamRow = (t, s, w) => {
     const cls = w === t ? 'bwin' : (w ? 'blose' : '');
-    return `<div class="bteam ${cls}" data-team="${t}">
+    return `<div class="bteam ${cls}" data-team="${t}" data-alive="${isAlive(t) ? 1 : 0}">
       <span class="bflag">${flagOf[t] || ''}</span><span class="bname">${t}</span>
       <span class="bscore">${s ?? '–'}</span></div>`;
   };
@@ -1075,17 +1086,6 @@ function renderBracket() {
     </div>`;
   }).join('')).join('');
 
-  // Équipes éliminées = perdantes d'un match joué (les autres sont encore en course).
-  const eliminated = new Set();
-  for (let ri = 0; ri < rounds.length; ri++) {
-    for (const m of rounds[ri].list) {
-      if (m.status !== 'played') continue;
-      const w = winnerOf(m, ri); if (!w) continue;
-      eliminated.add(w === m.team1 ? m.team2 : m.team1);
-    }
-  }
-  const isAlive = (t) => !eliminated.has(t);
-
   let paths = '';
   for (let ri = 0; ri + 1 < rounds.length; ri++) {
     for (const m of rounds[ri].list) {
@@ -1094,20 +1094,19 @@ function renderBracket() {
       const ax = ri * COLW + (COLW - 24), ay = m._y * SLOT, bx = (ri + 1) * COLW, by = nm._y * SLOT, mid = (ax + bx) / 2;
       const d = (ri * 0.22 + 0.28).toFixed(2);
       const cls = isAlive(w) ? 'bpath-live' : 'bpath-out';
-      paths += `<path class="bpath ${cls}" data-team="${w}" style="--d:${d}s" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
+      paths += `<path class="bpath ${cls}" data-team="${w}" data-alive="${isAlive(w) ? 1 : 0}" style="--d:${d}s" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
     }
   }
-  // Traces « encore en course » vers le trophée (non-éliminés du dernier tour présent).
+  // Trace vers le trophée : uniquement pour les équipes encore en course, révélée au survol.
   const alive = [];
   for (const m of rounds[lastRi].list) {
     if (m.status === 'played') { const w = winnerOf(m, lastRi); if (w) alive.push({ t: w, y: m._y }); }
     else alive.push({ t: m.team1, y: m._y }, { t: m.team2, y: m._y });
   }
   const trophyY = H / 2;
-  const aliveDelay = (lastRi * 0.22 + 0.45).toFixed(2);
   for (const a of alive) {
     const x0 = lastRi * COLW + (COLW - 24), y0 = a.y * SLOT;
-    paths += `<path class="bpath bpath-alive" data-team="${a.t}" style="--d:${aliveDelay}s" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
+    paths += `<path class="bpath bpath-alive" data-team="${a.t}" data-alive="1" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
   }
   const trophyDelay = (rounds.length * 0.22 + 0.55).toFixed(2);
 
@@ -1131,11 +1130,14 @@ function renderBracket() {
 function initBracketHover() {
   const b = document.querySelector('#parcours .bracket');
   if (!b) return;
-  const clear = () => { b.classList.remove('focus'); b.querySelectorAll('.hl').forEach((x) => x.classList.remove('hl')); };
+  const clear = () => { b.classList.remove('focus', 'focus-live', 'focus-out'); b.querySelectorAll('.hl').forEach((x) => x.classList.remove('hl')); };
   b.addEventListener('mouseover', (e) => {
     const el = e.target.closest('[data-team]'); if (!el) return;
     const t = el.dataset.team;
+    const alive = el.dataset.alive === '1';
     b.classList.add('focus');
+    b.classList.toggle('focus-live', alive);
+    b.classList.toggle('focus-out', !alive);
     b.querySelectorAll('[data-team]').forEach((x) => x.classList.toggle('hl', x.dataset.team === t));
   });
   b.addEventListener('mouseout', (e) => {
