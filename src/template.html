@@ -182,8 +182,10 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 /* -- Résumé du match de la veille -- */
 .recap{border-left:4px solid var(--gold);background:linear-gradient(100deg,#ffd16614,#ffffff08)}
 .recap-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-.recap-score{font-size:22px;font-weight:800;letter-spacing:.5px;
+.recap-score{font-size:22px;font-weight:800;letter-spacing:.5px;display:inline-flex;align-items:center;gap:8px;
   background:linear-gradient(90deg,#fff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.recap-cap{width:34px;height:34px;border-radius:50%;object-fit:cover;vertical-align:middle;
+  border:2px solid #ffffff33;background:#0c1230;box-shadow:0 2px 6px #00000066,0 0 12px #ffd16640}
 .recap-phase{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:1px}
 .recap-body{line-height:1.65;font-size:15px;color:#dfe4ff}
 .recap-body p{margin:8px 0}

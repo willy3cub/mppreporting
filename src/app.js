@@ -125,10 +125,24 @@ function renderRecap() {
   if (!r) return;
   const items = Array.isArray(r.matches) ? r.matches : (r.html ? [r] : []);
   if (!items.length) return;
+  // Remplace, dans le titre du match, le drapeau de chaque équipe par l'avatar de son capitaine.
+  const caps = window.__WC.captains || {};
+  const flagOf = {};
+  for (const m of window.__WC.matches) { flagOf[m.team1] = m.flag1; flagOf[m.team2] = m.flag2; }
+  const withCaptains = (title) => {
+    let out = title || '';
+    for (const [team, c] of Object.entries(caps)) {
+      const flag = flagOf[team];
+      if (flag && c.img && out.includes(flag)) {
+        out = out.split(flag).join(`<img class="recap-cap" src="${c.img}" alt="" title="Capitaine — ${team}">`);
+      }
+    }
+    return out;
+  };
   const blocks = items.map((it) => `
     <div class="recap-match">
       <div class="recap-head">
-        <span class="recap-score">${it.match || ''}</span>
+        <span class="recap-score">${withCaptains(it.match)}</span>
         ${it.phase ? `<span class="recap-phase">${it.phase}</span>` : ''}
       </div>
       <div class="recap-body">${it.html || ''}</div>
