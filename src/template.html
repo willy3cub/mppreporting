@@ -240,17 +240,17 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .bracket.focus-live .bteam.hl{opacity:1;background:#ffd1662a;transform:scale(1.04)}
 .bracket.focus-live .bteam.hl .bcap{border-color:var(--gold);transform:scale(1.16)}
 .bracket.focus-live .bteam.hl .bcap-wrap::after{opacity:1;animation:capPulse 1.8s ease-in-out infinite}
-.bracket.focus-live .bpath-live.hl{opacity:1;stroke:var(--gold);stroke-width:3.6;
-  filter:drop-shadow(0 0 6px #ffd166aa);animation:bfill .38s calc(var(--seg,0)*.16s) cubic-bezier(.4,.7,.3,1) both}
-.bracket.focus-live .bpath-alive.hl{opacity:1;stroke:var(--gold);stroke-width:3;stroke-dasharray:9 7;
+.bracket.focus-live .bpath.bpath-live.hl{opacity:1;stroke:var(--gold);stroke-width:3.6;
+  filter:drop-shadow(0 0 6px #ffd166aa);animation:bfill .34s calc(var(--seg,0)*.34s) linear both}
+.bracket.focus-live .bpath.bpath-alive.hl{opacity:1;stroke:var(--gold);stroke-width:3;stroke-dasharray:9 7;
   filter:drop-shadow(0 0 6px #ffd16699);
-  animation:bdashin .3s calc(var(--seg,0)*.16s + .12s) ease both, flow .7s calc(var(--seg,0)*.16s + .12s) linear infinite}
+  animation:bdashin .28s calc(var(--seg,0)*.34s) ease both, flow .7s calc(var(--seg,0)*.34s) linear infinite}
 /* équipe éliminée : argenté, se remplit jusqu'au point d'élimination, sans trace vers le trophée */
 .bracket.focus-out .bteam.hl{opacity:1;background:#9aa3c733;transform:scale(1.04)}
 .bracket.focus-out .bteam.hl .bcap{border-color:#c9d0f5;transform:scale(1.14);filter:grayscale(.35) brightness(1)}
 .bracket.focus-out .bteam.hl .bcap-wrap::after{opacity:1;box-shadow:0 0 18px 5px #c9d0f566}
-.bracket.focus-out .bpath-out.hl{opacity:1;stroke:#c9d0f5;stroke-width:3.2;
-  filter:drop-shadow(0 0 5px #c9d0f577);animation:bfill .38s calc(var(--seg,0)*.16s) cubic-bezier(.4,.7,.3,1) both}
+.bracket.focus-out .bpath.bpath-out.hl{opacity:1;stroke:#c9d0f5;stroke-width:3.2;
+  filter:drop-shadow(0 0 5px #c9d0f577);animation:bfill .34s calc(var(--seg,0)*.34s) linear both}
 /* entrée cinématique au scroll (déclenchée par .played) */
 .bracket:not(.played) .bmatch{opacity:0;transform:translateX(-16px) scale(.95)}
 .bracket:not(.played) .bpath{stroke-dashoffset:var(--len,680)}
@@ -270,8 +270,8 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   .btrophy,.btrophy-halo{animation:none}
   .bracket:not(.played) .bmatch,.bracket:not(.played) .bpath,.bracket:not(.played) .bpath-alive,.bracket:not(.played) .btrophy{opacity:1;transform:none;stroke-dashoffset:0}
   .bracket.played .bmatch,.bracket.played .bpath,.bracket.played .btrophy{animation:none}
-  .bracket.focus-live .bpath-live.hl,.bracket.focus-out .bpath-out.hl{animation:none;stroke-dashoffset:0}
-  .bracket.focus-live .bpath-alive.hl{animation:none;opacity:1}
+  .bracket.focus-live .bpath.bpath-live.hl,.bracket.focus-out .bpath.bpath-out.hl{animation:none;stroke-dashoffset:0}
+  .bracket.focus-live .bpath.bpath-alive.hl{animation:none;opacity:1}
   .bracket.focus-live .bteam.hl .bcap-wrap::after{animation:none}
 }
 /* -- Favoris (champion / buteur) : classement + carte -- */
