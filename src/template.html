@@ -189,6 +189,25 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .recap-body p{margin:8px 0}
 .recap-body b{color:#fff}
 .recap-match + .recap-match{margin-top:16px;padding-top:16px;border-top:1px solid #ffffff14}
+/* -- Parcours des phases finales (bracket) -- */
+.bracket{position:relative;margin:4px auto}
+.bracket-svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.bpath{fill:none;stroke:#8892c9;stroke-width:2;opacity:.5;pointer-events:stroke;
+  transition:opacity .15s,stroke .15s,stroke-width .15s}
+.bpath-alive{stroke:#ffd16688;stroke-dasharray:5 5}
+.bmatch{position:absolute;background:#141b3c;border:1px solid #ffffff22;border-radius:8px;overflow:hidden;font-size:12px;z-index:2}
+.bteam{display:flex;align-items:center;gap:6px;padding:4px 8px;cursor:pointer;transition:opacity .15s,background .15s}
+.bteam+.bteam{border-top:1px solid #ffffff12}
+.bteam .bname{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bteam .bscore{font-weight:700;color:var(--gold)}
+.bwin .bname{font-weight:800;color:#fff}
+.blose{opacity:.5}
+.btrophy{position:absolute;font-size:34px;z-index:2;filter:drop-shadow(0 0 9px var(--gold));animation:float 3.6s ease-in-out infinite}
+.bracket.focus .bteam{opacity:.22}
+.bracket.focus .bteam.hl{opacity:1;background:#ffd16620}
+.bracket.focus .bpath{opacity:.07}
+.bracket.focus .bpath.hl{opacity:1;stroke:var(--gold);stroke-width:3.5}
+@media (prefers-reduced-motion: reduce){.btrophy{animation:none}}
 /* -- Favoris (champion / buteur) : classement + carte -- */
 .fav-item{display:inline-flex;align-items:center;gap:8px;font-weight:600;white-space:nowrap}
 .fav-img{width:26px;height:26px;object-fit:contain;flex:0 0 auto}

@@ -55,6 +55,7 @@ function renderHero(root) {
       <a href="#classement">Classement</a>
       <a href="#bilan">Bilan</a>
       <a href="#graphe">Évolution</a>
+      <a href="#parcours">Parcours</a>
       <a href="#pronos">Pronostics</a>
       <a href="#compare">Duel</a>
       <a href="#awards">Superlatifs</a>
@@ -718,6 +719,7 @@ function initApp() {
       </div>
     </section>`);
   initChart();
+  renderBracket();
   renderPronosShell();
   renderCompare();
   renderAwards();
@@ -1011,4 +1013,112 @@ function renderBilan() {
 function renderFooter() {
   document.getElementById('app').insertAdjacentHTML('beforeend',
     '<footer class="foot">SHRS Football Club — Coupe du Monde 2026 • généré statiquement</footer>');
+}
+
+// -- Parcours des phases finales : bracket + traces vers le trophée ------
+const BRACKET_ROUNDS = ['16es', '8es', 'Quarts', 'Demies', 'Finale'];
+
+function renderBracket() {
+  const all = window.__WC.matches;
+  const flagOf = {};
+  for (const m of all) { flagOf[m.team1] = m.flag1; flagOf[m.team2] = m.flag2; }
+  const rounds = BRACKET_ROUNDS
+    .map((ph) => ({ ph, list: all.filter((m) => m.phase === ph) }))
+    .filter((r) => r.list.length);
+  if (rounds.length < 2) return;
+  const teamSet = rounds.map((r) => new Set(r.list.flatMap((m) => [m.team1, m.team2])));
+  const winnerOf = (m, ri) => {
+    if (ri + 1 < rounds.length) {
+      if (teamSet[ri + 1].has(m.team1)) return m.team1;
+      if (teamSet[ri + 1].has(m.team2)) return m.team2;
+      return null;
+    }
+    if (m.status !== 'played' || m.score1 === m.score2) return null;
+    return m.score1 > m.score2 ? m.team1 : m.team2;
+  };
+  const byDate = (a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+  // Layout récursif : chaque match centré sur ses deux qualifiés (feuilles = 1er tour présent).
+  let slot = 0;
+  const place = (m, ri) => {
+    if (ri === 0) { m._y = slot + 0.5; slot += 1; return m._y; }
+    const feeders = rounds[ri - 1].list
+      .filter((f) => { const w = winnerOf(f, ri - 1); return w === m.team1 || w === m.team2; })
+      .sort(byDate);
+    if (!feeders.length) { m._y = slot + 0.5; slot += 1; return m._y; }
+    const ys = feeders.map((f) => place(f, ri - 1));
+    m._y = ys.reduce((a, b) => a + b, 0) / ys.length;
+    return m._y;
+  };
+  const lastRi = rounds.length - 1;
+  rounds[lastRi].list.slice().sort(byDate).forEach((m) => place(m, lastRi));
+  for (const r of rounds) for (const m of r.list) if (m._y == null) { m._y = slot + 0.5; slot += 1; }
+
+  const SLOT = 46, BOXH = 40, COLW = 172;
+  const H = Math.max(rounds[0].list.length, 1) * SLOT;
+  const trophyX = rounds.length * COLW;
+  const W = trophyX + 92;
+
+  const teamRow = (t, s, w) => {
+    const cls = w === t ? 'bwin' : (w ? 'blose' : '');
+    return `<div class="bteam ${cls}" data-team="${t}">
+      <span class="bflag">${flagOf[t] || ''}</span><span class="bname">${t}</span>
+      <span class="bscore">${s ?? '–'}</span></div>`;
+  };
+  const boxHtml = rounds.map((r, ri) => r.list.map((m) => {
+    const w = winnerOf(m, ri);
+    const top = m._y * SLOT - BOXH / 2;
+    return `<div class="bmatch" style="left:${ri * COLW}px;top:${top}px;width:${COLW - 24}px">
+      ${teamRow(m.team1, m.status === 'played' ? m.score1 : null, w)}
+      ${teamRow(m.team2, m.status === 'played' ? m.score2 : null, w)}
+    </div>`;
+  }).join('')).join('');
+
+  let paths = '';
+  for (let ri = 0; ri + 1 < rounds.length; ri++) {
+    for (const m of rounds[ri].list) {
+      const w = winnerOf(m, ri); if (!w) continue;
+      const nm = rounds[ri + 1].list.find((x) => x.team1 === w || x.team2 === w); if (!nm) continue;
+      const ax = ri * COLW + (COLW - 24), ay = m._y * SLOT, bx = (ri + 1) * COLW, by = nm._y * SLOT, mid = (ax + bx) / 2;
+      paths += `<path class="bpath" data-team="${w}" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
+    }
+  }
+  // Traces « encore en course » vers le trophée (non-éliminés du dernier tour présent).
+  const alive = [];
+  for (const m of rounds[lastRi].list) {
+    if (m.status === 'played') { const w = winnerOf(m, lastRi); if (w) alive.push({ t: w, y: m._y }); }
+    else alive.push({ t: m.team1, y: m._y }, { t: m.team2, y: m._y });
+  }
+  const trophyY = H / 2;
+  for (const a of alive) {
+    const x0 = lastRi * COLW + (COLW - 24), y0 = a.y * SLOT;
+    paths += `<path class="bpath bpath-alive" data-team="${a.t}" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
+  }
+
+  document.getElementById('app').insertAdjacentHTML('beforeend', `
+    <section id="parcours" class="card">
+      <h2>🏟️ Parcours des phases finales</h2>
+      <p class="muted" style="margin:0 0 12px">Survolez une équipe (ou sa trace) pour suivre son chemin jusqu'au trophée.</p>
+      <div class="twrap"><div class="bracket" style="width:${W}px;height:${H}px">
+        <svg class="bracket-svg" width="${W}" height="${H}">${paths}</svg>
+        ${boxHtml}
+        <div class="btrophy" style="left:${trophyX}px;top:${trophyY - 22}px">🏆</div>
+      </div></div>
+    </section>`);
+  initBracketHover();
+}
+
+function initBracketHover() {
+  const b = document.querySelector('#parcours .bracket');
+  if (!b) return;
+  const clear = () => { b.classList.remove('focus'); b.querySelectorAll('.hl').forEach((x) => x.classList.remove('hl')); };
+  b.addEventListener('mouseover', (e) => {
+    const el = e.target.closest('[data-team]'); if (!el) return;
+    const t = el.dataset.team;
+    b.classList.add('focus');
+    b.querySelectorAll('[data-team]').forEach((x) => x.classList.toggle('hl', x.dataset.team === t));
+  });
+  b.addEventListener('mouseout', (e) => {
+    const to = e.relatedTarget;
+    if (!to || !to.closest || !to.closest('#parcours .bracket')) clear();
+  });
 }
