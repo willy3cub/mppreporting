@@ -53,11 +53,12 @@ Consignes par match :
 ```
 - **Rendu juste après le classement** (déjà câblé dans `initApp`).
 - **RÈGLE : ne commente QUE ce qui est directement lié à la dernière journée** — les matchs qui viennent d'être joués, leurs pronos, et les mouvements de classement de CETTE journée. **N'évoque pas** les paris long terme (équipes/buteurs éliminés lors de journées antérieures) ni un récap général des superlatifs, **sauf** si un titre a changé de main À CAUSE de cette journée (ex. un exact du soir fait basculer le Sniper) — là c'est lié, tu peux le glisser.
-- **2 à 3 paragraphes**, chacun **3-4 phrases max**, ton humoristique et très chambreur :
+- **3 à 4 paragraphes**, chacun **3-4 phrases max**, ton humoristique et très chambreur :
   1. **Mouvements au classement** de la journée : qui grimpe/plonge, le leader, l'écart en tête.
   2. **Pronos de la journée** : les coups de génie (exacts, pronos rares réussis) et les fours/0-pointés sur les matchs du jour — cite les joueurs.
   3. (optionnel) une **pique** liée à la journée (un superlatif qui bascule, une série qui casse…).
-- Appuie-toi sur les faits (classement, pronos notables). Reste factuel sous l'humour.
+  4. **Paragraphe teaser final OBLIGATOIRE** sur les **prochains matchs à venir** (les `status:"pending"` les plus proches, cf. `data/matches.json`) : annonce les affiches, les enjeux, avec des clins d'œil aux paris concernés (qui a misé sur telle équipe/tel buteur encore en lice). Toujours chambreur.
+- Appuie-toi sur les faits (classement, pronos notables) et sur les matchs à venir. Reste factuel sous l'humour.
 
 ### 6. Superlatifs & pronos rares
 Ils sont **recalculés automatiquement** côté front à partir de `data/forecasts.json` au build — aucun fichier à éditer. Vérifie juste, dans la sortie de `facts.mjs`, que les détenteurs ont du sens, et n'hésite pas à en citer dans le bilan.
