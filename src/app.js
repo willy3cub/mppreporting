@@ -648,6 +648,7 @@ function initReveal() {
       if (!e.isIntersecting) continue;
       e.target.classList.add('in');
       e.target.querySelectorAll('[data-count]').forEach(countUp);
+      e.target.querySelector('.bracket')?.classList.add('played');
       obs.unobserve(e.target);
     }
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
@@ -1067,7 +1068,8 @@ function renderBracket() {
   const boxHtml = rounds.map((r, ri) => r.list.map((m) => {
     const w = winnerOf(m, ri);
     const top = m._y * SLOT - BOXH / 2;
-    return `<div class="bmatch" style="left:${ri * COLW}px;top:${top}px;width:${COLW - 24}px">
+    const d = (ri * 0.22 + m._y * 0.02).toFixed(2);
+    return `<div class="bmatch" style="left:${ri * COLW}px;top:${top}px;width:${COLW - 24}px;--d:${d}s">
       ${teamRow(m.team1, m.status === 'played' ? m.score1 : null, w)}
       ${teamRow(m.team2, m.status === 'played' ? m.score2 : null, w)}
     </div>`;
@@ -1079,7 +1081,8 @@ function renderBracket() {
       const w = winnerOf(m, ri); if (!w) continue;
       const nm = rounds[ri + 1].list.find((x) => x.team1 === w || x.team2 === w); if (!nm) continue;
       const ax = ri * COLW + (COLW - 24), ay = m._y * SLOT, bx = (ri + 1) * COLW, by = nm._y * SLOT, mid = (ax + bx) / 2;
-      paths += `<path class="bpath" data-team="${w}" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
+      const d = (ri * 0.22 + 0.28).toFixed(2);
+      paths += `<path class="bpath" data-team="${w}" style="--d:${d}s" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
     }
   }
   // Traces « encore en course » vers le trophée (non-éliminés du dernier tour présent).
@@ -1089,19 +1092,25 @@ function renderBracket() {
     else alive.push({ t: m.team1, y: m._y }, { t: m.team2, y: m._y });
   }
   const trophyY = H / 2;
+  const aliveDelay = (lastRi * 0.22 + 0.45).toFixed(2);
   for (const a of alive) {
     const x0 = lastRi * COLW + (COLW - 24), y0 = a.y * SLOT;
-    paths += `<path class="bpath bpath-alive" data-team="${a.t}" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
+    paths += `<path class="bpath bpath-alive" data-team="${a.t}" style="--d:${aliveDelay}s" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
   }
+  const trophyDelay = (rounds.length * 0.22 + 0.55).toFixed(2);
 
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="parcours" class="card">
       <h2>🏟️ Parcours des phases finales</h2>
       <p class="muted" style="margin:0 0 12px">Survolez une équipe (ou sa trace) pour suivre son chemin jusqu'au trophée.</p>
       <div class="twrap"><div class="bracket" style="width:${W}px;height:${H}px">
-        <svg class="bracket-svg" width="${W}" height="${H}">${paths}</svg>
+        <svg class="bracket-svg" width="${W}" height="${H}">
+          <defs><linearGradient id="bp" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#6b74b8"/><stop offset="1" stop-color="#ffd166"/></linearGradient></defs>
+          ${paths}
+        </svg>
         ${boxHtml}
-        <div class="btrophy" style="left:${trophyX}px;top:${trophyY - 22}px">🏆</div>
+        <div class="btrophy" style="left:${trophyX}px;top:${trophyY - 22}px;--d:${trophyDelay}s"><span class="btrophy-halo"></span>🏆</div>
       </div></div>
     </section>`);
   initBracketHover();
