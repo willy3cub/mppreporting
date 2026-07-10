@@ -1075,6 +1075,17 @@ function renderBracket() {
     </div>`;
   }).join('')).join('');
 
+  // Équipes éliminées = perdantes d'un match joué (les autres sont encore en course).
+  const eliminated = new Set();
+  for (let ri = 0; ri < rounds.length; ri++) {
+    for (const m of rounds[ri].list) {
+      if (m.status !== 'played') continue;
+      const w = winnerOf(m, ri); if (!w) continue;
+      eliminated.add(w === m.team1 ? m.team2 : m.team1);
+    }
+  }
+  const isAlive = (t) => !eliminated.has(t);
+
   let paths = '';
   for (let ri = 0; ri + 1 < rounds.length; ri++) {
     for (const m of rounds[ri].list) {
@@ -1082,7 +1093,8 @@ function renderBracket() {
       const nm = rounds[ri + 1].list.find((x) => x.team1 === w || x.team2 === w); if (!nm) continue;
       const ax = ri * COLW + (COLW - 24), ay = m._y * SLOT, bx = (ri + 1) * COLW, by = nm._y * SLOT, mid = (ax + bx) / 2;
       const d = (ri * 0.22 + 0.28).toFixed(2);
-      paths += `<path class="bpath" data-team="${w}" style="--d:${d}s" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
+      const cls = isAlive(w) ? 'bpath-live' : 'bpath-out';
+      paths += `<path class="bpath ${cls}" data-team="${w}" style="--d:${d}s" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
     }
   }
   // Traces « encore en course » vers le trophée (non-éliminés du dernier tour présent).
@@ -1102,11 +1114,11 @@ function renderBracket() {
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="parcours" class="card">
       <h2>🏟️ Parcours des phases finales</h2>
-      <p class="muted" style="margin:0 0 12px">Survolez une équipe (ou sa trace) pour suivre son chemin jusqu'au trophée.</p>
+      <p class="muted" style="margin:0 0 12px">Survolez une équipe (ou sa trace) pour suivre son chemin.
+        <span class="brk-leg"><i class="brk-swatch live"></i>encore en course</span>
+        <span class="brk-leg"><i class="brk-swatch out"></i>éliminée</span></p>
       <div class="twrap"><div class="bracket" style="width:${W}px;height:${H}px">
         <svg class="bracket-svg" width="${W}" height="${H}">
-          <defs><linearGradient id="bp" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#6b74b8"/><stop offset="1" stop-color="#ffd166"/></linearGradient></defs>
           ${paths}
         </svg>
         ${boxHtml}

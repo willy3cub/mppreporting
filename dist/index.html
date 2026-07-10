@@ -192,9 +192,16 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 /* -- Parcours des phases finales (bracket cinématique) -- */
 .bracket{position:relative;margin:4px auto}
 .bracket-svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
-.bpath{fill:none;stroke:url(#bp);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.55;
+.bpath{fill:none;stroke:#5b6488;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.5;
   stroke-dasharray:680;pointer-events:stroke;transition:opacity .18s,stroke-width .18s,filter .18s}
-.bpath-alive{stroke:#ffd166;opacity:.6;stroke-dasharray:5 7}
+/* équipe encore en course : trace dorée ; éliminée : trace froide et estompée */
+.bpath-live{stroke:#ffd166;opacity:.7;stroke-width:2.6}
+.bpath-out{stroke:#5b6488;opacity:.32;stroke-width:1.7}
+.bpath-alive{stroke:#ffd166;opacity:.65;stroke-dasharray:5 7;filter:drop-shadow(0 0 3px #ffd16655)}
+.brk-leg{display:inline-flex;align-items:center;gap:5px;margin-left:14px;font-size:12px}
+.brk-swatch{display:inline-block;width:16px;height:3px;border-radius:2px}
+.brk-swatch.live{background:#ffd166}
+.brk-swatch.out{background:#5b6488}
 .bmatch{position:absolute;background:#141b3c;border:1px solid #ffffff22;border-radius:9px;overflow:hidden;font-size:12px;z-index:2;
   box-shadow:0 4px 14px #00000040}
 .bteam{display:flex;align-items:center;gap:6px;padding:4px 8px;cursor:pointer;transition:opacity .18s,background .18s,transform .18s}
@@ -1426,6 +1433,17 @@ function renderBracket() {
     </div>`;
   }).join('')).join('');
 
+  // Équipes éliminées = perdantes d'un match joué (les autres sont encore en course).
+  const eliminated = new Set();
+  for (let ri = 0; ri < rounds.length; ri++) {
+    for (const m of rounds[ri].list) {
+      if (m.status !== 'played') continue;
+      const w = winnerOf(m, ri); if (!w) continue;
+      eliminated.add(w === m.team1 ? m.team2 : m.team1);
+    }
+  }
+  const isAlive = (t) => !eliminated.has(t);
+
   let paths = '';
   for (let ri = 0; ri + 1 < rounds.length; ri++) {
     for (const m of rounds[ri].list) {
@@ -1433,7 +1451,8 @@ function renderBracket() {
       const nm = rounds[ri + 1].list.find((x) => x.team1 === w || x.team2 === w); if (!nm) continue;
       const ax = ri * COLW + (COLW - 24), ay = m._y * SLOT, bx = (ri + 1) * COLW, by = nm._y * SLOT, mid = (ax + bx) / 2;
       const d = (ri * 0.22 + 0.28).toFixed(2);
-      paths += `<path class="bpath" data-team="${w}" style="--d:${d}s" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
+      const cls = isAlive(w) ? 'bpath-live' : 'bpath-out';
+      paths += `<path class="bpath ${cls}" data-team="${w}" style="--d:${d}s" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
     }
   }
   // Traces « encore en course » vers le trophée (non-éliminés du dernier tour présent).
@@ -1453,11 +1472,11 @@ function renderBracket() {
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="parcours" class="card">
       <h2>🏟️ Parcours des phases finales</h2>
-      <p class="muted" style="margin:0 0 12px">Survolez une équipe (ou sa trace) pour suivre son chemin jusqu'au trophée.</p>
+      <p class="muted" style="margin:0 0 12px">Survolez une équipe (ou sa trace) pour suivre son chemin.
+        <span class="brk-leg"><i class="brk-swatch live"></i>encore en course</span>
+        <span class="brk-leg"><i class="brk-swatch out"></i>éliminée</span></p>
       <div class="twrap"><div class="bracket" style="width:${W}px;height:${H}px">
         <svg class="bracket-svg" width="${W}" height="${H}">
-          <defs><linearGradient id="bp" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#6b74b8"/><stop offset="1" stop-color="#ffd166"/></linearGradient></defs>
           ${paths}
         </svg>
         ${boxHtml}

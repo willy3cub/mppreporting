@@ -192,9 +192,16 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 /* -- Parcours des phases finales (bracket cinématique) -- */
 .bracket{position:relative;margin:4px auto}
 .bracket-svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
-.bpath{fill:none;stroke:url(#bp);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.55;
+.bpath{fill:none;stroke:#5b6488;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.5;
   stroke-dasharray:680;pointer-events:stroke;transition:opacity .18s,stroke-width .18s,filter .18s}
-.bpath-alive{stroke:#ffd166;opacity:.6;stroke-dasharray:5 7}
+/* équipe encore en course : trace dorée ; éliminée : trace froide et estompée */
+.bpath-live{stroke:#ffd166;opacity:.7;stroke-width:2.6}
+.bpath-out{stroke:#5b6488;opacity:.32;stroke-width:1.7}
+.bpath-alive{stroke:#ffd166;opacity:.65;stroke-dasharray:5 7;filter:drop-shadow(0 0 3px #ffd16655)}
+.brk-leg{display:inline-flex;align-items:center;gap:5px;margin-left:14px;font-size:12px}
+.brk-swatch{display:inline-block;width:16px;height:3px;border-radius:2px}
+.brk-swatch.live{background:#ffd166}
+.brk-swatch.out{background:#5b6488}
 .bmatch{position:absolute;background:#141b3c;border:1px solid #ffffff22;border-radius:9px;overflow:hidden;font-size:12px;z-index:2;
   box-shadow:0 4px 14px #00000040}
 .bteam{display:flex;align-items:center;gap:6px;padding:4px 8px;cursor:pointer;transition:opacity .18s,background .18s,transform .18s}
