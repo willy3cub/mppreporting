@@ -29,9 +29,9 @@ function avatarThumb(p, extraClass = '') {
 // Cellule "favori" (champion ou buteur pronostiqué) : image + nom, grisé si éliminé.
 function favCell(fav, round) {
   if (!fav) return '<span class="muted">—</span>';
-  return `<span class="fav-item ${fav.eliminated ? 'fav-out' : ''}">
+  return `<span class="fav-item ${fav.eliminated ? 'fav-out' : ''}"${fav.eliminated ? ` title="${fav.name} — éliminé"` : ''}>
       ${fav.img ? `<img class="fav-img ${round ? 'fav-round' : ''}" src="${fav.img}" alt="">` : ''}
-      <span>${fav.name}${fav.eliminated ? ' <span class="fav-x">éliminé</span>' : ''}</span></span>`;
+      <span class="fav-name">${fav.name}${fav.eliminated ? ' <span class="fav-x">éliminé</span>' : ''}</span></span>`;
 }
 function favOf(uid) { return (window.__WC.favorites || {})[uid] || {}; }
 
@@ -187,7 +187,7 @@ function renderClassement() {
     <section id="classement" class="card">
       <h2>🏆 Classement</h2>
       <div class="twrap"><table class="tbl">
-        <thead><tr><th>#</th><th>Joueur</th><th>Pseudo</th><th>🏆 Champion</th><th>⚽ Buteur</th><th>Évol</th><th>+pts</th><th>Total</th></tr></thead>
+        <thead><tr><th>#</th><th>Joueur</th><th class="ps">Pseudo</th><th>🏆 Champion</th><th>⚽ Buteur</th><th class="ev">Évol</th><th class="dp">+pts</th><th>Total</th></tr></thead>
         <tbody>${rows}</tbody>
       </table></div>
     </section>`);

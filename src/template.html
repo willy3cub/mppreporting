@@ -357,6 +357,54 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   .badge:hover::after{animation:none}
   .rare-item:hover,.pill:hover,.pname-link:hover .avt,.fav-item:hover .fav-img,.badge:hover .badge-img{transform:none}
 }
+/* ============ RESPONSIVE / MOBILE ============ */
+@media (max-width: 720px){
+  #app{padding:14px 12px}
+  .hero{padding:24px 6px 6px}
+  .hero .trophy{font-size:36px}
+  .hero h1{font-size:23px;letter-spacing:1px}
+  .hero .sub{font-size:14px}
+  .nav{gap:6px;padding:8px 4px}
+  .nav a{font-size:13px;padding:5px 11px}
+  .card{padding:14px 12px;margin:16px 0}
+  .card h2{font-size:18px}
+  .podium{gap:8px;margin:20px 0}
+  .podium .step{min-width:0;flex:1 1 0;padding:12px 6px}
+  .podium .step-1{padding-bottom:28px}
+  .podium .step-2{padding-bottom:18px}
+  .podium .avt-lg{width:46px;height:46px;font-size:18px}
+  .podium .medal{font-size:24px}
+  .podium .pname{font-size:14px}
+  .podium .consol{margin-left:8px}
+  .recap-score{font-size:18px;gap:6px}
+  .recap-cap{width:28px;height:28px}
+  .tbl{font-size:13px}
+  .tbl th,.tbl td{padding:7px 6px}
+  .tbl .rk{width:34px;font-size:16px}
+  .prose{font-size:15px}
+  .stats{gap:10px}
+  .stat{min-width:calc(50% - 5px);flex:1 1 calc(50% - 5px)}
+}
+@media (max-width: 480px){
+  .hero h1{font-size:19px;letter-spacing:.5px}
+  /* Classement : le tableau tient sans scroll — colonnes secondaires masquées,
+     Champion/Buteur réduits à l'icône (nom au survol / titre ; grisé+liseré si éliminé) */
+  .tbl .ps,.tbl .dp,.tbl .ev{display:none}
+  .tbl th,.tbl td{padding:7px 5px}
+  .tbl .fav-name{display:none}
+  .fav-item{gap:0}
+  .fav-img{width:26px;height:26px}
+  .fav-out .fav-img{outline:2px solid #ff6b6bcc;outline-offset:1px;border-radius:5px}
+  /* Podium : l'avant-dernier passe sous le trio (sa propre ligne) pour ne pas serrer */
+  .podium{flex-wrap:wrap}
+  .podium .consol{flex:0 0 100%;margin:12px 0 0;order:9}
+  .badges-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+  .pcard{padding:18px 14px}
+  .pcard-stats{flex-wrap:wrap}
+  .cmp-picks{gap:8px}
+  /* indice de défilement horizontal pour la grille de pronos et le bracket */
+  .twrap{-webkit-overflow-scrolling:touch}
+}
 </style>
 </head>
 <body>
