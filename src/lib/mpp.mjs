@@ -9,13 +9,13 @@ export function phaseFor(roundType) { return PHASES[roundType] || 'Poules'; }
 // renvoyés par championship-clubs (voir data). Fallback "".
 const FLAGS = {
   'France': '🇫🇷', 'Argentine': '🇦🇷', 'Maroc': '🇲🇦', 'Égypte': '🇪🇬', 'Suisse': '🇨🇭',
-  'Colombie': '🇨🇴', 'Brésil': '🇧🇷', 'Espagne': '🇪🇸', 'Angleterre': '🏴', 'Portugal': '🇵🇹',
+  'Colombie': '🇨🇴', 'Brésil': '🇧🇷', 'Espagne': '🇪🇸', 'Angleterre': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'Portugal': '🇵🇹',
   'Allemagne': '🇩🇪', 'Pays-Bas': '🇳🇱', 'Italie': '🇮🇹', 'Belgique': '🇧🇪', 'Croatie': '🇭🇷',
   'Uruguay': '🇺🇾', 'États-Unis': '🇺🇸', 'Mexique': '🇲🇽', 'Canada': '🇨🇦', 'Japon': '🇯🇵',
   'Corée du Sud': '🇰🇷', 'Sénégal': '🇸🇳', 'Nigeria': '🇳🇬', 'Ghana': '🇬🇭', 'Cameroun': '🇨🇲',
   'Australie': '🇦🇺', 'Danemark': '🇩🇰', 'Serbie': '🇷🇸', 'Pologne': '🇵🇱', 'Suède': '🇸🇪',
   'Équateur': '🇪🇨', 'Pérou': '🇵🇪', 'Chili': '🇨🇱', 'Tunisie': '🇹🇳', 'Algérie': '🇩🇿',
-  'Côte d\'Ivoire': '🇨🇮', 'Autriche': '🇦🇹', 'Norvège': '🇳🇴', 'Écosse': '🏴', 'Turquie': '🇹🇷',
+  'Côte d\'Ivoire': '🇨🇮', 'Autriche': '🇦🇹', 'Norvège': '🇳🇴', 'Écosse': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'Turquie': '🇹🇷',
   'Iran': '🇮🇷', 'Arabie saoudite': '🇸🇦', 'Qatar': '🇶🇦', 'Ukraine': '🇺🇦', 'Grèce': '🇬🇷',
   'Paraguay': '🇵🇾', 'Costa Rica': '🇨🇷', 'Panama': '🇵🇦',
   // Complété avec les noms exacts renvoyés par championship-clubs (CDM 2026).
