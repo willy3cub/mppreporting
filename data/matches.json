@@ -1282,9 +1282,9 @@
     "flag1": "🇳🇴",
     "team2": "Angleterre",
     "flag2": "🏴",
-    "score1": null,
-    "score2": null,
-    "status": "pending"
+    "score1": 1,
+    "score2": 2,
+    "status": "played"
   },
   {
     "id": "mpp_championship_match_2608358",
@@ -1295,9 +1295,9 @@
     "flag1": "🇦🇷",
     "team2": "Suisse",
     "flag2": "🇨🇭",
-    "score1": null,
-    "score2": null,
-    "status": "pending"
+    "score1": 3,
+    "score2": 1,
+    "status": "played"
   },
   {
     "id": "mpp_championship_match_2608359",
@@ -1308,6 +1308,19 @@
     "flag1": "🇫🇷",
     "team2": "Espagne",
     "flag2": "🇪🇸",
+    "score1": null,
+    "score2": null,
+    "status": "pending"
+  },
+  {
+    "id": "mpp_championship_match_2608360",
+    "gameWeek": 7,
+    "phase": "Demies",
+    "date": "2026-07-15T19:00:00.000Z",
+    "team1": "Angleterre",
+    "flag1": "🏴",
+    "team2": "Argentine",
+    "flag2": "🇦🇷",
     "score1": null,
     "score2": null,
     "status": "pending"

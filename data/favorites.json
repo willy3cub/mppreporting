@@ -101,7 +101,7 @@
     "team": {
       "name": "Belgique",
       "points": 250,
-      "eliminated": false,
+      "eliminated": true,
       "img": "team-360.png"
     },
     "scorer": {
