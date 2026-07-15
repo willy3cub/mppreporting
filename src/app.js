@@ -21,9 +21,11 @@ function ordinalFr(v) {
 }
 
 // Vignette avatar ronde : photo si dispo, sinon initiale sur fond couleur joueur.
-function avatarThumb(p, extraClass = '') {
+function avatarThumb(p, extraClass = '', dunce = false) {
   const inner = p.avatar ? `<img src="${p.avatar}" alt="">` : p.name.slice(0, 1);
-  return `<span class="avt ${extraClass}" style="--c:${p.color}">${inner}</span>`;
+  const avt = `<span class="avt ${extraClass}" style="--c:${p.color}">${inner}</span>`;
+  if (!dunce) return avt;
+  return `<span class="avt-wrap" data-hint="Bon dernier — bonnet d'âne obligatoire 🫏">${avt}${DUNCE_CAP_SVG}</span>`;
 }
 
 // Cellule "favori" (champion ou buteur pronostiqué) : image + nom, grisé si éliminé.
@@ -83,6 +85,20 @@ const FLAMES_SVG = `
       <path class="fl fl2" d="M60 106 C52 72 72 60 80 10 C88 60 108 72 100 106 C90 94 70 94 60 106 Z"/>
     </g>
     <path class="fl flcore" fill="#ffe680" d="M70 106 C66 82 76 72 80 40 C84 72 94 82 90 106 C84 96 76 96 70 106 Z"/>
+  </svg>`;
+
+// Bonnet d'âne du bon dernier : cône + oreilles d'âne qui dodelinent (pur SVG animé en CSS).
+const DUNCE_CAP_SVG = `
+  <svg class="dunce-cap" viewBox="0 0 60 64" aria-hidden="true">
+    <g class="dunce-wobble">
+      <g class="dunce-ears" fill="#d9d9e6" stroke="#9a9ab6" stroke-width="1.4" stroke-linejoin="round">
+        <path d="M24 32 C11 27 7 13 12 6 C19 11 25 22 27 32 Z"/>
+        <path d="M36 32 C49 27 53 13 48 6 C41 11 35 22 33 32 Z"/>
+      </g>
+      <path class="dunce-cone" d="M30 7 L45 51 L15 51 Z" fill="#f2d873" stroke="#b8912f" stroke-width="2" stroke-linejoin="round"/>
+      <text x="30" y="47" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="15" fill="#b8912f">D</text>
+      <circle cx="30" cy="7" r="3.6" fill="#e0574f" stroke="#a83b34" stroke-width="1"/>
+    </g>
   </svg>`;
 
 function renderPodium() {
@@ -165,6 +181,7 @@ function renderClassement() {
     const dp = s.pts - (prev[s.uid] ?? 0);
     const dr = (rankPrev[s.uid] ?? s.rank) - s.rank;
     const isAvd = s.rank === avdRank;
+    const isLast = s.rank === standings.length;
     const isLeader = s.rank === 1;
     const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || (isAvd ? '🏅' : `${s.rank}.`);
     const arrow = dr > 0 ? `<span class="up">▲${dr}</span>`
@@ -174,7 +191,7 @@ function renderClassement() {
     return `<tr class="${isLeader ? 'row-leader' : ''}${isAvd ? ' row-avd' : ''}">
       <td class="rk"${rkHint}>${medal}</td>
       <td class="pname-link" data-card-uid="${p.uid}" style="color:${p.color};font-weight:600">
-        <span class="pname-cell">${avatarThumb(p)}${p.name}</span></td>
+        <span class="pname-cell">${avatarThumb(p, '', isLast)}${p.name}</span></td>
       <td class="ps">${p.pseudo}</td>
       <td class="fav-col">${favCell(f.team, false)}</td>
       <td class="fav-col">${favCell(f.scorer, true)}</td>

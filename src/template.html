@@ -99,6 +99,11 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   background:var(--c);color:#0a0e27;font-weight:800;font-size:16px;overflow:hidden;flex:0 0 auto;
   border:2px solid color-mix(in srgb,var(--c) 70%,#fff)}
 .avt img{width:100%;height:100%;object-fit:cover}
+.avt-wrap{position:relative;display:inline-flex;flex:0 0 auto}
+.dunce-cap{position:absolute;left:50%;top:-19px;width:30px;height:32px;translate:-50% 0;z-index:4;
+  overflow:visible;pointer-events:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.dunce-wobble{transform-origin:30px 51px;animation:duncewob 2.6s ease-in-out infinite}
+@keyframes duncewob{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
 .avt-lg{width:56px;height:56px;font-size:22px;margin:2px auto 6px}
 .pname-cell{display:inline-flex;align-items:center;gap:9px}
 .podium .step .avt-lg{display:flex}
@@ -356,6 +361,7 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   .card-overlay,.pcard{animation:none}
   .badge:hover::after{animation:none}
   .rare-item:hover,.pill:hover,.pname-link:hover .avt,.fav-item:hover .fav-img,.badge:hover .badge-img{transform:none}
+  .dunce-wobble{animation:none;transform:rotate(-4deg)}
 }
 /* ============ RESPONSIVE / MOBILE ============ */
 @media (max-width: 720px){
