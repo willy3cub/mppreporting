@@ -1,806 +1,4 @@
 {
-  "user_8422848": {
-    "mpp_championship_match_2608241": {
-      "score1": 2,
-      "score2": 0,
-      "points": 69,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-06-11T06:39:23.308Z"
-    },
-    "mpp_championship_match_2608242": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-11T08:09:16.782Z"
-    },
-    "mpp_championship_match_2608243": {
-      "score1": 1,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-11T08:40:13.577Z"
-    },
-    "mpp_championship_match_2608247": {
-      "score1": 2,
-      "score2": 1,
-      "points": 74,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-12T12:19:47.401Z"
-    },
-    "mpp_championship_match_2608244": {
-      "score1": 0,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-12T12:19:52.947Z"
-    },
-    "mpp_championship_match_2608245": {
-      "score1": 1,
-      "score2": 1,
-      "points": 142,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-06-12T12:37:49.133Z"
-    },
-    "mpp_championship_match_2608246": {
-      "score1": 0,
-      "score2": 2,
-      "points": 44,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-12T12:27:29.617Z"
-    },
-    "mpp_championship_match_2608248": {
-      "score1": 1,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-12T12:39:31.992Z"
-    },
-    "mpp_championship_match_2608249": {
-      "score1": 4,
-      "score2": 0,
-      "points": 15,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-12T12:39:38.062Z"
-    },
-    "mpp_championship_match_2608251": {
-      "score1": 1,
-      "score2": 1,
-      "points": 115,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-12T12:39:43.487Z"
-    },
-    "mpp_championship_match_2608250": {
-      "score1": 0,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-14T13:17:50.437Z"
-    },
-    "mpp_championship_match_2608252": {
-      "score1": 2,
-      "score2": 1,
-      "points": 72,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-14T13:18:27.066Z"
-    },
-    "mpp_championship_match_2608255": {
-      "score1": 3,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-14T13:22:38.972Z"
-    },
-    "mpp_championship_match_2608253": {
-      "score1": 1,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-14T13:23:35.049Z"
-    },
-    "mpp_championship_match_2608256": {
-      "score1": 0,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-15T20:14:33.100Z"
-    },
-    "mpp_championship_match_2608254": {
-      "score1": 2,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-15T20:14:37.052Z"
-    },
-    "mpp_championship_match_2608257": {
-      "score1": 2,
-      "score2": 1,
-      "points": 46,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-15T20:14:39.152Z"
-    },
-    "mpp_championship_match_2608258": {
-      "score1": 0,
-      "score2": 3,
-      "points": 30,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-16T13:45:39.564Z"
-    },
-    "mpp_championship_match_2608259": {
-      "score1": 2,
-      "score2": 0,
-      "points": 43,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-16T13:46:11.341Z"
-    },
-    "mpp_championship_match_2608260": {
-      "score1": 2,
-      "score2": 0,
-      "points": 38,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-16T13:46:11.981Z"
-    },
-    "mpp_championship_match_2608261": {
-      "score1": 3,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-17T12:55:47.981Z"
-    },
-    "mpp_championship_match_2608263": {
-      "score1": 1,
-      "score2": 0,
-      "points": 59,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-17T12:56:05.113Z"
-    },
-    "mpp_championship_match_2608264": {
-      "score1": 2,
-      "score2": 1,
-      "points": 73,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-17T12:56:25.309Z"
-    },
-    "mpp_championship_match_2608262": {
-      "score1": 0,
-      "score2": 2,
-      "points": 44,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-17T12:56:26.864Z"
-    },
-    "mpp_championship_match_2608266": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-17T12:59:34.998Z"
-    },
-    "mpp_championship_match_2608268": {
-      "score1": 1,
-      "score2": 0,
-      "points": 76,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-17T12:59:37.830Z"
-    },
-    "mpp_championship_match_2608267": {
-      "score1": 2,
-      "score2": 0,
-      "points": 71,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-18T12:52:40.388Z"
-    },
-    "mpp_championship_match_2608265": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-18T12:52:54.565Z"
-    },
-    "mpp_championship_match_2608271": {
-      "score1": 2,
-      "score2": 1,
-      "points": 58,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-18T12:53:48.888Z"
-    },
-    "mpp_championship_match_2608270": {
-      "score1": 0,
-      "score2": 1,
-      "points": 141,
-      "result": "exact",
-      "rarity": 3,
-      "editedAt": "2026-06-19T17:21:21.151Z"
-    },
-    "mpp_championship_match_2608269": {
-      "score1": 4,
-      "score2": 0,
-      "points": 21,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-19T17:21:55.903Z"
-    },
-    "mpp_championship_match_2608272": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-19T17:22:24.851Z"
-    },
-    "mpp_championship_match_2608275": {
-      "score1": 2,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-19T17:22:40.557Z"
-    },
-    "mpp_championship_match_2608273": {
-      "score1": 3,
-      "score2": 1,
-      "points": 38,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-19T17:23:15.069Z"
-    },
-    "mpp_championship_match_2608274": {
-      "score1": 3,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-20T14:49:21.461Z"
-    },
-    "mpp_championship_match_2608276": {
-      "score1": 0,
-      "score2": 2,
-      "points": 91,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-20T14:49:50.205Z"
-    },
-    "mpp_championship_match_2608279": {
-      "score1": 2,
-      "score2": 0,
-      "points": 31,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-20T14:50:42.581Z"
-    },
-    "mpp_championship_match_2608277": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-20T14:51:39.561Z"
-    },
-    "mpp_championship_match_2608280": {
-      "score1": 1,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-21T16:08:30.698Z"
-    },
-    "mpp_championship_match_2608278": {
-      "score1": 0,
-      "score2": 1,
-      "points": 59,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-21T16:08:55.798Z"
-    },
-    "mpp_championship_match_2608283": {
-      "score1": 2,
-      "score2": 1,
-      "points": 63,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-21T16:09:27.847Z"
-    },
-    "mpp_championship_match_2608281": {
-      "score1": 3,
-      "score2": 1,
-      "points": 22,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-21T16:09:36.599Z"
-    },
-    "mpp_championship_match_2608282": {
-      "score1": 2,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-22T11:30:17.462Z"
-    },
-    "mpp_championship_match_2608284": {
-      "score1": 0,
-      "score2": 2,
-      "points": 67,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T11:30:34.338Z"
-    },
-    "mpp_championship_match_2608285": {
-      "score1": 2,
-      "score2": 0,
-      "points": 24,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T11:31:11.883Z"
-    },
-    "mpp_championship_match_2608287": {
-      "score1": 3,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-22T11:31:29.229Z"
-    },
-    "mpp_championship_match_2608288": {
-      "score1": 0,
-      "score2": 2,
-      "points": 36,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-23T16:29:30.565Z"
-    },
-    "mpp_championship_match_2608286": {
-      "score1": 2,
-      "score2": 1,
-      "points": 77,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-23T16:29:50.984Z"
-    },
-    "mpp_championship_match_2608291": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-23T16:30:10.960Z"
-    },
-    "mpp_championship_match_2608292": {
-      "score1": 3,
-      "score2": 1,
-      "points": 137,
-      "result": "exact",
-      "rarity": 3,
-      "editedAt": "2026-06-23T16:30:32.753Z"
-    },
-    "mpp_championship_match_2608293": {
-      "score1": 0,
-      "score2": 2,
-      "points": 48,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-24T16:20:11.544Z"
-    },
-    "mpp_championship_match_2608294": {
-      "score1": 3,
-      "score2": 0,
-      "points": 29,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-24T16:20:25.479Z"
-    },
-    "mpp_championship_match_2608289": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-24T16:20:43.910Z"
-    },
-    "mpp_championship_match_2608290": {
-      "score1": 1,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-24T16:22:15.693Z"
-    },
-    "mpp_championship_match_2608297": {
-      "score1": 1,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-24T16:22:57.829Z"
-    },
-    "mpp_championship_match_2608298": {
-      "score1": 0,
-      "score2": 2,
-      "points": 73,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-06-24T16:23:15.378Z"
-    },
-    "mpp_championship_match_2608299": {
-      "score1": 0,
-      "score2": 4,
-      "points": 56,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-25T14:00:25.753Z"
-    },
-    "mpp_championship_match_2608300": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-25T14:00:38.162Z"
-    },
-    "mpp_championship_match_2608295": {
-      "score1": 1,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-25T14:00:59.119Z"
-    },
-    "mpp_championship_match_2608296": {
-      "score1": 1,
-      "score2": 1,
-      "points": 104,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-25T14:01:10.832Z"
-    },
-    "mpp_championship_match_2608305": {
-      "score1": 0,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-25T14:01:28.016Z"
-    },
-    "mpp_championship_match_2608306": {
-      "score1": 2,
-      "score2": 1,
-      "points": 54,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-25T14:02:00.490Z"
-    },
-    "mpp_championship_match_2608303": {
-      "score1": 1,
-      "score2": 2,
-      "points": 57,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-26T15:04:28.522Z"
-    },
-    "mpp_championship_match_2608304": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-26T15:05:09.038Z"
-    },
-    "mpp_championship_match_2608301": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-26T15:05:52.848Z"
-    },
-    "mpp_championship_match_2608302": {
-      "score1": 1,
-      "score2": 1,
-      "points": 134,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-06-26T15:06:44.049Z"
-    },
-    "mpp_championship_match_2608311": {
-      "score1": 0,
-      "score2": 3,
-      "points": 32,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-26T15:07:29.481Z"
-    },
-    "mpp_championship_match_2608312": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-26T15:07:50.838Z"
-    },
-    "mpp_championship_match_2608309": {
-      "score1": 1,
-      "score2": 1,
-      "points": 102,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-27T16:36:10.483Z"
-    },
-    "mpp_championship_match_2608310": {
-      "score1": 2,
-      "score2": 1,
-      "points": 63,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-27T16:36:29.828Z"
-    },
-    "mpp_championship_match_2608307": {
-      "score1": 0,
-      "score2": 3,
-      "points": 32,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-27T16:36:43.404Z"
-    },
-    "mpp_championship_match_2608308": {
-      "score1": 1,
-      "score2": 1,
-      "points": 103,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-27T16:37:34.261Z"
-    },
-    "mpp_championship_match_2608313": {
-      "score1": 1,
-      "score2": 2,
-      "points": 64,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-27T16:37:50.125Z"
-    },
-    "mpp_championship_match_2608316": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-28T14:51:14.643Z"
-    },
-    "mpp_championship_match_2608314": {
-      "score1": 1,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-28T14:51:19.243Z"
-    },
-    "mpp_championship_match_2608315": {
-      "score1": 2,
-      "score2": 2,
-      "points": 114,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-29T15:10:49.908Z"
-    },
-    "mpp_championship_match_2608318": {
-      "score1": 2,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-29T15:11:30.639Z"
-    },
-    "mpp_championship_match_2608317": {
-      "score1": 3,
-      "score2": 1,
-      "points": 38,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-29T15:12:38.415Z"
-    },
-    "mpp_championship_match_2608319": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-30T15:47:10.996Z"
-    },
-    "mpp_championship_match_2608320": {
-      "score1": 2,
-      "score2": 1,
-      "points": 89,
-      "result": "exact",
-      "rarity": 3,
-      "editedAt": "2026-06-30T15:47:42.605Z"
-    },
-    "mpp_championship_match_2608322": {
-      "score1": 1,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-30T15:47:59.794Z"
-    },
-    "mpp_championship_match_2608321": {
-      "score1": 2,
-      "score2": 1,
-      "points": 52,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-01T15:42:59.217Z"
-    },
-    "mpp_championship_match_2608324": {
-      "score1": 2,
-      "score2": 1,
-      "points": 41,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-01T15:43:30.157Z"
-    },
-    "mpp_championship_match_2608323": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-07-02T17:06:08.212Z"
-    },
-    "mpp_championship_match_2608325": {
-      "score1": 2,
-      "score2": 1,
-      "points": 61,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-02T17:06:48.534Z"
-    },
-    "mpp_championship_match_2608328": {
-      "score1": 1,
-      "score2": 1,
-      "points": 126,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-07-02T17:07:42.761Z"
-    },
-    "mpp_championship_match_2608326": {
-      "score1": 2,
-      "score2": 0,
-      "points": 25,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-03T20:17:56.112Z"
-    },
-    "mpp_championship_match_2608327": {
-      "score1": 1,
-      "score2": 0,
-      "points": 116,
-      "result": "exact",
-      "rarity": 3,
-      "editedAt": "2026-07-03T20:19:20.881Z"
-    },
-    "mpp_championship_match_2608348": {
-      "score1": 1,
-      "score2": 2,
-      "points": 68,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-03T20:19:43.815Z"
-    },
-    "mpp_championship_match_2608347": {
-      "score1": 0,
-      "score2": 2,
-      "points": 28,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-03T22:17:36.956Z"
-    },
-    "mpp_championship_match_2608349": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-07-04T18:49:51.419Z"
-    },
-    "mpp_championship_match_2608350": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-07-05T22:12:53.199Z"
-    },
-    "mpp_championship_match_2608351": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-07-05T22:10:20.266Z"
-    },
-    "mpp_championship_match_2608352": {
-      "score1": 1,
-      "score2": 2,
-      "points": 100,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-05T22:13:19.730Z"
-    },
-    "mpp_championship_match_2608353": {
-      "score1": 2,
-      "score2": 0,
-      "points": 43,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-05T22:13:40.425Z"
-    },
-    "mpp_championship_match_2608354": {
-      "score1": 1,
-      "score2": 1,
-      "points": 113,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-05T22:13:54.534Z"
-    },
-    "mpp_championship_match_2608355": {
-      "score1": 2,
-      "score2": 1,
-      "points": 54,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-08T13:24:14.924Z"
-    },
-    "mpp_championship_match_2608356": {
-      "score1": 2,
-      "score2": 1,
-      "points": 80,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-07-09T06:15:27.690Z"
-    },
-    "mpp_championship_match_2608357": {
-      "score1": 3,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-07-11T09:26:35.323Z"
-    },
-    "mpp_championship_match_2608358": {
-      "score1": 2,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-07-11T09:26:46.916Z"
-    }
-  },
   "user_10698233": {
     "mpp_championship_match_2608241": {
       "score1": 3,
@@ -1601,6 +799,14 @@
       "result": "result",
       "rarity": 0,
       "editedAt": "2026-07-08T16:48:08.024Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-11T11:21:37.691Z"
     }
   },
   "user_8701920": {
@@ -2403,808 +1609,14 @@
       "result": "result",
       "rarity": 0,
       "editedAt": "2026-07-11T17:05:48.257Z"
-    }
-  },
-  "user_10189113": {
-    "mpp_championship_match_2608241": {
-      "score1": 2,
-      "score2": 0,
-      "points": 69,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-06-10T21:54:42.670Z"
     },
-    "mpp_championship_match_2608242": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:54:51.782Z"
-    },
-    "mpp_championship_match_2608243": {
-      "score1": 0,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:55:17.680Z"
-    },
-    "mpp_championship_match_2608247": {
-      "score1": 2,
-      "score2": 1,
-      "points": 74,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:55:29.960Z"
-    },
-    "mpp_championship_match_2608244": {
-      "score1": 0,
-      "score2": 3,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:55:36.129Z"
-    },
-    "mpp_championship_match_2608245": {
-      "score1": 2,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:55:56.029Z"
-    },
-    "mpp_championship_match_2608246": {
-      "score1": 1,
-      "score2": 4,
-      "points": 44,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:56:04.228Z"
-    },
-    "mpp_championship_match_2608248": {
-      "score1": 0,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:56:18.453Z"
-    },
-    "mpp_championship_match_2608249": {
-      "score1": 4,
-      "score2": 0,
-      "points": 15,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:56:27.016Z"
-    },
-    "mpp_championship_match_2608251": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:56:47.480Z"
-    },
-    "mpp_championship_match_2608250": {
-      "score1": 2,
-      "score2": 1,
-      "points": 108,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:57:02.454Z"
-    },
-    "mpp_championship_match_2608252": {
-      "score1": 0,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:57:13.146Z"
-    },
-    "mpp_championship_match_2608255": {
-      "score1": 3,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:57:18.317Z"
-    },
-    "mpp_championship_match_2608253": {
-      "score1": 3,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:57:31.726Z"
-    },
-    "mpp_championship_match_2608256": {
-      "score1": 0,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:57:37.891Z"
-    },
-    "mpp_championship_match_2608254": {
-      "score1": 0,
-      "score2": 0,
-      "points": 116,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:57:47.625Z"
-    },
-    "mpp_championship_match_2608257": {
-      "score1": 2,
-      "score2": 0,
-      "points": 46,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:58:01.303Z"
-    },
-    "mpp_championship_match_2608258": {
-      "score1": 0,
-      "score2": 2,
-      "points": 30,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:58:11.379Z"
-    },
-    "mpp_championship_match_2608259": {
-      "score1": 2,
-      "score2": 1,
-      "points": 43,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:58:44.900Z"
-    },
-    "mpp_championship_match_2608260": {
-      "score1": 1,
-      "score2": 0,
-      "points": 38,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:58:51.785Z"
-    },
-    "mpp_championship_match_2608261": {
-      "score1": 3,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:59:00.499Z"
-    },
-    "mpp_championship_match_2608263": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:59:06.653Z"
-    },
-    "mpp_championship_match_2608264": {
-      "score1": 2,
-      "score2": 0,
-      "points": 73,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:59:20.744Z"
-    },
-    "mpp_championship_match_2608262": {
-      "score1": 0,
-      "score2": 2,
-      "points": 44,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-10T21:59:38.365Z"
-    },
-    "mpp_championship_match_2608266": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-18T07:13:57.460Z"
-    },
-    "mpp_championship_match_2608268": {
-      "score1": 1,
-      "score2": 0,
-      "points": 76,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-18T07:58:05.656Z"
-    },
-    "mpp_championship_match_2608267": {
-      "score1": 2,
-      "score2": 1,
-      "points": 71,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-18T21:29:28.822Z"
-    },
-    "mpp_championship_match_2608265": {
-      "score1": 2,
-      "score2": 0,
-      "points": 69,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-18T21:28:47.432Z"
-    },
-    "mpp_championship_match_2608271": {
-      "score1": 4,
-      "score2": 1,
-      "points": 58,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-18T21:30:17.629Z"
-    },
-    "mpp_championship_match_2608270": {
-      "score1": 1,
-      "score2": 2,
-      "points": 91,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:12:55.780Z"
-    },
-    "mpp_championship_match_2608269": {
-      "score1": 5,
-      "score2": 0,
-      "points": 21,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:13:03.675Z"
-    },
-    "mpp_championship_match_2608272": {
-      "score1": 2,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:13:21.684Z"
-    },
-    "mpp_championship_match_2608275": {
-      "score1": 3,
-      "score2": 2,
-      "points": 67,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:14:01.791Z"
-    },
-    "mpp_championship_match_2608273": {
-      "score1": 3,
-      "score2": 0,
-      "points": 38,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:14:13.234Z"
-    },
-    "mpp_championship_match_2608274": {
-      "score1": 3,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:14:26.792Z"
-    },
-    "mpp_championship_match_2608276": {
-      "score1": 1,
-      "score2": 3,
-      "points": 91,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:14:37.466Z"
-    },
-    "mpp_championship_match_2608279": {
-      "score1": 3,
-      "score2": 0,
-      "points": 31,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:14:49.926Z"
-    },
-    "mpp_championship_match_2608277": {
-      "score1": 4,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:14:58.124Z"
-    },
-    "mpp_championship_match_2608280": {
-      "score1": 2,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:15:06.290Z"
-    },
-    "mpp_championship_match_2608278": {
-      "score1": 0,
-      "score2": 1,
-      "points": 59,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:15:12.490Z"
-    },
-    "mpp_championship_match_2608283": {
-      "score1": 3,
-      "score2": 1,
-      "points": 63,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:15:17.898Z"
-    },
-    "mpp_championship_match_2608281": {
-      "score1": 3,
-      "score2": 0,
-      "points": 42,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-06-19T08:17:58.411Z"
-    },
-    "mpp_championship_match_2608282": {
-      "score1": 2,
-      "score2": 1,
-      "points": 64,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:43:28.231Z"
-    },
-    "mpp_championship_match_2608284": {
-      "score1": 0,
-      "score2": 2,
-      "points": 67,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:43:38.009Z"
-    },
-    "mpp_championship_match_2608285": {
-      "score1": 3,
-      "score2": 1,
-      "points": 24,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:43:42.515Z"
-    },
-    "mpp_championship_match_2608287": {
-      "score1": 4,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:43:50.910Z"
-    },
-    "mpp_championship_match_2608288": {
-      "score1": 0,
-      "score2": 2,
-      "points": 36,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:43:59.226Z"
-    },
-    "mpp_championship_match_2608286": {
-      "score1": 2,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:44:04.785Z"
-    },
-    "mpp_championship_match_2608291": {
-      "score1": 2,
-      "score2": 0,
-      "points": 68,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:44:23.540Z"
-    },
-    "mpp_championship_match_2608292": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:44:30.277Z"
-    },
-    "mpp_championship_match_2608293": {
-      "score1": 0,
-      "score2": 2,
-      "points": 48,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:44:36.294Z"
-    },
-    "mpp_championship_match_2608294": {
-      "score1": 2,
-      "score2": 0,
-      "points": 29,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:44:58.291Z"
-    },
-    "mpp_championship_match_2608289": {
-      "score1": 1,
-      "score2": 2,
-      "points": 91,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:45:01.603Z"
-    },
-    "mpp_championship_match_2608290": {
-      "score1": 1,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:45:23.294Z"
-    },
-    "mpp_championship_match_2608297": {
-      "score1": 0,
-      "score2": 3,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:45:29.388Z"
-    },
-    "mpp_championship_match_2608298": {
-      "score1": 0,
-      "score2": 2,
-      "points": 73,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-06-22T19:45:34.896Z"
-    },
-    "mpp_championship_match_2608299": {
-      "score1": 1,
-      "score2": 2,
-      "points": 56,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:45:43.020Z"
-    },
-    "mpp_championship_match_2608300": {
-      "score1": 2,
-      "score2": 2,
-      "points": 108,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:45:46.956Z"
-    },
-    "mpp_championship_match_2608295": {
-      "score1": 1,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:45:58.983Z"
-    },
-    "mpp_championship_match_2608296": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-19T12:13:43.023Z"
-    },
-    "mpp_championship_match_2608305": {
-      "score1": 1,
-      "score2": 3,
-      "points": 68,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:46:06.877Z"
-    },
-    "mpp_championship_match_2608306": {
-      "score1": 2,
-      "score2": 0,
-      "points": 54,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:46:11.306Z"
-    },
-    "mpp_championship_match_2608303": {
-      "score1": 0,
-      "score2": 2,
-      "points": 57,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:46:23.991Z"
-    },
-    "mpp_championship_match_2608304": {
-      "score1": 1,
-      "score2": 1,
-      "points": 123,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:46:32.114Z"
-    },
-    "mpp_championship_match_2608301": {
-      "score1": 1,
-      "score2": 2,
-      "points": 32,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:46:38.684Z"
-    },
-    "mpp_championship_match_2608302": {
+    "mpp_championship_match_2608359": {
       "score1": 1,
       "score2": 0,
       "points": 0,
       "result": "miss",
       "rarity": 0,
-      "editedAt": "2026-06-22T19:46:49.419Z"
-    },
-    "mpp_championship_match_2608311": {
-      "score1": 0,
-      "score2": 2,
-      "points": 62,
-      "result": "exact",
-      "rarity": 2,
-      "editedAt": "2026-06-22T19:46:52.724Z"
-    },
-    "mpp_championship_match_2608312": {
-      "score1": 2,
-      "score2": 0,
-      "points": 57,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-22T19:47:03.231Z"
-    },
-    "mpp_championship_match_2608309": {
-      "score1": 1,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-24T21:23:52.465Z"
-    },
-    "mpp_championship_match_2608310": {
-      "score1": 3,
-      "score2": 0,
-      "points": 63,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-24T21:23:57.865Z"
-    },
-    "mpp_championship_match_2608307": {
-      "score1": 0,
-      "score2": 4,
-      "points": 32,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-24T21:24:18.161Z"
-    },
-    "mpp_championship_match_2608308": {
-      "score1": 1,
-      "score2": 1,
-      "points": 103,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-24T21:24:26.510Z"
-    },
-    "mpp_championship_match_2608313": {
-      "score1": 0,
-      "score2": 2,
-      "points": 64,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-28T07:58:15.928Z"
-    },
-    "mpp_championship_match_2608316": {
-      "score1": 2,
-      "score2": 1,
-      "points": 85,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-06-28T20:03:57.080Z"
-    },
-    "mpp_championship_match_2608314": {
-      "score1": 2,
-      "score2": 0,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-28T20:04:00.698Z"
-    },
-    "mpp_championship_match_2608315": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-28T20:04:06.467Z"
-    },
-    "mpp_championship_match_2608318": {
-      "score1": 1,
-      "score2": 3,
-      "points": 75,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-28T20:04:12.507Z"
-    },
-    "mpp_championship_match_2608317": {
-      "score1": 3,
-      "score2": 0,
-      "points": 68,
-      "result": "exact",
-      "rarity": 2,
-      "editedAt": "2026-06-30T07:10:13.454Z"
-    },
-    "mpp_championship_match_2608319": {
-      "score1": 2,
-      "score2": 0,
-      "points": 114,
-      "result": "exact",
-      "rarity": 2,
-      "editedAt": "2026-06-30T21:22:55.569Z"
-    },
-    "mpp_championship_match_2608320": {
-      "score1": 2,
-      "score2": 1,
-      "points": 89,
-      "result": "exact",
-      "rarity": 3,
-      "editedAt": "2026-06-30T21:23:05.307Z"
-    },
-    "mpp_championship_match_2608322": {
-      "score1": 0,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-30T21:23:16.807Z"
-    },
-    "mpp_championship_match_2608321": {
-      "score1": 2,
-      "score2": 0,
-      "points": 72,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-06-30T21:23:29.449Z"
-    },
-    "mpp_championship_match_2608324": {
-      "score1": 2,
-      "score2": 0,
-      "points": 41,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-30T21:24:59.729Z"
-    },
-    "mpp_championship_match_2608323": {
-      "score1": 1,
-      "score2": 2,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-30T21:25:23.926Z"
-    },
-    "mpp_championship_match_2608325": {
-      "score1": 1,
-      "score2": 0,
-      "points": 61,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-30T21:27:10.061Z"
-    },
-    "mpp_championship_match_2608328": {
-      "score1": 0,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-06-30T21:28:15.110Z"
-    },
-    "mpp_championship_match_2608326": {
-      "score1": 3,
-      "score2": 0,
-      "points": 25,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-30T21:28:46.309Z"
-    },
-    "mpp_championship_match_2608327": {
-      "score1": 2,
-      "score2": 1,
-      "points": 66,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-30T21:29:30.315Z"
-    },
-    "mpp_championship_match_2608348": {
-      "score1": 1,
-      "score2": 2,
-      "points": 68,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-06-30T21:30:42.312Z"
-    },
-    "mpp_championship_match_2608347": {
-      "score1": 0,
-      "score2": 4,
-      "points": 28,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-01T20:26:02.906Z"
-    },
-    "mpp_championship_match_2608349": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-07-01T20:26:11.324Z"
-    },
-    "mpp_championship_match_2608350": {
-      "score1": 0,
-      "score2": 2,
-      "points": 93,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-03T19:16:30.720Z"
-    },
-    "mpp_championship_match_2608351": {
-      "score1": 1,
-      "score2": 3,
-      "points": 72,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-03T19:16:33.283Z"
-    },
-    "mpp_championship_match_2608352": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-07-03T19:16:39.113Z"
-    },
-    "mpp_championship_match_2608353": {
-      "score1": 2,
-      "score2": 1,
-      "points": 43,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-04T18:16:16.656Z"
-    },
-    "mpp_championship_match_2608354": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-07-04T18:16:25.905Z"
-    },
-    "mpp_championship_match_2608355": {
-      "score1": 3,
-      "score2": 1,
-      "points": 54,
-      "result": "result",
-      "rarity": 0,
-      "editedAt": "2026-07-06T17:38:46.541Z"
-    },
-    "mpp_championship_match_2608356": {
-      "score1": 2,
-      "score2": 1,
-      "points": 80,
-      "result": "exact",
-      "rarity": 1,
-      "editedAt": "2026-07-10T18:50:17.548Z"
-    },
-    "mpp_championship_match_2608357": {
-      "score1": 2,
-      "score2": 1,
-      "points": 0,
-      "result": "miss",
-      "rarity": 0,
-      "editedAt": "2026-07-06T17:38:50.563Z"
-    },
-    "mpp_championship_match_2608358": {
-      "score1": 3,
-      "score2": 1,
-      "points": 114,
-      "result": "exact",
-      "rarity": 3,
-      "editedAt": "2026-07-08T17:47:51.867Z"
+      "editedAt": "2026-07-14T06:14:00.923Z"
     }
   },
   "user_8620122": {
@@ -4007,6 +2419,14 @@
       "result": "result",
       "rarity": 0,
       "editedAt": "2026-07-11T16:57:52.236Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-11T16:57:35.995Z"
     }
   },
   "user_8619031": {
@@ -4801,6 +3221,14 @@
       "result": "miss",
       "rarity": 0,
       "editedAt": "2026-07-08T12:03:51.413Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-13T06:34:59.360Z"
     }
   },
   "user_9239662": {
@@ -5603,6 +4031,14 @@
       "result": "miss",
       "rarity": 0,
       "editedAt": "2026-07-08T13:36:53.474Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-13T17:04:13.632Z"
     }
   },
   "user_8616704": {
@@ -6373,6 +4809,14 @@
       "result": "result",
       "rarity": 0,
       "editedAt": "2026-07-08T08:57:28.404Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 1,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-13T15:30:59.280Z"
     }
   },
   "user_8742869": {
@@ -7175,6 +5619,14 @@
       "result": "result",
       "rarity": 0,
       "editedAt": "2026-07-08T21:12:56.340Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 3,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-12T17:48:47.204Z"
     }
   },
   "user_8702965": {
@@ -7969,6 +6421,14 @@
       "result": "miss",
       "rarity": 0,
       "editedAt": "2026-07-09T16:02:43.504Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-10T22:03:31.994Z"
     }
   },
   "user_8736186": {
@@ -8723,6 +7183,14 @@
       "result": "exact",
       "rarity": 1,
       "editedAt": "2026-07-07T07:29:53.140Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 1,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-13T15:11:11.553Z"
     }
   },
   "user_8745208": {
@@ -9525,6 +7993,14 @@
       "result": "result",
       "rarity": 0,
       "editedAt": "2026-07-08T10:50:57.665Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-14T10:32:14.610Z"
     }
   },
   "user_10595758": {
@@ -10279,6 +8755,14 @@
       "result": "result",
       "rarity": 0,
       "editedAt": "2026-07-09T07:22:12.243Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 1,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-11T23:24:24.456Z"
     }
   },
   "user_8620746": {
@@ -11065,6 +9549,14 @@
       "result": "result",
       "rarity": 0,
       "editedAt": "2026-07-11T19:17:01.131Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-14T17:15:04.597Z"
     }
   },
   "user_8619563": {
@@ -11851,6 +10343,14 @@
       "result": "exact",
       "rarity": 3,
       "editedAt": "2026-07-08T21:06:13.314Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 3,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-11T17:23:48.949Z"
     }
   },
   "user_8738144": {
@@ -12613,6 +11113,1634 @@
       "result": "miss",
       "rarity": 0,
       "editedAt": "2026-07-08T14:51:46.598Z"
+    }
+  },
+  "user_8422848": {
+    "mpp_championship_match_2608241": {
+      "score1": 2,
+      "score2": 0,
+      "points": 69,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-06-11T06:39:23.308Z"
+    },
+    "mpp_championship_match_2608242": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-11T08:09:16.782Z"
+    },
+    "mpp_championship_match_2608243": {
+      "score1": 1,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-11T08:40:13.577Z"
+    },
+    "mpp_championship_match_2608247": {
+      "score1": 2,
+      "score2": 1,
+      "points": 74,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-12T12:19:47.401Z"
+    },
+    "mpp_championship_match_2608244": {
+      "score1": 0,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-12T12:19:52.947Z"
+    },
+    "mpp_championship_match_2608245": {
+      "score1": 1,
+      "score2": 1,
+      "points": 142,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-06-12T12:37:49.133Z"
+    },
+    "mpp_championship_match_2608246": {
+      "score1": 0,
+      "score2": 2,
+      "points": 44,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-12T12:27:29.617Z"
+    },
+    "mpp_championship_match_2608248": {
+      "score1": 1,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-12T12:39:31.992Z"
+    },
+    "mpp_championship_match_2608249": {
+      "score1": 4,
+      "score2": 0,
+      "points": 15,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-12T12:39:38.062Z"
+    },
+    "mpp_championship_match_2608251": {
+      "score1": 1,
+      "score2": 1,
+      "points": 115,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-12T12:39:43.487Z"
+    },
+    "mpp_championship_match_2608250": {
+      "score1": 0,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-14T13:17:50.437Z"
+    },
+    "mpp_championship_match_2608252": {
+      "score1": 2,
+      "score2": 1,
+      "points": 72,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-14T13:18:27.066Z"
+    },
+    "mpp_championship_match_2608255": {
+      "score1": 3,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-14T13:22:38.972Z"
+    },
+    "mpp_championship_match_2608253": {
+      "score1": 1,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-14T13:23:35.049Z"
+    },
+    "mpp_championship_match_2608256": {
+      "score1": 0,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-15T20:14:33.100Z"
+    },
+    "mpp_championship_match_2608254": {
+      "score1": 2,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-15T20:14:37.052Z"
+    },
+    "mpp_championship_match_2608257": {
+      "score1": 2,
+      "score2": 1,
+      "points": 46,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-15T20:14:39.152Z"
+    },
+    "mpp_championship_match_2608258": {
+      "score1": 0,
+      "score2": 3,
+      "points": 30,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-16T13:45:39.564Z"
+    },
+    "mpp_championship_match_2608259": {
+      "score1": 2,
+      "score2": 0,
+      "points": 43,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-16T13:46:11.341Z"
+    },
+    "mpp_championship_match_2608260": {
+      "score1": 2,
+      "score2": 0,
+      "points": 38,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-16T13:46:11.981Z"
+    },
+    "mpp_championship_match_2608261": {
+      "score1": 3,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-17T12:55:47.981Z"
+    },
+    "mpp_championship_match_2608263": {
+      "score1": 1,
+      "score2": 0,
+      "points": 59,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-17T12:56:05.113Z"
+    },
+    "mpp_championship_match_2608264": {
+      "score1": 2,
+      "score2": 1,
+      "points": 73,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-17T12:56:25.309Z"
+    },
+    "mpp_championship_match_2608262": {
+      "score1": 0,
+      "score2": 2,
+      "points": 44,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-17T12:56:26.864Z"
+    },
+    "mpp_championship_match_2608266": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-17T12:59:34.998Z"
+    },
+    "mpp_championship_match_2608268": {
+      "score1": 1,
+      "score2": 0,
+      "points": 76,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-17T12:59:37.830Z"
+    },
+    "mpp_championship_match_2608267": {
+      "score1": 2,
+      "score2": 0,
+      "points": 71,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-18T12:52:40.388Z"
+    },
+    "mpp_championship_match_2608265": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-18T12:52:54.565Z"
+    },
+    "mpp_championship_match_2608271": {
+      "score1": 2,
+      "score2": 1,
+      "points": 58,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-18T12:53:48.888Z"
+    },
+    "mpp_championship_match_2608270": {
+      "score1": 0,
+      "score2": 1,
+      "points": 141,
+      "result": "exact",
+      "rarity": 3,
+      "editedAt": "2026-06-19T17:21:21.151Z"
+    },
+    "mpp_championship_match_2608269": {
+      "score1": 4,
+      "score2": 0,
+      "points": 21,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-19T17:21:55.903Z"
+    },
+    "mpp_championship_match_2608272": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-19T17:22:24.851Z"
+    },
+    "mpp_championship_match_2608275": {
+      "score1": 2,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-19T17:22:40.557Z"
+    },
+    "mpp_championship_match_2608273": {
+      "score1": 3,
+      "score2": 1,
+      "points": 38,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-19T17:23:15.069Z"
+    },
+    "mpp_championship_match_2608274": {
+      "score1": 3,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-20T14:49:21.461Z"
+    },
+    "mpp_championship_match_2608276": {
+      "score1": 0,
+      "score2": 2,
+      "points": 91,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-20T14:49:50.205Z"
+    },
+    "mpp_championship_match_2608279": {
+      "score1": 2,
+      "score2": 0,
+      "points": 31,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-20T14:50:42.581Z"
+    },
+    "mpp_championship_match_2608277": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-20T14:51:39.561Z"
+    },
+    "mpp_championship_match_2608280": {
+      "score1": 1,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-21T16:08:30.698Z"
+    },
+    "mpp_championship_match_2608278": {
+      "score1": 0,
+      "score2": 1,
+      "points": 59,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-21T16:08:55.798Z"
+    },
+    "mpp_championship_match_2608283": {
+      "score1": 2,
+      "score2": 1,
+      "points": 63,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-21T16:09:27.847Z"
+    },
+    "mpp_championship_match_2608281": {
+      "score1": 3,
+      "score2": 1,
+      "points": 22,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-21T16:09:36.599Z"
+    },
+    "mpp_championship_match_2608282": {
+      "score1": 2,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-22T11:30:17.462Z"
+    },
+    "mpp_championship_match_2608284": {
+      "score1": 0,
+      "score2": 2,
+      "points": 67,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T11:30:34.338Z"
+    },
+    "mpp_championship_match_2608285": {
+      "score1": 2,
+      "score2": 0,
+      "points": 24,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T11:31:11.883Z"
+    },
+    "mpp_championship_match_2608287": {
+      "score1": 3,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-22T11:31:29.229Z"
+    },
+    "mpp_championship_match_2608288": {
+      "score1": 0,
+      "score2": 2,
+      "points": 36,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-23T16:29:30.565Z"
+    },
+    "mpp_championship_match_2608286": {
+      "score1": 2,
+      "score2": 1,
+      "points": 77,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-23T16:29:50.984Z"
+    },
+    "mpp_championship_match_2608291": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-23T16:30:10.960Z"
+    },
+    "mpp_championship_match_2608292": {
+      "score1": 3,
+      "score2": 1,
+      "points": 137,
+      "result": "exact",
+      "rarity": 3,
+      "editedAt": "2026-06-23T16:30:32.753Z"
+    },
+    "mpp_championship_match_2608293": {
+      "score1": 0,
+      "score2": 2,
+      "points": 48,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-24T16:20:11.544Z"
+    },
+    "mpp_championship_match_2608294": {
+      "score1": 3,
+      "score2": 0,
+      "points": 29,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-24T16:20:25.479Z"
+    },
+    "mpp_championship_match_2608289": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-24T16:20:43.910Z"
+    },
+    "mpp_championship_match_2608290": {
+      "score1": 1,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-24T16:22:15.693Z"
+    },
+    "mpp_championship_match_2608297": {
+      "score1": 1,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-24T16:22:57.829Z"
+    },
+    "mpp_championship_match_2608298": {
+      "score1": 0,
+      "score2": 2,
+      "points": 73,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-06-24T16:23:15.378Z"
+    },
+    "mpp_championship_match_2608299": {
+      "score1": 0,
+      "score2": 4,
+      "points": 56,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-25T14:00:25.753Z"
+    },
+    "mpp_championship_match_2608300": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-25T14:00:38.162Z"
+    },
+    "mpp_championship_match_2608295": {
+      "score1": 1,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-25T14:00:59.119Z"
+    },
+    "mpp_championship_match_2608296": {
+      "score1": 1,
+      "score2": 1,
+      "points": 104,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-25T14:01:10.832Z"
+    },
+    "mpp_championship_match_2608305": {
+      "score1": 0,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-25T14:01:28.016Z"
+    },
+    "mpp_championship_match_2608306": {
+      "score1": 2,
+      "score2": 1,
+      "points": 54,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-25T14:02:00.490Z"
+    },
+    "mpp_championship_match_2608303": {
+      "score1": 1,
+      "score2": 2,
+      "points": 57,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-26T15:04:28.522Z"
+    },
+    "mpp_championship_match_2608304": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-26T15:05:09.038Z"
+    },
+    "mpp_championship_match_2608301": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-26T15:05:52.848Z"
+    },
+    "mpp_championship_match_2608302": {
+      "score1": 1,
+      "score2": 1,
+      "points": 134,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-06-26T15:06:44.049Z"
+    },
+    "mpp_championship_match_2608311": {
+      "score1": 0,
+      "score2": 3,
+      "points": 32,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-26T15:07:29.481Z"
+    },
+    "mpp_championship_match_2608312": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-26T15:07:50.838Z"
+    },
+    "mpp_championship_match_2608309": {
+      "score1": 1,
+      "score2": 1,
+      "points": 102,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-27T16:36:10.483Z"
+    },
+    "mpp_championship_match_2608310": {
+      "score1": 2,
+      "score2": 1,
+      "points": 63,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-27T16:36:29.828Z"
+    },
+    "mpp_championship_match_2608307": {
+      "score1": 0,
+      "score2": 3,
+      "points": 32,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-27T16:36:43.404Z"
+    },
+    "mpp_championship_match_2608308": {
+      "score1": 1,
+      "score2": 1,
+      "points": 103,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-27T16:37:34.261Z"
+    },
+    "mpp_championship_match_2608313": {
+      "score1": 1,
+      "score2": 2,
+      "points": 64,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-27T16:37:50.125Z"
+    },
+    "mpp_championship_match_2608316": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-28T14:51:14.643Z"
+    },
+    "mpp_championship_match_2608314": {
+      "score1": 1,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-28T14:51:19.243Z"
+    },
+    "mpp_championship_match_2608315": {
+      "score1": 2,
+      "score2": 2,
+      "points": 114,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-29T15:10:49.908Z"
+    },
+    "mpp_championship_match_2608318": {
+      "score1": 2,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-29T15:11:30.639Z"
+    },
+    "mpp_championship_match_2608317": {
+      "score1": 3,
+      "score2": 1,
+      "points": 38,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-29T15:12:38.415Z"
+    },
+    "mpp_championship_match_2608319": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-30T15:47:10.996Z"
+    },
+    "mpp_championship_match_2608320": {
+      "score1": 2,
+      "score2": 1,
+      "points": 89,
+      "result": "exact",
+      "rarity": 3,
+      "editedAt": "2026-06-30T15:47:42.605Z"
+    },
+    "mpp_championship_match_2608322": {
+      "score1": 1,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-30T15:47:59.794Z"
+    },
+    "mpp_championship_match_2608321": {
+      "score1": 2,
+      "score2": 1,
+      "points": 52,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-01T15:42:59.217Z"
+    },
+    "mpp_championship_match_2608324": {
+      "score1": 2,
+      "score2": 1,
+      "points": 41,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-01T15:43:30.157Z"
+    },
+    "mpp_championship_match_2608323": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-02T17:06:08.212Z"
+    },
+    "mpp_championship_match_2608325": {
+      "score1": 2,
+      "score2": 1,
+      "points": 61,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-02T17:06:48.534Z"
+    },
+    "mpp_championship_match_2608328": {
+      "score1": 1,
+      "score2": 1,
+      "points": 126,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-07-02T17:07:42.761Z"
+    },
+    "mpp_championship_match_2608326": {
+      "score1": 2,
+      "score2": 0,
+      "points": 25,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-03T20:17:56.112Z"
+    },
+    "mpp_championship_match_2608327": {
+      "score1": 1,
+      "score2": 0,
+      "points": 116,
+      "result": "exact",
+      "rarity": 3,
+      "editedAt": "2026-07-03T20:19:20.881Z"
+    },
+    "mpp_championship_match_2608348": {
+      "score1": 1,
+      "score2": 2,
+      "points": 68,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-03T20:19:43.815Z"
+    },
+    "mpp_championship_match_2608347": {
+      "score1": 0,
+      "score2": 2,
+      "points": 28,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-03T22:17:36.956Z"
+    },
+    "mpp_championship_match_2608349": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-04T18:49:51.419Z"
+    },
+    "mpp_championship_match_2608350": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-05T22:12:53.199Z"
+    },
+    "mpp_championship_match_2608351": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-05T22:10:20.266Z"
+    },
+    "mpp_championship_match_2608352": {
+      "score1": 1,
+      "score2": 2,
+      "points": 100,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-05T22:13:19.730Z"
+    },
+    "mpp_championship_match_2608353": {
+      "score1": 2,
+      "score2": 0,
+      "points": 43,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-05T22:13:40.425Z"
+    },
+    "mpp_championship_match_2608354": {
+      "score1": 1,
+      "score2": 1,
+      "points": 113,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-05T22:13:54.534Z"
+    },
+    "mpp_championship_match_2608355": {
+      "score1": 2,
+      "score2": 1,
+      "points": 54,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-08T13:24:14.924Z"
+    },
+    "mpp_championship_match_2608356": {
+      "score1": 2,
+      "score2": 1,
+      "points": 80,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-07-09T06:15:27.690Z"
+    },
+    "mpp_championship_match_2608357": {
+      "score1": 3,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-11T09:26:35.323Z"
+    },
+    "mpp_championship_match_2608358": {
+      "score1": 2,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-11T09:26:46.916Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-13T20:35:33.738Z"
+    },
+    "mpp_championship_match_2608360": {
+      "score1": 2,
+      "score2": 2,
+      "points": 0,
+      "result": "pending",
+      "rarity": 0,
+      "editedAt": "2026-07-13T20:37:17.261Z"
+    }
+  },
+  "user_10189113": {
+    "mpp_championship_match_2608241": {
+      "score1": 2,
+      "score2": 0,
+      "points": 69,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-06-10T21:54:42.670Z"
+    },
+    "mpp_championship_match_2608242": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:54:51.782Z"
+    },
+    "mpp_championship_match_2608243": {
+      "score1": 0,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:55:17.680Z"
+    },
+    "mpp_championship_match_2608247": {
+      "score1": 2,
+      "score2": 1,
+      "points": 74,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:55:29.960Z"
+    },
+    "mpp_championship_match_2608244": {
+      "score1": 0,
+      "score2": 3,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:55:36.129Z"
+    },
+    "mpp_championship_match_2608245": {
+      "score1": 2,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:55:56.029Z"
+    },
+    "mpp_championship_match_2608246": {
+      "score1": 1,
+      "score2": 4,
+      "points": 44,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:56:04.228Z"
+    },
+    "mpp_championship_match_2608248": {
+      "score1": 0,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:56:18.453Z"
+    },
+    "mpp_championship_match_2608249": {
+      "score1": 4,
+      "score2": 0,
+      "points": 15,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:56:27.016Z"
+    },
+    "mpp_championship_match_2608251": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:56:47.480Z"
+    },
+    "mpp_championship_match_2608250": {
+      "score1": 2,
+      "score2": 1,
+      "points": 108,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:57:02.454Z"
+    },
+    "mpp_championship_match_2608252": {
+      "score1": 0,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:57:13.146Z"
+    },
+    "mpp_championship_match_2608255": {
+      "score1": 3,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:57:18.317Z"
+    },
+    "mpp_championship_match_2608253": {
+      "score1": 3,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:57:31.726Z"
+    },
+    "mpp_championship_match_2608256": {
+      "score1": 0,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:57:37.891Z"
+    },
+    "mpp_championship_match_2608254": {
+      "score1": 0,
+      "score2": 0,
+      "points": 116,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:57:47.625Z"
+    },
+    "mpp_championship_match_2608257": {
+      "score1": 2,
+      "score2": 0,
+      "points": 46,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:58:01.303Z"
+    },
+    "mpp_championship_match_2608258": {
+      "score1": 0,
+      "score2": 2,
+      "points": 30,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:58:11.379Z"
+    },
+    "mpp_championship_match_2608259": {
+      "score1": 2,
+      "score2": 1,
+      "points": 43,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:58:44.900Z"
+    },
+    "mpp_championship_match_2608260": {
+      "score1": 1,
+      "score2": 0,
+      "points": 38,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:58:51.785Z"
+    },
+    "mpp_championship_match_2608261": {
+      "score1": 3,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:59:00.499Z"
+    },
+    "mpp_championship_match_2608263": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:59:06.653Z"
+    },
+    "mpp_championship_match_2608264": {
+      "score1": 2,
+      "score2": 0,
+      "points": 73,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:59:20.744Z"
+    },
+    "mpp_championship_match_2608262": {
+      "score1": 0,
+      "score2": 2,
+      "points": 44,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-10T21:59:38.365Z"
+    },
+    "mpp_championship_match_2608266": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-18T07:13:57.460Z"
+    },
+    "mpp_championship_match_2608268": {
+      "score1": 1,
+      "score2": 0,
+      "points": 76,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-18T07:58:05.656Z"
+    },
+    "mpp_championship_match_2608267": {
+      "score1": 2,
+      "score2": 1,
+      "points": 71,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-18T21:29:28.822Z"
+    },
+    "mpp_championship_match_2608265": {
+      "score1": 2,
+      "score2": 0,
+      "points": 69,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-18T21:28:47.432Z"
+    },
+    "mpp_championship_match_2608271": {
+      "score1": 4,
+      "score2": 1,
+      "points": 58,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-18T21:30:17.629Z"
+    },
+    "mpp_championship_match_2608270": {
+      "score1": 1,
+      "score2": 2,
+      "points": 91,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:12:55.780Z"
+    },
+    "mpp_championship_match_2608269": {
+      "score1": 5,
+      "score2": 0,
+      "points": 21,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:13:03.675Z"
+    },
+    "mpp_championship_match_2608272": {
+      "score1": 2,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:13:21.684Z"
+    },
+    "mpp_championship_match_2608275": {
+      "score1": 3,
+      "score2": 2,
+      "points": 67,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:14:01.791Z"
+    },
+    "mpp_championship_match_2608273": {
+      "score1": 3,
+      "score2": 0,
+      "points": 38,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:14:13.234Z"
+    },
+    "mpp_championship_match_2608274": {
+      "score1": 3,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:14:26.792Z"
+    },
+    "mpp_championship_match_2608276": {
+      "score1": 1,
+      "score2": 3,
+      "points": 91,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:14:37.466Z"
+    },
+    "mpp_championship_match_2608279": {
+      "score1": 3,
+      "score2": 0,
+      "points": 31,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:14:49.926Z"
+    },
+    "mpp_championship_match_2608277": {
+      "score1": 4,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:14:58.124Z"
+    },
+    "mpp_championship_match_2608280": {
+      "score1": 2,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:15:06.290Z"
+    },
+    "mpp_championship_match_2608278": {
+      "score1": 0,
+      "score2": 1,
+      "points": 59,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:15:12.490Z"
+    },
+    "mpp_championship_match_2608283": {
+      "score1": 3,
+      "score2": 1,
+      "points": 63,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:15:17.898Z"
+    },
+    "mpp_championship_match_2608281": {
+      "score1": 3,
+      "score2": 0,
+      "points": 42,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-06-19T08:17:58.411Z"
+    },
+    "mpp_championship_match_2608282": {
+      "score1": 2,
+      "score2": 1,
+      "points": 64,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:43:28.231Z"
+    },
+    "mpp_championship_match_2608284": {
+      "score1": 0,
+      "score2": 2,
+      "points": 67,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:43:38.009Z"
+    },
+    "mpp_championship_match_2608285": {
+      "score1": 3,
+      "score2": 1,
+      "points": 24,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:43:42.515Z"
+    },
+    "mpp_championship_match_2608287": {
+      "score1": 4,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:43:50.910Z"
+    },
+    "mpp_championship_match_2608288": {
+      "score1": 0,
+      "score2": 2,
+      "points": 36,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:43:59.226Z"
+    },
+    "mpp_championship_match_2608286": {
+      "score1": 2,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:44:04.785Z"
+    },
+    "mpp_championship_match_2608291": {
+      "score1": 2,
+      "score2": 0,
+      "points": 68,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:44:23.540Z"
+    },
+    "mpp_championship_match_2608292": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:44:30.277Z"
+    },
+    "mpp_championship_match_2608293": {
+      "score1": 0,
+      "score2": 2,
+      "points": 48,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:44:36.294Z"
+    },
+    "mpp_championship_match_2608294": {
+      "score1": 2,
+      "score2": 0,
+      "points": 29,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:44:58.291Z"
+    },
+    "mpp_championship_match_2608289": {
+      "score1": 1,
+      "score2": 2,
+      "points": 91,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:45:01.603Z"
+    },
+    "mpp_championship_match_2608290": {
+      "score1": 1,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:45:23.294Z"
+    },
+    "mpp_championship_match_2608297": {
+      "score1": 0,
+      "score2": 3,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:45:29.388Z"
+    },
+    "mpp_championship_match_2608298": {
+      "score1": 0,
+      "score2": 2,
+      "points": 73,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-06-22T19:45:34.896Z"
+    },
+    "mpp_championship_match_2608299": {
+      "score1": 1,
+      "score2": 2,
+      "points": 56,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:45:43.020Z"
+    },
+    "mpp_championship_match_2608300": {
+      "score1": 2,
+      "score2": 2,
+      "points": 108,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:45:46.956Z"
+    },
+    "mpp_championship_match_2608295": {
+      "score1": 1,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:45:58.983Z"
+    },
+    "mpp_championship_match_2608296": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-19T12:13:43.023Z"
+    },
+    "mpp_championship_match_2608305": {
+      "score1": 1,
+      "score2": 3,
+      "points": 68,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:46:06.877Z"
+    },
+    "mpp_championship_match_2608306": {
+      "score1": 2,
+      "score2": 0,
+      "points": 54,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:46:11.306Z"
+    },
+    "mpp_championship_match_2608303": {
+      "score1": 0,
+      "score2": 2,
+      "points": 57,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:46:23.991Z"
+    },
+    "mpp_championship_match_2608304": {
+      "score1": 1,
+      "score2": 1,
+      "points": 123,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:46:32.114Z"
+    },
+    "mpp_championship_match_2608301": {
+      "score1": 1,
+      "score2": 2,
+      "points": 32,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:46:38.684Z"
+    },
+    "mpp_championship_match_2608302": {
+      "score1": 1,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:46:49.419Z"
+    },
+    "mpp_championship_match_2608311": {
+      "score1": 0,
+      "score2": 2,
+      "points": 62,
+      "result": "exact",
+      "rarity": 2,
+      "editedAt": "2026-06-22T19:46:52.724Z"
+    },
+    "mpp_championship_match_2608312": {
+      "score1": 2,
+      "score2": 0,
+      "points": 57,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-22T19:47:03.231Z"
+    },
+    "mpp_championship_match_2608309": {
+      "score1": 1,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-24T21:23:52.465Z"
+    },
+    "mpp_championship_match_2608310": {
+      "score1": 3,
+      "score2": 0,
+      "points": 63,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-24T21:23:57.865Z"
+    },
+    "mpp_championship_match_2608307": {
+      "score1": 0,
+      "score2": 4,
+      "points": 32,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-24T21:24:18.161Z"
+    },
+    "mpp_championship_match_2608308": {
+      "score1": 1,
+      "score2": 1,
+      "points": 103,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-24T21:24:26.510Z"
+    },
+    "mpp_championship_match_2608313": {
+      "score1": 0,
+      "score2": 2,
+      "points": 64,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-28T07:58:15.928Z"
+    },
+    "mpp_championship_match_2608316": {
+      "score1": 2,
+      "score2": 1,
+      "points": 85,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-06-28T20:03:57.080Z"
+    },
+    "mpp_championship_match_2608314": {
+      "score1": 2,
+      "score2": 0,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-28T20:04:00.698Z"
+    },
+    "mpp_championship_match_2608315": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-28T20:04:06.467Z"
+    },
+    "mpp_championship_match_2608318": {
+      "score1": 1,
+      "score2": 3,
+      "points": 75,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-28T20:04:12.507Z"
+    },
+    "mpp_championship_match_2608317": {
+      "score1": 3,
+      "score2": 0,
+      "points": 68,
+      "result": "exact",
+      "rarity": 2,
+      "editedAt": "2026-06-30T07:10:13.454Z"
+    },
+    "mpp_championship_match_2608319": {
+      "score1": 2,
+      "score2": 0,
+      "points": 114,
+      "result": "exact",
+      "rarity": 2,
+      "editedAt": "2026-06-30T21:22:55.569Z"
+    },
+    "mpp_championship_match_2608320": {
+      "score1": 2,
+      "score2": 1,
+      "points": 89,
+      "result": "exact",
+      "rarity": 3,
+      "editedAt": "2026-06-30T21:23:05.307Z"
+    },
+    "mpp_championship_match_2608322": {
+      "score1": 0,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-30T21:23:16.807Z"
+    },
+    "mpp_championship_match_2608321": {
+      "score1": 2,
+      "score2": 0,
+      "points": 72,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-06-30T21:23:29.449Z"
+    },
+    "mpp_championship_match_2608324": {
+      "score1": 2,
+      "score2": 0,
+      "points": 41,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-30T21:24:59.729Z"
+    },
+    "mpp_championship_match_2608323": {
+      "score1": 1,
+      "score2": 2,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-30T21:25:23.926Z"
+    },
+    "mpp_championship_match_2608325": {
+      "score1": 1,
+      "score2": 0,
+      "points": 61,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-30T21:27:10.061Z"
+    },
+    "mpp_championship_match_2608328": {
+      "score1": 0,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-06-30T21:28:15.110Z"
+    },
+    "mpp_championship_match_2608326": {
+      "score1": 3,
+      "score2": 0,
+      "points": 25,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-30T21:28:46.309Z"
+    },
+    "mpp_championship_match_2608327": {
+      "score1": 2,
+      "score2": 1,
+      "points": 66,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-30T21:29:30.315Z"
+    },
+    "mpp_championship_match_2608348": {
+      "score1": 1,
+      "score2": 2,
+      "points": 68,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-06-30T21:30:42.312Z"
+    },
+    "mpp_championship_match_2608347": {
+      "score1": 0,
+      "score2": 4,
+      "points": 28,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-01T20:26:02.906Z"
+    },
+    "mpp_championship_match_2608349": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-01T20:26:11.324Z"
+    },
+    "mpp_championship_match_2608350": {
+      "score1": 0,
+      "score2": 2,
+      "points": 93,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-03T19:16:30.720Z"
+    },
+    "mpp_championship_match_2608351": {
+      "score1": 1,
+      "score2": 3,
+      "points": 72,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-03T19:16:33.283Z"
+    },
+    "mpp_championship_match_2608352": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-03T19:16:39.113Z"
+    },
+    "mpp_championship_match_2608353": {
+      "score1": 2,
+      "score2": 1,
+      "points": 43,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-04T18:16:16.656Z"
+    },
+    "mpp_championship_match_2608354": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-04T18:16:25.905Z"
+    },
+    "mpp_championship_match_2608355": {
+      "score1": 3,
+      "score2": 1,
+      "points": 54,
+      "result": "result",
+      "rarity": 0,
+      "editedAt": "2026-07-06T17:38:46.541Z"
+    },
+    "mpp_championship_match_2608356": {
+      "score1": 2,
+      "score2": 1,
+      "points": 80,
+      "result": "exact",
+      "rarity": 1,
+      "editedAt": "2026-07-10T18:50:17.548Z"
+    },
+    "mpp_championship_match_2608357": {
+      "score1": 2,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-06T17:38:50.563Z"
+    },
+    "mpp_championship_match_2608358": {
+      "score1": 3,
+      "score2": 1,
+      "points": 114,
+      "result": "exact",
+      "rarity": 3,
+      "editedAt": "2026-07-08T17:47:51.867Z"
+    },
+    "mpp_championship_match_2608359": {
+      "score1": 3,
+      "score2": 1,
+      "points": 0,
+      "result": "miss",
+      "rarity": 0,
+      "editedAt": "2026-07-11T11:32:45.231Z"
     }
   }
 }

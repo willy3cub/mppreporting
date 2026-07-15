@@ -1308,9 +1308,9 @@
     "flag1": "🇫🇷",
     "team2": "Espagne",
     "flag2": "🇪🇸",
-    "score1": null,
-    "score2": null,
-    "status": "pending"
+    "score1": 0,
+    "score2": 2,
+    "status": "played"
   },
   {
     "id": "mpp_championship_match_2608360",
