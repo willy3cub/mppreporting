@@ -1026,6 +1026,20 @@ function renderBilan() {
       <h2>🔍 Le mot du bilan <span class="muted">${b.updated}</span></h2>
       <div class="prose">${b.html}</div>
     </section>`);
+  // Embed X : le <script> injecté via insertAdjacentHTML ne s'exécute pas, on charge widgets.js à la main.
+  if (/twitter-tweet/.test(b.html)) loadTwitterWidgets();
+}
+
+// widgets.js hydrate les <blockquote class="twitter-tweet"> présents dans le DOM (dépendance externe assumée).
+function loadTwitterWidgets() {
+  if (window.twttr && window.twttr.widgets) { window.twttr.widgets.load(); return; }
+  if (document.getElementById('twitter-wjs')) return;
+  const s = document.createElement('script');
+  s.id = 'twitter-wjs';
+  s.async = true;
+  s.charset = 'utf-8';
+  s.src = 'https://platform.twitter.com/widgets.js';
+  document.head.appendChild(s);
 }
 
 function renderFooter() {
