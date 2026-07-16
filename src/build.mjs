@@ -77,13 +77,31 @@ function eliminatedNationsFrom(matches) {
   return elim;
 }
 
+// Nations qui ont encore au moins un match à disputer (statut != 'played') : finalistes
+// ET équipes de la petite finale. Sert à la colonne Buteur — un joueur ne peut plus
+// marquer une fois que son équipe a fini son parcours.
+function activeNationsFrom(matches) {
+  const s = new Set();
+  for (const m of matches || []) {
+    if (m.status !== 'played') { s.add(m.team1); s.add(m.team2); }
+  }
+  return s;
+}
+
 // Résout les images des favoris en data URIs (page auto-suffisante) ET réconcilie le
-// statut « éliminé » des colonnes Champion (nation) et Buteur (via data/scorer-nations.json)
-// avec les résultats réels — sans jamais « ressusciter » un favori déjà marqué éliminé par l'API.
+// statut « éliminé » des deux colonnes avec les résultats réels. Les deux colonnes ont
+// des sémantiques DIFFÉRENTES :
+//   - Champion (nation) : barré dès que l'équipe ne peut plus gagner le titre, c.-à-d.
+//     perdant d'un match KO — un demi-finaliste battu reste barré même s'il dispute la
+//     petite finale (il ne sera jamais champion).
+//   - Buteur (via data/scorer-nations.json) : barré seulement quand le joueur ne peut
+//     plus marquer, c.-à-d. quand son équipe n'a plus aucun match à venir. Un buteur
+//     d'une équipe encore en lice (finale OU petite finale) n'est donc PAS barré.
 function resolveFavorites(matches) {
   if (!existsSync(join(ROOT, 'data/favorites.json'))) return {};
   const fav = readJson('data/favorites.json');
   const elim = eliminatedNationsFrom(matches || []);
+  const active = activeNationsFrom(matches || []);
   const scorerNat = existsSync(join(ROOT, 'data/scorer-nations.json')) ? readJson('data/scorer-nations.json') : {};
   const out = {};
   for (const [uid, f] of Object.entries(fav)) {
@@ -94,7 +112,7 @@ function resolveFavorites(matches) {
     }
     if (f.scorer) {
       const nat = scorerNat[f.scorer.name];
-      const gone = !!f.scorer.eliminated || (nat != null && elim.has(nat));
+      const gone = nat != null && !active.has(nat);
       r.scorer = { ...f.scorer, eliminated: gone, img: f.scorer.img ? imgDataUri(FAV_DIR, f.scorer.img) : null };
     }
     out[uid] = r;
