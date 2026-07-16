@@ -3,7 +3,7 @@
     "team": {
       "name": "France",
       "points": 90,
-      "eliminated": false,
+      "eliminated": true,
       "img": "team-368.png"
     },
     "scorer": {
@@ -45,7 +45,7 @@
     "team": {
       "name": "France",
       "points": 90,
-      "eliminated": false,
+      "eliminated": true,
       "img": "team-368.png"
     },
     "scorer": {
@@ -73,7 +73,7 @@
     "team": {
       "name": "France",
       "points": 90,
-      "eliminated": false,
+      "eliminated": true,
       "img": "team-368.png"
     },
     "scorer": {
@@ -87,7 +87,7 @@
     "team": {
       "name": "France",
       "points": 90,
-      "eliminated": false,
+      "eliminated": true,
       "img": "team-368.png"
     },
     "scorer": {
@@ -115,7 +115,7 @@
     "team": {
       "name": "France",
       "points": 90,
-      "eliminated": false,
+      "eliminated": true,
       "img": "team-368.png"
     },
     "scorer": {
@@ -129,7 +129,7 @@
     "team": {
       "name": "France",
       "points": 90,
-      "eliminated": false,
+      "eliminated": true,
       "img": "team-368.png"
     },
     "scorer": {
@@ -165,7 +165,7 @@
     "team": {
       "name": "France",
       "points": 90,
-      "eliminated": false,
+      "eliminated": true,
       "img": "team-368.png"
     },
     "scorer": {
@@ -179,7 +179,7 @@
     "team": {
       "name": "France",
       "points": 90,
-      "eliminated": false,
+      "eliminated": true,
       "img": "team-368.png"
     },
     "scorer": {
@@ -193,7 +193,7 @@
     "team": {
       "name": "France",
       "points": 90,
-      "eliminated": false,
+      "eliminated": true,
       "img": "team-368.png"
     },
     "scorer": {

@@ -297,6 +297,120 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   .bracket.focus-live .bpath.bpath-alive.hl{animation:none;opacity:1}
   .bracket.focus-live .bteam.hl .bcap-wrap::after{animation:none}
   .elim-stamp{animation:none;opacity:1}
+  .bracket:not(.played) .bfinal,.bracket:not(.played) .bpetite{opacity:1;transform:none}
+  .bracket.played .bfinal,.bracket.played .bpetite{animation:none}
+  .bfinal-cup{animation:none}
+}
+/* -- Affiche de finale : les deux finalistes face à face autour de la Coupe du Monde -- */
+.bfinal{position:absolute;z-index:3;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:12px 14px 10px;border-radius:16px;border:1px solid #ffd16655;
+  background:radial-gradient(130% 120% at 50% -10%,#20295a,#0f14340);
+  box-shadow:0 10px 34px #00000066,0 0 0 1px #ffd1661f,inset 0 1px 30px #ffd1660e}
+.bfinal-done{border-color:var(--gold);box-shadow:0 10px 34px #00000066,0 0 0 1px #ffd16655,inset 0 1px 40px #ffd16618}
+.bfinal-title{font:800 12px/1 -apple-system,system-ui,sans-serif;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
+.bfinal-duel{display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.bfside{flex:1;min-width:0;flex-direction:column;align-items:center;gap:6px;padding:4px 2px;min-height:0;text-align:center;
+  border:none!important;background:none}
+.bfside .bcap{width:64px;height:64px}
+.bfname{display:inline-flex;align-items:center;gap:6px;max-width:100%;font-weight:700}
+.bfname .bname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:108px}
+.bfside .bscore{font-size:17px}
+.bfinal-cup{flex:0 0 auto;position:relative;font-size:44px;line-height:1;filter:drop-shadow(0 0 12px var(--gold));
+  animation:float 3.6s ease-in-out infinite}
+.bfinal-meta{font-size:11px;color:var(--muted);white-space:nowrap}
+.bfinal-done .bfinal-meta{color:var(--gold);font-weight:700}
+/* petite finale (3e place) : plus discrète, sous l'affiche */
+.bpetite{position:absolute;z-index:3;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:8px 12px;border-radius:12px;border:1px dashed #ffffff26;background:#101736aa}
+.bpetite-title{font:700 10.5px/1 -apple-system,system-ui,sans-serif;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
+.bpetite-duel{display:flex;align-items:center;gap:10px;font-size:13.5px}
+.bpetite-vs{color:var(--muted);font-weight:700}
+.bmini{display:inline-flex;align-items:center;gap:6px;cursor:pointer;transition:opacity .18s,transform .18s}
+.bmini .bname{white-space:nowrap}
+.bmini .bscore{font-weight:700;color:var(--gold)}
+.bmini:hover{transform:scale(1.05)}
+/* entrée cinématique de l'affiche + petite finale (au scroll) */
+.bracket:not(.played) .bfinal,.bracket:not(.played) .bpetite{opacity:0;transform:translateY(16px) scale(.94)}
+.bracket.played .bfinal,.bracket.played .bpetite{animation:bfinIn .6s var(--d,1s) cubic-bezier(.2,.8,.25,1.2) both}
+@keyframes bfinIn{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}
+/* survol : les finalistes (.bfside sont des .bteam, déjà gérés) et la 3e place s'estompent,
+   sauf l'équipe survolée. On évite d'estomper le conteneur .bfinal (l'opacité du parent
+   plafonnerait celle de l'enfant mis en valeur). */
+.bracket.focus .bfinal-title,.bracket.focus .bfinal-cup,.bracket.focus .bfinal-meta,
+.bracket.focus .bpetite-title,.bracket.focus .bpetite-vs{opacity:.25}
+.bracket.focus .bmini{opacity:.25}
+.bracket.focus .bmini.hl{opacity:1;transform:scale(1.05)}
+
+/* ==== Affiche de finale : ambiance « sous tension » (pouls doré + balayage lumineux) ==== */
+@keyframes fhGlow{
+  0%,100%{box-shadow:0 10px 40px #00000066,0 0 0 1px #ffd16640,0 0 34px #ffd16618}
+  50%{box-shadow:0 10px 46px #00000077,0 0 0 1px #ffd166b3,0 0 72px 8px #ffd16650}}
+@keyframes fhSweep{0%{transform:translateX(-170%) rotate(8deg)}
+  24%,100%{transform:translateX(380%) rotate(8deg)}}
+@keyframes fhCup{0%,100%{transform:translateY(0) scale(1);filter:drop-shadow(0 0 10px #ffd166)}
+  50%{transform:translateY(-4px) scale(1.07);filter:drop-shadow(0 0 22px #ffd166)}}
+/* --- grande affiche header, juste sous les onglets --- */
+.final-hero{max-width:760px;margin:8px auto 6px;animation:fadeUp .7s .2s both}
+.fh-poster{position:relative;overflow:hidden;border-radius:18px;padding:12px 12px 10px;
+  border:1px solid #ffd16655;background:radial-gradient(120% 130% at 50% -20%,#26305f 0%,#141b3c 55%,#0e1330 100%);
+  box-shadow:0 10px 40px #00000066,0 0 0 1px #ffd16640;animation:fhGlow 1.5s ease-in-out infinite}
+.fh-shine,.bfinal-shine{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none;z-index:4}
+.fh-shine::before{content:'';position:absolute;top:-30%;left:0;width:24%;height:160%;
+  background:linear-gradient(100deg,transparent,#ffffff5c 46%,#ffffff85 50%,transparent);
+  transform:translateX(-170%) rotate(8deg);animation:fhSweep 5s ease-in-out infinite}
+.fh-tag{position:relative;z-index:6;text-align:center;font:800 12px/1 -apple-system,system-ui,sans-serif;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+/* confrontation : deux grands portraits rectangulaires qui se font face, séparés par une
+   diagonale, avec la Coupe + VS par-dessus la jointure. Les images remplissent le conteneur. */
+.fh-duel{position:relative;display:flex;gap:0;height:clamp(240px,42vw,340px);border-radius:14px;overflow:hidden;background:#0a0f2c}
+.fh-team{position:relative;flex:1;min-width:0;height:100%}
+.fh-team-l{clip-path:polygon(0 0,100% 0,calc(100% - 44px) 100%,0 100%)}
+.fh-team-r{margin-left:-44px;clip-path:polygon(44px 0,100% 0,100% 100%,0 100%)}
+.fh-capwrap{display:block;width:100%;height:100%;line-height:0;border-radius:0}
+.fh-cap{width:100%;height:100%;border-radius:0;object-fit:cover;object-position:center 20%;
+  border:none;box-shadow:none;background:#0c1230}
+.fh-cap.cap-empty{display:flex;align-items:center;justify-content:center;font-size:72px;font-weight:800;color:#fff;text-transform:uppercase}
+/* voile dégradé sous chaque portrait pour lire le nom du pays */
+.fh-team::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top,#080d28f2 4%,#080d2855 30%,transparent 52%)}
+.fh-lose{filter:grayscale(.72) brightness(.72)}
+.fh-country{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:0 12px 13px;font-weight:800;font-size:clamp(16px,2.3vw,22px);white-space:nowrap;text-shadow:0 2px 8px #000}
+.fh-team-l .fh-country{padding-right:44px}
+.fh-team-r .fh-country{padding-left:44px}
+.fh-win .fh-country{color:var(--gold)}
+.fh-flag{font-size:1.2em}
+.fh-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;
+  display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;text-align:center}
+.fh-cup{font-size:clamp(42px,6vw,60px);line-height:1;animation:fhCup 1.5s ease-in-out infinite;filter:drop-shadow(0 3px 10px #000)}
+.fh-vs{font:900 clamp(22px,3.4vw,34px)/1 -apple-system,system-ui,sans-serif;letter-spacing:1px;color:#fff;
+  padding:5px 15px;border-radius:999px;background:#0b1030d9;border:2px solid var(--gold);box-shadow:0 0 20px #ffd16680}
+.fh-score{font:900 clamp(26px,4vw,36px)/1 -apple-system,system-ui,sans-serif;color:var(--gold);white-space:nowrap;
+  padding:5px 16px;border-radius:12px;background:#0b1030d9;border:2px solid var(--gold)}
+.fh-dash{margin:0 7px;color:#ffffff99}
+.fh-meta{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:12px;font-size:12.5px;color:var(--muted)}
+.fh-loc{color:#cbd3f5}
+.fh-done .fh-poster{border-color:var(--gold)}
+/* petite finale, en petit sous l'affiche */
+.fh-petite{max-width:560px;margin:8px auto 0;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  padding:7px 15px;border-radius:11px;border:1px dashed #ffffff26;background:#101736aa;font-size:13px}
+.fh-petite-tag{font:700 10.5px/1 -apple-system,system-ui,sans-serif;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.fh-petite-duel{font-weight:600}
+.fh-petite-duel b{color:var(--muted);margin:0 5px;font-weight:700}
+.fh-pf{margin-right:3px}
+.fh-petite-meta{color:var(--muted);font-size:12px}
+/* --- brillance identique sur l'affiche centrale du bracket --- */
+.bfinal-shine::before{content:'';position:absolute;top:-30%;left:0;width:24%;height:160%;
+  background:linear-gradient(100deg,transparent,#ffffff4d 48%,transparent);
+  transform:translateX(-170%) rotate(8deg);animation:fhSweep 5s ease-in-out infinite}
+.bracket.played .bfinal{animation:bfinIn .6s var(--d,1s) cubic-bezier(.2,.8,.25,1.2) both,fhGlow 1.5s 1.2s ease-in-out infinite}
+.bfinal-cup{animation:fhCup 1.5s ease-in-out infinite}
+.bfinal-when{font-size:11px;color:var(--muted);margin-top:1px}
+.bfinal-champ{color:var(--gold);font-weight:800}
+@media (prefers-reduced-motion: reduce){
+  .fh-poster,.bracket.played .bfinal{animation:none}
+  .fh-cup,.bfinal-cup{animation:none}
+  .fh-shine,.bfinal-shine{display:none}
 }
 /* -- Favoris (champion / buteur) : classement + carte -- */
 .fav-item{display:inline-flex;align-items:center;gap:8px;font-weight:600;white-space:nowrap}

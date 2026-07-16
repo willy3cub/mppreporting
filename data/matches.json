@@ -1321,6 +1321,32 @@
     "flag1": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     "team2": "Argentine",
     "flag2": "🇦🇷",
+    "score1": 1,
+    "score2": 2,
+    "status": "played"
+  },
+  {
+    "id": "mpp_championship_match_2608361",
+    "gameWeek": 8,
+    "phase": "Petite finale",
+    "date": "2026-07-18T21:00:00.000Z",
+    "team1": "France",
+    "flag1": "🇫🇷",
+    "team2": "Angleterre",
+    "flag2": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    "score1": null,
+    "score2": null,
+    "status": "pending"
+  },
+  {
+    "id": "mpp_championship_match_2608362",
+    "gameWeek": 9,
+    "phase": "Finale",
+    "date": "2026-07-19T19:00:00.000Z",
+    "team1": "Espagne",
+    "flag1": "🇪🇸",
+    "team2": "Argentine",
+    "flag2": "🇦🇷",
     "score1": null,
     "score2": null,
     "status": "pending"

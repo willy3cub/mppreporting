@@ -165,6 +165,8 @@ function renderRecap() {
     </div>`).join('');
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="recap" class="card recap">${blocks}</section>`);
+  // Embed X : idem bilan, on hydrate les blockquotes via widgets.js s'il y en a.
+  if (items.some((it) => /twitter-tweet/.test(it.html || ''))) loadTwitterWidgets();
 }
 
 function renderClassement() {
@@ -735,6 +737,7 @@ function initApp() {
   const app = document.getElementById('app');
   app.innerHTML = '';
   renderHero(app);
+  renderFinalBanner();
   renderPodium();
   renderRecap();
   renderClassement();
@@ -1064,6 +1067,74 @@ function renderFooter() {
     '<footer class="foot">SHRS Football Club — Coupe du Monde 2026 • généré statiquement</footer>');
 }
 
+// -- Affiche de la finale (bannière d'en-tête + composant partagé) --------
+// Lieu absent des données MPP → lieu réel de la finale CDM 2026.
+const FINAL_VENUE = 'MetLife Stadium · East Rutherford, New Jersey';
+const FINAL_VENUE_SHORT = 'MetLife Stadium';
+
+// Date ISO (UTC) → texte FR sans dépendre du fuseau du navigateur (page déterministe).
+function frDateTime(iso) {
+  const M = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
+    'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(iso || '');
+  if (!m) return '';
+  const min = m[5] === '00' ? '' : m[5];
+  return `${+m[3]} ${M[+m[2] - 1]} ${m[1]} · ${m[4]}h${min}`;
+}
+
+// Avatar du capitaine d'une équipe (data URI embarqué au build), avec repli initiales.
+function captainImg(team, cls) {
+  const c = (window.__WC.captains || {})[team];
+  return c && c.img
+    ? `<img class="${cls}" src="${c.img}" alt="Capitaine — ${team}" loading="lazy">`
+    : `<span class="${cls} cap-empty">${(team || '?').slice(0, 2)}</span>`;
+}
+
+// Grande affiche de la finale, insérée juste sous les onglets. Capitaines en grand,
+// pays, lieu et date/heure ; petite finale (3e place) en petit dessous.
+function renderFinalBanner() {
+  const matches = window.__WC.matches;
+  const fm = matches.find((m) => m.phase === 'Finale');
+  const nav = document.querySelector('.nav');
+  if (!fm || !nav) return;
+  const pm = matches.find((m) => m.phase === 'Petite finale');
+  const done = fm.status === 'played';
+  const fw = done && fm.score1 !== fm.score2 ? (fm.score1 > fm.score2 ? fm.team1 : fm.team2) : null;
+  const centre = done
+    ? `<span class="fh-score">${fm.score1}<span class="fh-dash">–</span>${fm.score2}</span>`
+    : '<span class="fh-vs">VS</span>';
+  const side = (team, flag, cls) =>
+    `<div class="fh-team ${cls}${fw === team ? ' fh-win' : (fw ? ' fh-lose' : '')}" data-team="${team}">
+      <span class="fh-capwrap">${captainImg(team, 'fh-cap')}</span>
+      <span class="fh-country"><span class="fh-flag">${flag}</span>${team}</span>
+    </div>`;
+  const petiteHtml = pm ? `
+    <div class="fh-petite">
+      <span class="fh-petite-tag">🥉 Petite finale · 3ᵉ place</span>
+      <span class="fh-petite-duel"><span class="fh-pf">${pm.flag1}</span>${pm.team1}
+        <b>${pm.status === 'played' ? `${pm.score1}–${pm.score2}` : 'vs'}</b>
+        <span class="fh-pf">${pm.flag2}</span>${pm.team2}</span>
+      <span class="fh-petite-meta">${frDateTime(pm.date)}</span>
+    </div>` : '';
+  nav.insertAdjacentHTML('afterend', `
+    <section class="final-hero${done ? ' fh-done' : ''}" id="final-hero" aria-label="Affiche de la finale">
+      <div class="fh-poster">
+        <span class="fh-shine" aria-hidden="true"></span>
+        <div class="fh-tag">La Finale · Coupe du Monde 2026</div>
+        <div class="fh-duel">
+          ${side(fm.team1, fm.flag1, 'fh-team-l')}
+          <div class="fh-center"><span class="fh-cup">🏆</span>${centre}</div>
+          ${side(fm.team2, fm.flag2, 'fh-team-r')}
+        </div>
+        <div class="fh-meta">
+          <span class="fh-loc">📍 ${FINAL_VENUE}</span>
+          <span class="fh-when">🗓️ ${done ? 'terminée' : frDateTime(fm.date)}</span>
+        </div>
+      </div>
+      ${petiteHtml}
+    </section>`);
+}
+
 // -- Parcours des phases finales : bracket + traces vers le trophée ------
 const BRACKET_ROUNDS = ['16es', '8es', 'Quarts', 'Demies', 'Finale'];
 
@@ -1109,8 +1180,21 @@ function renderBracket() {
 
   const SLOT = 170, BOXH = 154, COLW = 236;
   const H = Math.max(rounds[0].list.length, 1) * SLOT;
-  const trophyX = rounds.length * COLW;
-  const W = trophyX + 92;
+
+  // La finale (dernier tour) sort du flux « colonnes » : elle est rendue en affiche
+  // face-à-face avec la Coupe du Monde au centre, et la petite finale (3e place) se glisse
+  // juste en dessous, en plus discret. À défaut de finale (tournoi en cours), on retombe
+  // sur l'ancien aboutissement (trophée seul à droite).
+  const finalRi = rounds.findIndex((r) => r.ph === 'Finale');
+  const finalMatch = finalRi >= 0 ? rounds[finalRi].list[0] : null;
+  const petite = all.find((m) => m.phase === 'Petite finale') || null;
+  const colRounds = finalMatch ? rounds.slice(0, finalRi) : rounds;
+  const FINW = 356, FINH = 208, PETH = 74, GAP = 20;
+  const finalLeft = (finalMatch ? finalRi : rounds.length) * COLW;
+  const cupY = finalMatch ? finalMatch._y * SLOT : H / 2;
+  const trophyX = finalMatch ? finalLeft + FINW / 2 : rounds.length * COLW;
+  const trophyY = cupY;
+  const W = (finalMatch ? finalLeft + FINW : trophyX + 92) + 24;
 
   // Équipes éliminées = perdantes d'un match joué (les autres sont encore en course).
   // wins[équipe] = liste des victoires { vaincu, tour, matchId } pour cadencer les tampons « ÉLIMINÉ ».
@@ -1139,7 +1223,7 @@ function renderBracket() {
       ${capAvatar(t)}<span class="bflag">${flagOf[t] || ''}</span><span class="bname">${t}</span>
       <span class="bscore">${s ?? '–'}</span></div>`;
   };
-  const boxHtml = rounds.map((r, ri) => r.list.map((m) => {
+  const boxHtml = colRounds.map((r, ri) => r.list.map((m) => {
     const w = winnerOf(m, ri);
     const top = m._y * SLOT - BOXH / 2;
     const d = (ri * 0.22 + m._y * 0.02).toFixed(2);
@@ -1151,27 +1235,75 @@ function renderBracket() {
 
   let paths = '';
   for (let ri = 0; ri + 1 < rounds.length; ri++) {
+    const toFinal = finalMatch && (ri + 1 === finalRi);
     for (const m of rounds[ri].list) {
       const w = winnerOf(m, ri); if (!w) continue;
       const nm = rounds[ri + 1].list.find((x) => x.team1 === w || x.team2 === w); if (!nm) continue;
-      const ax = ri * COLW + (COLW - 24), ay = m._y * SLOT, bx = (ri + 1) * COLW, by = nm._y * SLOT, mid = (ax + bx) / 2;
+      const ax = ri * COLW + (COLW - 24), ay = m._y * SLOT;
+      // Vers une colonne classique : bord gauche de la box suivante. Vers la finale : les deux
+      // demies convergent sur le flanc gauche de l'affiche, au niveau de la Coupe.
+      const bx = toFinal ? finalLeft : (ri + 1) * COLW;
+      const by = toFinal ? cupY : nm._y * SLOT;
+      const mid = (ax + bx) / 2;
       const d = (ri * 0.22 + 0.28).toFixed(2);
       const cls = isAlive(w) ? 'bpath-live' : 'bpath-out';
       paths += `<path class="bpath ${cls}" data-team="${w}" data-alive="${isAlive(w) ? 1 : 0}" style="--d:${d}s;--seg:${ri}" d="M${ax} ${ay} H${mid} V${by} H${bx}"/>`;
     }
   }
-  // Trace vers le trophée : uniquement pour les équipes encore en course, révélée au survol.
-  const alive = [];
-  for (const m of rounds[lastRi].list) {
-    if (m.status === 'played') { const w = winnerOf(m, lastRi); if (w) alive.push({ t: w, y: m._y }); }
-    else alive.push({ t: m.team1, y: m._y }, { t: m.team2, y: m._y });
-  }
-  const trophyY = H / 2;
-  for (const a of alive) {
-    const x0 = lastRi * COLW + (COLW - 24), y0 = a.y * SLOT;
-    paths += `<path class="bpath bpath-alive" data-team="${a.t}" data-alive="1" style="--seg:${lastRi}" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
+  // Sans affiche de finale (tournoi encore en cours), on garde l'ancien aboutissement : une trace
+  // vers le trophée pour chaque équipe encore en course, révélée au survol.
+  if (!finalMatch) {
+    for (const m of rounds[lastRi].list) {
+      const teams = m.status === 'played' ? [winnerOf(m, lastRi)].filter(Boolean) : [m.team1, m.team2];
+      for (const t of teams) {
+        const x0 = lastRi * COLW + (COLW - 24), y0 = m._y * SLOT;
+        paths += `<path class="bpath bpath-alive" data-team="${t}" data-alive="1" style="--seg:${lastRi}" d="M${x0} ${y0} H${(x0 + trophyX) / 2} V${trophyY} H${trophyX}"/>`;
+      }
+    }
   }
   const trophyDelay = (rounds.length * 0.22 + 0.55).toFixed(2);
+
+  // Affiche de finale : les deux finalistes se font face de part et d'autre de la Coupe du Monde,
+  // avec la petite finale (3e place) juste en dessous, en plus discret.
+  const finalName = (t) => `<span class="bfname"><span class="bflag">${flagOf[t] || ''}</span><span class="bname">${t}</span></span>`;
+  const finalSide = (t, s, w) => {
+    const cls = w === t ? 'bwin' : (w ? 'blose' : '');
+    const sc = s == null ? '' : `<span class="bscore">${s}</span>`;
+    return `<div class="bteam bfside ${cls}" data-team="${t}" data-alive="${isAlive(t) ? 1 : 0}">
+      ${capAvatar(t)}${finalName(t)}${sc}</div>`;
+  };
+  const miniSide = (t, s, w) => {
+    const cls = w === t ? 'bwin' : (w ? 'blose' : '');
+    const sc = s == null ? '' : `<span class="bscore">${s}</span>`;
+    return `<span class="bmini ${cls}" data-team="${t}" data-alive="${isAlive(t) ? 1 : 0}">
+      <span class="bflag">${flagOf[t] || ''}</span><span class="bname">${t}</span>${sc}</span>`;
+  };
+  let finalHtml = '';
+  if (finalMatch) {
+    const fm = finalMatch, fw = winnerOf(fm, finalRi), done = fm.status === 'played';
+    const meta = done && fw
+      ? `<div class="bfinal-meta bfinal-champ">🏆 ${fw} — champion du monde</div>`
+      : `<div class="bfinal-meta">📍 ${FINAL_VENUE_SHORT}</div><div class="bfinal-when">🗓️ ${frDateTime(fm.date)}</div>`;
+    finalHtml += `<div class="bfinal${done ? ' bfinal-done' : ''}" style="left:${finalLeft}px;top:${cupY - FINH / 2}px;width:${FINW}px;--d:${trophyDelay}s">
+      <span class="bfinal-shine" aria-hidden="true"></span>
+      <div class="bfinal-title">Finale</div>
+      <div class="bfinal-duel">
+        ${finalSide(fm.team1, done ? fm.score1 : null, fw)}
+        <div class="bfinal-cup"><span class="btrophy-halo"></span>🏆</div>
+        ${finalSide(fm.team2, done ? fm.score2 : null, fw)}
+      </div>
+      ${meta}
+    </div>`;
+    if (petite) {
+      const pm = petite, done2 = pm.status === 'played';
+      const pw = done2 && pm.score1 !== pm.score2 ? (pm.score1 > pm.score2 ? pm.team1 : pm.team2) : null;
+      const pd = (rounds.length * 0.22 + 0.66).toFixed(2);
+      finalHtml += `<div class="bpetite" style="left:${finalLeft}px;top:${cupY + FINH / 2 + GAP}px;width:${FINW}px;height:${PETH}px;--d:${pd}s">
+        <div class="bpetite-title">🥉 Petite finale · 3ᵉ place</div>
+        <div class="bpetite-duel">${miniSide(pm.team1, done2 ? pm.score1 : null, pw)}<span class="bpetite-vs">vs</span>${miniSide(pm.team2, done2 ? pm.score2 : null, pw)}</div>
+      </div>`;
+    }
+  }
 
   document.getElementById('app').insertAdjacentHTML('beforeend', `
     <section id="parcours" class="card">
@@ -1184,7 +1316,7 @@ function renderBracket() {
           ${paths}
         </svg>
         ${boxHtml}
-        <div class="btrophy" style="left:${trophyX}px;top:${trophyY - 22}px;--d:${trophyDelay}s"><span class="btrophy-halo"></span>🏆</div>
+        ${finalMatch ? finalHtml : `<div class="btrophy" style="left:${trophyX}px;top:${trophyY - 22}px;--d:${trophyDelay}s"><span class="btrophy-halo"></span>🏆</div>`}
       </div></div>
     </section>`);
   // Longueur réelle de chaque trace → var --len (remplissage/dessin exacts, quelle que soit la trace).
