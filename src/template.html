@@ -34,18 +34,31 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .nav a:hover{background:#ffffff14;box-shadow:0 0 12px #ffffff22}
 .nav a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .nav a.active{background:#ffffff1f;border-color:var(--gold);color:var(--gold);box-shadow:0 0 12px #ffd16655}
-.podium{display:flex;align-items:flex-end;justify-content:center;gap:14px;margin:26px 0;position:relative;z-index:1}
-.podium .step{text-align:center;background:#ffffff0d;border:1px solid var(--c);border-radius:12px;padding:14px 16px;min-width:96px;
-  box-shadow:0 0 18px color-mix(in srgb,var(--c) 45%,transparent)}
-.podium .step-1{padding-bottom:38px}
-.podium .step-2{padding-bottom:22px}
-.podium .medal{font-size:30px}
-.podium .pname{font-weight:700;color:var(--c)}
-.podium .ppts{color:var(--muted);font-size:13px}
-/* Flammes SVG autour du 1er (diffuses au-dessus de la carte) */
-.flames{position:absolute;left:50%;top:-62px;translate:-50% 0;width:160px;height:112px;z-index:0;pointer-events:none;
+/* ============ Podium « cérémonie » ============ */
+.podium{position:relative;margin:26px 0;z-index:1}
+/* Estrade : rangée de blocs (or au centre, argents autour, Rescapé à part) */
+.podium .tiers{display:flex;align-items:flex-end;justify-content:center;gap:16px;position:relative;z-index:3}
+.podium .step{text-align:center;position:relative;min-width:108px;padding:16px 16px;
+  background:linear-gradient(180deg,#ffffff18,#ffffff07);border:1px solid var(--c);border-radius:14px 14px 5px 5px;
+  box-shadow:0 0 24px color-mix(in srgb,var(--c) 42%,transparent),inset 0 1px 0 #ffffff26,0 14px 26px #00000055}
+/* gros chiffre de place gravé dans le socle */
+.podium .step .plith{position:absolute;left:0;right:0;bottom:5px;text-align:center;font-weight:900;font-size:26px;
+  color:color-mix(in srgb,var(--c) 30%,transparent);letter-spacing:2px;line-height:1;pointer-events:none}
+.podium .step-gold{padding-bottom:60px;transform:translateY(-8px);z-index:2}
+.podium .step-silver{padding-bottom:34px}
+.podium .step-rescape{padding-bottom:18px;margin-left:30px;cursor:pointer}
+.podium .medal{font-size:32px;line-height:1;position:relative;z-index:1}
+.podium .crown{position:absolute;left:50%;top:-26px;translate:-50% 0;font-size:30px;z-index:2;
+  filter:drop-shadow(0 0 12px #ffd166);animation:crownbob 3s ease-in-out infinite}
+.podium .pname{font-weight:800;color:var(--c);position:relative;z-index:1}
+.podium .ppts{color:var(--muted);font-size:13px;position:relative;z-index:1}
+.podium .tag{margin-top:5px;font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;
+  color:#e6bd63;position:relative;z-index:1}
+.podium .step-silver .tag{color:#cfd6ff99}
+@keyframes crownbob{0%,100%{transform:translate(-50%,0) rotate(-5deg)}50%{transform:translate(-50%,-5px) rotate(5deg)}}
+/* Flammes SVG autour de l'or */
+.flames{position:absolute;left:50%;top:-66px;translate:-50% 0;width:160px;height:112px;z-index:0;pointer-events:none;
   filter:blur(.6px) drop-shadow(0 0 18px #ff6a0088)}
-.step-1 .medal,.step-1 .avt-lg,.step-1 .pname,.step-1 .ppts{position:relative;z-index:1}
 .fl{transform-origin:50% 100%;animation:flick 1s ease-in-out infinite alternate}
 .fl1{animation-duration:.9s}
 .fl2{animation-duration:.72s}
@@ -56,33 +69,74 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .flglow{transform-origin:50% 74%;animation:glowpulse 2.2s ease-in-out infinite alternate}
 @keyframes flick{0%{transform:scaleY(.88) scaleX(1.03);opacity:.78}100%{transform:scaleY(1.14) scaleX(.92);opacity:1}}
 @keyframes glowpulse{0%{opacity:.55;transform:scale(.94)}100%{opacity:.9;transform:scale(1.06)}}
-/* Feux d'artifice de fin de tournoi (rendus seulement quand tout est joué) */
-.podium.celebrate{padding-top:34px}
-.fireworks{position:absolute;left:0;right:0;top:-30px;height:150px;z-index:0;pointer-events:none;overflow:visible}
-.fw{position:absolute;width:4px;height:4px;border-radius:50%;opacity:0;transform:scale(.1);
-  animation:fw-burst 2.4s ease-out infinite}
-.fw::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:
-  40px 0 0 0 var(--fw),35px -20px 0 0 var(--fw),20px -35px 0 0 var(--fw),0 -40px 0 0 var(--fw),
-  -20px -35px 0 0 var(--fw),-35px -20px 0 0 var(--fw),-40px 0 0 0 var(--fw),-35px 20px 0 0 var(--fw),
-  -20px 35px 0 0 var(--fw),0 40px 0 0 var(--fw),20px 35px 0 0 var(--fw),35px 20px 0 0 var(--fw)}
-.fw1{left:14%;--fw:#ffd166;animation-delay:0s}
-.fw2{left:38%;--fw:#ff6b6b;animation-delay:.5s;top:14px}
-.fw3{left:62%;--fw:#38d996;animation-delay:1s;top:6px}
-.fw4{left:84%;--fw:#4d8bff;animation-delay:1.5s}
-.fw5{left:50%;--fw:#ff9f1c;animation-delay:.8s;top:-8px}
-@keyframes fw-burst{0%{opacity:0;transform:scale(.1)}12%{opacity:1}55%{opacity:1}100%{opacity:0;transform:scale(1)}}
-/* Le Rescapé (avant-dernier) : vrai trophée, à côté du podium */
-.podium .consol{margin-left:26px;padding-bottom:10px;cursor:pointer}
-.podium .consol .medal{font-size:26px;filter:drop-shadow(0 0 7px #d9a441)}
-.consol-label{margin-top:6px;font-size:11px;font-weight:700;color:#e6bd63;white-space:nowrap}
+/* Projecteurs qui balayent derrière l'estrade */
+.spotlights{position:absolute;left:0;right:0;top:-30px;bottom:40px;z-index:0;pointer-events:none;overflow:hidden}
+.spotlights span{position:absolute;bottom:-10%;left:50%;width:120px;height:170%;transform-origin:50% 100%;
+  background:linear-gradient(to top,color-mix(in srgb,var(--sl) 30%,transparent),transparent 78%);
+  filter:blur(6px);mix-blend-mode:screen;opacity:.5;animation:sweep 7s ease-in-out infinite alternate}
+.spotlights span:nth-child(1){--sl:#ffd166;translate:-220px 0;animation-delay:-1s}
+.spotlights span:nth-child(2){--sl:#4d8bff;translate:0 0;animation-duration:9s}
+.spotlights span:nth-child(3){--sl:#ff6b6b;translate:220px 0;animation-delay:-3s}
+@keyframes sweep{0%{transform:rotate(-16deg)}100%{transform:rotate(16deg)}}
+/* ===== Feux d'artifice (fin de tournoi) — plus nombreux, plus explosifs ===== */
+.fireworks{position:absolute;left:0;right:0;top:-46px;height:190px;z-index:1;pointer-events:none;overflow:visible}
+.fw{position:absolute;width:5px;height:5px;border-radius:50%;opacity:0;transform:scale(.1);
+  animation:fw-burst 2.2s ease-out infinite}
+.fw::before,.fw::after{content:"";position:absolute;inset:0;border-radius:50%}
+/* couronne de 16 étincelles (rayon 46) */
+.fw::after{box-shadow:
+  46px 0 0 .5px var(--fw),42px -18px 0 .5px var(--fw),33px -33px 0 .5px var(--fw),18px -42px 0 .5px var(--fw),
+  0 -46px 0 .5px var(--fw),-18px -42px 0 .5px var(--fw),-33px -33px 0 .5px var(--fw),-42px -18px 0 .5px var(--fw),
+  -46px 0 0 .5px var(--fw),-42px 18px 0 .5px var(--fw),-33px 33px 0 .5px var(--fw),-18px 42px 0 .5px var(--fw),
+  0 46px 0 .5px var(--fw),18px 42px 0 .5px var(--fw),33px 33px 0 .5px var(--fw),42px 18px 0 .5px var(--fw)}
+/* couronne interne décalée (rayon 26), teinte claire, pour l'effet double explosion */
+.fw::before{box-shadow:
+  26px 10px 0 0 var(--fw2),10px 26px 0 0 var(--fw2),-10px 26px 0 0 var(--fw2),-26px 10px 0 0 var(--fw2),
+  -26px -10px 0 0 var(--fw2),-10px -26px 0 0 var(--fw2),10px -26px 0 0 var(--fw2),26px -10px 0 0 var(--fw2)}
+.fw1{left:10%;top:30px;--fw:#ffd166;--fw2:#fff3c4;animation-delay:0s}
+.fw2{left:26%;top:8px;--fw:#ff6b6b;--fw2:#ffd3d3;animation-delay:.45s}
+.fw3{left:42%;top:36px;--fw:#38d996;--fw2:#c7ffe8;animation-delay:.9s}
+.fw4{left:58%;top:4px;--fw:#4d8bff;--fw2:#d6e6ff;animation-delay:1.35s}
+.fw5{left:74%;top:30px;--fw:#ff9f1c;--fw2:#ffe6bf;animation-delay:.7s}
+.fw6{left:90%;top:12px;--fw:#c77dff;--fw2:#efd9ff;animation-delay:1.7s}
+.fw7{left:34%;top:-2px;--fw:#ffd166;--fw2:#fff3c4;animation-delay:2s}
+.fw8{left:66%;top:40px;--fw:#38d996;--fw2:#c7ffe8;animation-delay:1.1s}
+.fw9{left:50%;top:-10px;--fw:#ff5a8a;--fw2:#ffd0e0;animation-delay:.25s}
+.fw10{left:18%;top:44px;--fw:#4d8bff;--fw2:#d6e6ff;animation-delay:1.5s}
+@keyframes fw-burst{0%{opacity:0;transform:scale(.05)}10%{opacity:1}45%{opacity:1}100%{opacity:0;transform:scale(1.15)}}
+/* ===== Confettis qui tombent ===== */
+.confetti{position:absolute;left:0;right:0;top:-40px;height:340px;z-index:2;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-16px;width:8px;height:12px;opacity:.9;border-radius:1px;
+  animation:confall linear infinite}
+@keyframes confall{0%{transform:translateY(-20px) rotate(0);opacity:0}
+  8%{opacity:1}100%{transform:translateY(360px) rotate(680deg);opacity:.9}}
+/* ===== Foule qui applaudit ===== */
+.crowd{position:relative;z-index:2;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;
+  gap:1px 3px;margin-top:2px;padding:14px 0 2px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+/* rangées de têtes floues en fond = profondeur de foule */
+.crowd::before{content:"";position:absolute;left:0;right:0;bottom:8px;height:30px;z-index:0;opacity:.45;
+  background:radial-gradient(circle at 6px 7px,#565d8a 5px,transparent 6px);background-size:15px 15px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+.fan{width:26px;height:32px;flex:0 0 auto;position:relative;z-index:1;transform-origin:50% 100%;
+  animation:cheer 1.1s ease-in-out infinite}
+.fan-head{fill:#cfd5f5}
+.fan-torso{fill:#5b6293}
+.fan-hands{transform-origin:50% 40%;animation:clap .46s ease-in-out infinite}
+.fan-hands circle{fill:#ffd166}
+@keyframes cheer{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes clap{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.35)}}
 @keyframes pop{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
 .podium .step{animation:pop .5s ease both}
-.podium .step-1{animation-delay:.15s}
+.podium .step-gold{animation-delay:.15s}
 @media (prefers-reduced-motion: reduce){
   .hero .trophy{animation:none}
-  .podium .step{animation:none}
+  .podium .step,.podium .crown{animation:none}
   .fl,.flcore,.flglow{animation:none}
-  .fw{animation:none;opacity:.55;transform:scale(.7)}
+  .fw{animation:none;opacity:.6;transform:scale(.7)}
+  .confetti i,.spotlights span,.fan,.fan-hands{animation:none}
   .beams{animation:none}
 }
 
@@ -504,14 +558,16 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   .nav a{font-size:13px;padding:5px 11px}
   .card{padding:14px 12px;margin:16px 0}
   .card h2{font-size:18px}
-  .podium{gap:8px;margin:20px 0}
+  .podium{margin:20px 0}
+  .podium .tiers{gap:8px}
   .podium .step{min-width:0;flex:1 1 0;padding:12px 6px}
-  .podium .step-1{padding-bottom:28px}
-  .podium .step-2{padding-bottom:18px}
+  .podium .step-gold{padding-bottom:46px}
+  .podium .step-silver{padding-bottom:24px}
+  .podium .step-rescape{padding-bottom:14px;margin-left:12px}
   .podium .avt-lg{width:46px;height:46px;font-size:18px}
   .podium .medal{font-size:24px}
   .podium .pname{font-size:14px}
-  .podium .consol{margin-left:8px}
+  .fan{width:20px;height:26px}
   .recap-score{font-size:18px;gap:6px}
   .recap-cap{width:28px;height:28px}
   .tbl{font-size:13px}
@@ -532,8 +588,8 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   .fav-img{width:26px;height:26px}
   .fav-out .fav-img{outline:2px solid #ff6b6bcc;outline-offset:1px;border-radius:5px}
   /* Podium : l'avant-dernier passe sous le trio (sa propre ligne) pour ne pas serrer */
-  .podium{flex-wrap:wrap}
-  .podium .consol{flex:0 0 100%;margin:12px 0 0;order:9}
+  .podium .tiers{flex-wrap:wrap}
+  .podium .step-rescape{flex:0 0 100%;margin:12px 0 0;order:9}
   .badges-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
   .pcard{padding:18px 14px}
   .pcard-stats{flex-wrap:wrap}

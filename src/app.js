@@ -101,46 +101,110 @@ const DUNCE_CAP_SVG = `
     </g>
   </svg>`;
 
+// Rang d'affichage tenant compte des ex æquo : même total ⇒ même place, la suivante saute
+// (deux 2es → pas de 3e). `full` est déjà trié par points décroissants.
+function withTieRanks(full) {
+  let lastPts = null; let lastRank = 0;
+  return full.map((s, i) => {
+    const drank = s.pts === lastPts ? lastRank : i + 1;
+    lastPts = s.pts; lastRank = drank;
+    return { ...s, drank };
+  });
+}
+
+// Une marche du podium (or / argent / bronze).
+function podiumStep(s, kind, tag) {
+  const p = playerByUid(s.uid);
+  const meta = {
+    gold: { cls: 'step-gold', medal: '🥇', crown: '👑' },
+    silver: { cls: 'step-silver', medal: '🥈', crown: '' },
+    bronze: { cls: 'step-bronze', medal: '🥉', crown: '' },
+  }[kind];
+  return `<div class="step ${meta.cls}" style="--c:${p.color}" data-card-uid="${s.uid}">
+    ${kind === 'gold' ? FLAMES_SVG : ''}
+    ${meta.crown ? `<div class="crown">${meta.crown}</div>` : ''}
+    <div class="medal">${meta.medal}</div>
+    ${avatarThumb(p, 'avt-lg')}
+    <div class="pname">${p.name}</div>
+    <div class="ppts"><span data-count="${s.pts}">${s.pts.toLocaleString('fr-FR')}</span> pts</div>
+    <div class="tag">${tag}</div>
+    <div class="plith">${s.drank}</div>
+  </div>`;
+}
+
+// Foule de supporters qui applaudissent (SVG répété, applaudissement décalé).
+function crowdMarkup(n) {
+  const tones = ['#5b6293', '#4d5488', '#646aa0', '#565d92', '#6b72ab'];
+  const hands = ['#ffd166', '#ff9f1c', '#ffe08a'];
+  let out = '';
+  for (let i = 0; i < n; i++) {
+    out += `<svg class="fan" viewBox="0 0 26 32" aria-hidden="true" style="animation-delay:${(i * 0.13 % 1.1).toFixed(2)}s">
+      <path class="fan-torso" d="M4 32 C4 20 22 20 22 32 Z" style="fill:${tones[i % tones.length]}"/>
+      <circle class="fan-head" cx="13" cy="10" r="5"/>
+      <g class="fan-hands" style="animation-delay:${(i * 0.17 % 0.46).toFixed(2)}s">
+        <circle cx="7" cy="5" r="2.3" style="fill:${hands[i % hands.length]}"/>
+        <circle cx="19" cy="5" r="2.3" style="fill:${hands[i % hands.length]}"/>
+      </g></svg>`;
+  }
+  return `<div class="crowd" aria-hidden="true">${out}</div>`;
+}
+
+// Confettis qui tombent (couleurs, positions et vitesses variées).
+function confettiMarkup(n) {
+  const cols = ['#ffd166', '#ff6b6b', '#38d996', '#4d8bff', '#ff9f1c', '#c77dff', '#ff5a8a', '#ffffff'];
+  let out = '';
+  for (let i = 0; i < n; i++) {
+    const left = (i / n * 100 + (i * 13 % 9)).toFixed(1);
+    const w = 6 + (i % 3) * 2;
+    out += `<i style="left:${left}%;width:${w}px;height:${w + 4}px;background:${cols[i % cols.length]};`
+      + `animation-duration:${(3 + (i % 5) * 0.7).toFixed(1)}s;animation-delay:${((i * 0.37) % 4).toFixed(2)}s"></i>`;
+  }
+  return `<div class="confetti" aria-hidden="true">${out}</div>`;
+}
+
 function renderPodium() {
-  const full = rankStandings(latestPoints());
-  const top3 = full.slice(0, 3);
-  const medals = ['🥇', '🥈', '🥉'];
-  const order = [1, 0, 2]; // 2e, 1er, 3e pour l'effet marches
-  const steps = order.map((i) => {
-    const s = top3[i]; if (!s) return '';
-    const p = playerByUid(s.uid);
-    return `<div class="step step-${s.rank}" style="--c:${p.color}">
-      ${s.rank === 1 ? FLAMES_SVG : ''}
-      <div class="medal">${medals[s.rank - 1]}</div>
-      ${avatarThumb(p, 'avt-lg')}
-      <div class="pname">${p.name}</div>
-      <div class="ppts"><span data-count="${s.pts}">${s.pts.toLocaleString('fr-FR')}</span> pts</div>
-    </div>`;
-  }).join('');
-  // Récompense de l'avant-dernier : un vrai trophée (« Le Rescapé »).
-  const avd = full[full.length - 2];
-  let consol = '';
+  const ranked = withTieRanks(rankStandings(latestPoints()));
+  const gold = ranked.filter((s) => s.drank === 1);
+  const silver = ranked.filter((s) => s.drank === 2);
+  const bronze = ranked.filter((s) => s.drank === 3);
+  const silverTag = silver.length > 1 ? '2ᵉ ex æquo' : 'Vice-champion';
+
+  const goldHtml = gold.map((s) => podiumStep(s, 'gold', 'Champion')).join('');
+  const others = [...silver.map((s) => ({ s, kind: 'silver', tag: silverTag })),
+    ...bronze.map((s) => ({ s, kind: 'bronze', tag: '3ᵉ place' }))];
+  // Réparti symétriquement autour de l'or : gauche / droite / gauche…
+  const left = []; const right = [];
+  others.forEach((o, i) => (i % 2 === 0 ? left : right).push(o));
+  const render = (o) => podiumStep(o.s, o.kind, o.tag);
+  const tiersInner = left.reverse().map(render).join('') + goldHtml + right.map(render).join('');
+
+  // Récompense de l'avant-dernier (par position) : un vrai trophée (« Le Rescapé »).
+  const avd = ranked[ranked.length - 2];
+  let rescape = '';
   if (avd) {
     const p = playerByUid(avd.uid);
-    consol = `<div class="step consol" style="--c:#d9a441" data-card-uid="${avd.uid}"
+    rescape = `<div class="step step-rescape" style="--c:#d9a441" data-card-uid="${avd.uid}"
         data-hint="Le Rescapé : l’avant-dernier échappe à la lanterne rouge… et repart avec un vrai trophée.">
       <div class="medal">🏅</div>
       ${avatarThumb(p, 'avt-lg')}
       <div class="pname">${p.name}</div>
       <div class="ppts"><span data-count="${avd.pts}">${avd.pts.toLocaleString('fr-FR')}</span> pts</div>
-      <div class="consol-label">Le Rescapé · ${ordinalFr(avd.rank)}</div>
+      <div class="tag">Le Rescapé · ${ordinalFr(avd.drank)}</div>
     </div>`;
   }
-  // Fin de tournoi : plus aucun match en attente → on lâche les feux d'artifice.
+
+  const tiers = `<div class="tiers">${tiersInner}${rescape}</div>`;
+  // Fin de tournoi : plus aucun match en attente → grande cérémonie (projecteurs, feux, confettis, foule).
   const done = (window.__WC.matches || []).every((m) => m.status !== 'pending');
   const el = document.getElementById('podium');
   if (done) {
     el.classList.add('celebrate');
-    const fw = '<div class="fireworks" aria-hidden="true">'
-      + [1, 2, 3, 4, 5].map((i) => `<span class="fw fw${i}"></span>`).join('') + '</div>';
-    el.innerHTML = fw + steps + consol;
+    const spotlights = '<div class="spotlights" aria-hidden="true"><span></span><span></span><span></span></div>';
+    const fireworks = '<div class="fireworks" aria-hidden="true">'
+      + Array.from({ length: 10 }, (_, i) => `<span class="fw fw${i + 1}"></span>`).join('') + '</div>';
+    el.innerHTML = spotlights + fireworks + confettiMarkup(30) + tiers + crowdMarkup(34);
   } else {
-    el.innerHTML = steps + consol;
+    el.innerHTML = tiers;
   }
 }
 
@@ -187,17 +251,18 @@ function renderClassement() {
   const cur = history[labels[labels.length - 1]];
   const prev = history[labels[labels.length - 2]] || cur;
   const rankPrev = {}; rankStandings(prev).forEach((s) => (rankPrev[s.uid] = s.rank));
-  const standings = rankStandings(cur);
-  const avdRank = standings.length - 1; // avant-dernier
-  const rows = standings.map((s) => {
+  const standings = withTieRanks(rankStandings(cur));
+  const lastIdx = standings.length - 1; // dernier (par position)
+  const rows = standings.map((s, idx) => {
     const p = players.find((x) => x.uid === s.uid);
     const f = favOf(s.uid);
     const dp = s.pts - (prev[s.uid] ?? 0);
     const dr = (rankPrev[s.uid] ?? s.rank) - s.rank;
-    const isAvd = s.rank === avdRank;
-    const isLast = s.rank === standings.length;
-    const isLeader = s.rank === 1;
-    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.rank] || (isAvd ? '🏅' : `${s.rank}.`);
+    const isAvd = idx === lastIdx - 1;
+    const isLast = idx === lastIdx;
+    const isLeader = s.drank === 1;
+    // Médaille sur la place réelle (ex æquo : deux 2es → 🥈🥈, pas de 🥉).
+    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[s.drank] || (isAvd ? '🏅' : `${s.drank}.`);
     const arrow = dr > 0 ? `<span class="up">▲${dr}</span>`
       : dr < 0 ? `<span class="down">▼${-dr}</span>` : `<span class="flat">■</span>`;
     const rkHint = isLeader ? ' data-hint="En tête du classement — le patron"'
