@@ -77,43 +77,19 @@ function eliminatedNationsFrom(matches) {
   return elim;
 }
 
-// Nations qui ont encore au moins un match à disputer (statut != 'played') : finalistes
-// ET équipes de la petite finale. Sert à la colonne Buteur — un joueur ne peut plus
-// marquer une fois que son équipe a fini son parcours.
-function activeNationsFrom(matches) {
-  const s = new Set();
-  for (const m of matches || []) {
-    if (m.status !== 'played') { s.add(m.team1); s.add(m.team2); }
-  }
-  return s;
-}
-
-// Champion : vainqueur de la Finale une fois jouée (null tant qu'elle ne l'est pas).
-// En fin de tournoi, plus aucune nation n'est « active » → sans ça, le buteur du champion
-// serait barré à tort. Le champion n'est jamais éliminé (ni nation, ni buteur).
-function championFrom(matches) {
-  const f = (matches || []).find((m) => m.phase === 'Finale' && m.status === 'played'
-    && m.score1 != null && m.score2 != null && m.score1 !== m.score2);
-  if (!f) return null;
-  return f.score1 > f.score2 ? f.team1 : f.team2;
-}
-
 // Résout les images des favoris en data URIs (page auto-suffisante) ET réconcilie le
-// statut « éliminé » des deux colonnes avec les résultats réels. Les deux colonnes ont
-// des sémantiques DIFFÉRENTES :
+// statut « éliminé » des deux colonnes. Les deux colonnes ont des sémantiques DIFFÉRENTES :
 //   - Champion (nation) : barré dès que l'équipe ne peut plus gagner le titre, c.-à-d.
-//     perdant d'un match KO — un demi-finaliste battu reste barré même s'il dispute la
-//     petite finale (il ne sera jamais champion).
-//   - Buteur (via data/scorer-nations.json) : barré seulement quand le joueur ne peut
-//     plus marquer, c.-à-d. quand son équipe n'a plus aucun match à venir. Un buteur
-//     d'une équipe encore en lice (finale OU petite finale) n'est donc PAS barré.
+//     perdant d'un match KO joué (le flag API a du retard → on le recalcule via les
+//     résultats). Un demi-finaliste battu reste barré même s'il dispute la petite finale.
+//   - Buteur (joueur) : c'est un pari sur le Soulier d'Or (meilleur buteur du tournoi),
+//     INDÉPENDANT de l'élimination de sa nation — un joueur d'une équipe sortie peut très
+//     bien finir meilleur buteur (ex. Mbappé 2026). L'API suit ce classement de près, donc
+//     on lui fait confiance directement pour cette colonne (pas de réconciliation nation).
 function resolveFavorites(matches) {
   if (!existsSync(join(ROOT, 'data/favorites.json'))) return {};
   const fav = readJson('data/favorites.json');
   const elim = eliminatedNationsFrom(matches || []);
-  const active = activeNationsFrom(matches || []);
-  const champion = championFrom(matches || []);
-  const scorerNat = existsSync(join(ROOT, 'data/scorer-nations.json')) ? readJson('data/scorer-nations.json') : {};
   const out = {};
   for (const [uid, f] of Object.entries(fav)) {
     const r = {};
@@ -122,8 +98,7 @@ function resolveFavorites(matches) {
       r.team = { ...f.team, eliminated: gone, img: f.team.img ? imgDataUri(FAV_DIR, f.team.img) : null };
     }
     if (f.scorer) {
-      const nat = scorerNat[f.scorer.name];
-      const gone = nat != null && !active.has(nat) && nat !== champion;
+      const gone = !!f.scorer.eliminated;
       r.scorer = { ...f.scorer, eliminated: gone, img: f.scorer.img ? imgDataUri(FAV_DIR, f.scorer.img) : null };
     }
     out[uid] = r;
