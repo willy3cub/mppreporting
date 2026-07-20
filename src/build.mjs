@@ -88,6 +88,16 @@ function activeNationsFrom(matches) {
   return s;
 }
 
+// Champion : vainqueur de la Finale une fois jouée (null tant qu'elle ne l'est pas).
+// En fin de tournoi, plus aucune nation n'est « active » → sans ça, le buteur du champion
+// serait barré à tort. Le champion n'est jamais éliminé (ni nation, ni buteur).
+function championFrom(matches) {
+  const f = (matches || []).find((m) => m.phase === 'Finale' && m.status === 'played'
+    && m.score1 != null && m.score2 != null && m.score1 !== m.score2);
+  if (!f) return null;
+  return f.score1 > f.score2 ? f.team1 : f.team2;
+}
+
 // Résout les images des favoris en data URIs (page auto-suffisante) ET réconcilie le
 // statut « éliminé » des deux colonnes avec les résultats réels. Les deux colonnes ont
 // des sémantiques DIFFÉRENTES :
@@ -102,6 +112,7 @@ function resolveFavorites(matches) {
   const fav = readJson('data/favorites.json');
   const elim = eliminatedNationsFrom(matches || []);
   const active = activeNationsFrom(matches || []);
+  const champion = championFrom(matches || []);
   const scorerNat = existsSync(join(ROOT, 'data/scorer-nations.json')) ? readJson('data/scorer-nations.json') : {};
   const out = {};
   for (const [uid, f] of Object.entries(fav)) {
@@ -112,7 +123,7 @@ function resolveFavorites(matches) {
     }
     if (f.scorer) {
       const nat = scorerNat[f.scorer.name];
-      const gone = nat != null && !active.has(nat);
+      const gone = nat != null && !active.has(nat) && nat !== champion;
       r.scorer = { ...f.scorer, eliminated: gone, img: f.scorer.img ? imgDataUri(FAV_DIR, f.scorer.img) : null };
     }
     out[uid] = r;

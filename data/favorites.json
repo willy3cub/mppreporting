@@ -23,7 +23,7 @@
     "scorer": {
       "name": "Un Autre",
       "points": 150,
-      "eliminated": false,
+      "eliminated": true,
       "img": "scorer-0.png"
     }
   },
@@ -51,7 +51,7 @@
     "scorer": {
       "name": "Lamine Yamal",
       "points": 100,
-      "eliminated": false,
+      "eliminated": true,
       "img": "scorer-593109.png"
     }
   },
@@ -65,7 +65,7 @@
     "scorer": {
       "name": "Un Autre",
       "points": 150,
-      "eliminated": false,
+      "eliminated": true,
       "img": "scorer-0.png"
     }
   },
@@ -79,7 +79,7 @@
     "scorer": {
       "name": "Un Autre",
       "points": 150,
-      "eliminated": false,
+      "eliminated": true,
       "img": "scorer-0.png"
     }
   },
@@ -93,7 +93,7 @@
     "scorer": {
       "name": "Un Autre",
       "points": 150,
-      "eliminated": false,
+      "eliminated": true,
       "img": "scorer-0.png"
     }
   },
@@ -107,7 +107,7 @@
     "scorer": {
       "name": "Harry Kane",
       "points": 100,
-      "eliminated": false,
+      "eliminated": true,
       "img": "scorer-78830.png"
     }
   },
@@ -135,7 +135,7 @@
     "scorer": {
       "name": "Un Autre",
       "points": 150,
-      "eliminated": false,
+      "eliminated": true,
       "img": "scorer-0.png"
     }
   },
@@ -149,7 +149,7 @@
     "scorer": {
       "name": "Un Autre",
       "points": 150,
-      "eliminated": false,
+      "eliminated": true,
       "img": "scorer-0.png"
     }
   },
@@ -185,7 +185,7 @@
     "scorer": {
       "name": "Un Autre",
       "points": 150,
-      "eliminated": false,
+      "eliminated": true,
       "img": "scorer-0.png"
     }
   },

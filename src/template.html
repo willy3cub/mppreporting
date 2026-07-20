@@ -56,6 +56,21 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
 .flglow{transform-origin:50% 74%;animation:glowpulse 2.2s ease-in-out infinite alternate}
 @keyframes flick{0%{transform:scaleY(.88) scaleX(1.03);opacity:.78}100%{transform:scaleY(1.14) scaleX(.92);opacity:1}}
 @keyframes glowpulse{0%{opacity:.55;transform:scale(.94)}100%{opacity:.9;transform:scale(1.06)}}
+/* Feux d'artifice de fin de tournoi (rendus seulement quand tout est joué) */
+.podium.celebrate{padding-top:34px}
+.fireworks{position:absolute;left:0;right:0;top:-30px;height:150px;z-index:0;pointer-events:none;overflow:visible}
+.fw{position:absolute;width:4px;height:4px;border-radius:50%;opacity:0;transform:scale(.1);
+  animation:fw-burst 2.4s ease-out infinite}
+.fw::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:
+  40px 0 0 0 var(--fw),35px -20px 0 0 var(--fw),20px -35px 0 0 var(--fw),0 -40px 0 0 var(--fw),
+  -20px -35px 0 0 var(--fw),-35px -20px 0 0 var(--fw),-40px 0 0 0 var(--fw),-35px 20px 0 0 var(--fw),
+  -20px 35px 0 0 var(--fw),0 40px 0 0 var(--fw),20px 35px 0 0 var(--fw),35px 20px 0 0 var(--fw)}
+.fw1{left:14%;--fw:#ffd166;animation-delay:0s}
+.fw2{left:38%;--fw:#ff6b6b;animation-delay:.5s;top:14px}
+.fw3{left:62%;--fw:#38d996;animation-delay:1s;top:6px}
+.fw4{left:84%;--fw:#4d8bff;animation-delay:1.5s}
+.fw5{left:50%;--fw:#ff9f1c;animation-delay:.8s;top:-8px}
+@keyframes fw-burst{0%{opacity:0;transform:scale(.1)}12%{opacity:1}55%{opacity:1}100%{opacity:0;transform:scale(1)}}
 /* Le Rescapé (avant-dernier) : vrai trophée, à côté du podium */
 .podium .consol{margin-left:26px;padding-bottom:10px;cursor:pointer}
 .podium .consol .medal{font-size:26px;filter:drop-shadow(0 0 7px #d9a441)}
@@ -67,6 +82,7 @@ body{margin:0;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var
   .hero .trophy{animation:none}
   .podium .step{animation:none}
   .fl,.flcore,.flglow{animation:none}
+  .fw{animation:none;opacity:.55;transform:scale(.7)}
   .beams{animation:none}
 }
 

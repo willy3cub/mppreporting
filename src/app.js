@@ -131,7 +131,17 @@ function renderPodium() {
       <div class="consol-label">Le Rescapé · ${ordinalFr(avd.rank)}</div>
     </div>`;
   }
-  document.getElementById('podium').innerHTML = steps + consol;
+  // Fin de tournoi : plus aucun match en attente → on lâche les feux d'artifice.
+  const done = (window.__WC.matches || []).every((m) => m.status !== 'pending');
+  const el = document.getElementById('podium');
+  if (done) {
+    el.classList.add('celebrate');
+    const fw = '<div class="fireworks" aria-hidden="true">'
+      + [1, 2, 3, 4, 5].map((i) => `<span class="fw fw${i}"></span>`).join('') + '</div>';
+    el.innerHTML = fw + steps + consol;
+  } else {
+    el.innerHTML = steps + consol;
+  }
 }
 
 // Résumé des matchs de la journée précédente (texte éditorial, data/recap.json).
@@ -167,6 +177,8 @@ function renderRecap() {
     <section id="recap" class="card recap">${blocks}</section>`);
   // Embed X : idem bilan, on hydrate les blockquotes via widgets.js s'il y en a.
   if (items.some((it) => /twitter-tweet/.test(it.html || ''))) loadTwitterWidgets();
+  // Embed Instagram : idem, on hydrate les blockquotes .instagram-media via embed.js.
+  if (items.some((it) => /instagram-media/.test(it.html || ''))) loadInstagramEmbeds();
 }
 
 function renderClassement() {
@@ -1059,6 +1071,17 @@ function loadTwitterWidgets() {
   s.async = true;
   s.charset = 'utf-8';
   s.src = 'https://platform.twitter.com/widgets.js';
+  document.head.appendChild(s);
+}
+
+// embed.js hydrate les <blockquote class="instagram-media"> présents dans le DOM (dépendance externe assumée).
+function loadInstagramEmbeds() {
+  if (window.instgrm && window.instgrm.Embeds) { window.instgrm.Embeds.process(); return; }
+  if (document.getElementById('instagram-wjs')) return;
+  const s = document.createElement('script');
+  s.id = 'instagram-wjs';
+  s.async = true;
+  s.src = 'https://www.instagram.com/embed.js';
   document.head.appendChild(s);
 }
 
